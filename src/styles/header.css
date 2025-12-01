@@ -1,0 +1,39 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 5%;
+  background-color: transparent;
+}
+
+.logo h1 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: var(--marrom-escuro);
+  text-transform: uppercase;
+  background-image: src('../../public/Logo.png');
+}
+
+.nav ul {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav a {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--cinza-queimado);
+}
+
+.nav a:hover {
+  color: var(--dourado-suave);
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
