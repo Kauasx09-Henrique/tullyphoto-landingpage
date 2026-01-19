@@ -1,0 +1,272 @@
+.my-bookings-page {
+  min-height: 100vh;
+  padding: 120px 20px 60px;
+  background-color: #fdfbf7; /* Creme claro */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.page-title {
+  font-family: 'Times New Roman', serif;
+  font-size: 2.5rem;
+  color: #2C2420;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.page-title::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 3px;
+  background: #D4AF6E; /* Dourado */
+  margin: 10px auto 0;
+}
+
+.bookings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.booking-history-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border-left: 5px solid #ccc; /* Cor padrão */
+  transition: transform 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.booking-history-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Cores da borda baseadas no status */
+.booking-history-card.PENDENTE { border-left-color: #f6c23e; }
+.booking-history-card.CONFIRMADO { border-left-color: #1cc88a; }
+.booking-history-card.CANCELADO { border-left-color: #e74a3b; }
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.studio-name {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #2C2420;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-badge.PENDENTE { background: #fff3cd; color: #856404; }
+.status-badge.CONFIRMADO { background: #d4edda; color: #155724; }
+.status-badge.CANCELADO { background: #f8d7da; color: #721c24; }
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.price-tag {
+  margin-top: 10px;
+  font-family: 'Times New Roman', serif;
+  font-size: 1.5rem;
+  color: #D4AF6E;
+  text-align: right;
+  font-weight: bold;
+}
+
+.empty-state {
+  text-align: center;
+  color: #888;
+  margin-top: 50px;
+}
+
+.btn-new-booking {
+  margin-top: 20px;
+  padding: 10px 25px;
+  background: #2C2420;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 30px;
+  transition: 0.3s;
+}
+.btn-new-booking:hover { background: #000; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+
+/* ... (Mantenha o CSS anterior) ... */
+
+.booking-history-card.REAGENDAMENTO_SOLICITADO { border-left-color: #36b9cc; }
+
+.status-badge.REAGENDAMENTO_SOLICITADO { background: #e0f2f1; color: #00897b; }
+
+.card-actions {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px dashed #eee;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-action {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-cancel {
+  background: #fff;
+  border: 1px solid #e74a3b;
+  color: #e74a3b;
+}
+
+.btn-cancel:hover {
+  background: #e74a3b;
+  color: #fff;
+}
+
+.btn-reschedule {
+  background: #fff;
+  border: 1px solid #36b9cc;
+  color: #36b9cc;
+}
+
+.btn-reschedule:hover {
+  background: #36b9cc;
+  color: #fff;
+}
+
+.alert-days {
+  font-size: 0.75rem;
+  color: #e74a3b;
+  margin-top: 5px;
+  display: block;
+  text-align: right;
+}
+
+/* --- MODAL DE CONFIRMAÇÃO --- */
+.confirm-icon {
+  font-size: 3rem;
+  color: #f6c23e; /* Amarelo alerta */
+  margin-bottom: 15px;
+  animation: pulse 1s infinite;
+}
+
+.confirm-title {
+  color: #2C2420;
+  margin-bottom: 10px;
+  font-family: 'Times New Roman', serif;
+}
+
+.confirm-text {
+  color: #666;
+  margin-bottom: 25px;
+  font-size: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.btn-modal {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  min-width: 100px;
+}
+
+.btn-yes {
+  background: #2C2420;
+  color: #fff;
+}
+.btn-yes:hover {
+  background: #000;
+  transform: translateY(-2px);
+}
+
+.btn-no {
+  background: #eee;
+  color: #555;
+}
+.btn-no:hover {
+  background: #ddd;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+  .my-bookings-page {
+    padding: 100px 15px 40px;
+  }
+
+  .page-title {
+    font-size: 2rem;
+  }
+
+  /* Grid vira uma coluna só */
+  .bookings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Card ocupa largura total */
+  .booking-history-card {
+    width: 100%;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .card-actions {
+    flex-direction: column; /* Botões um em cima do outro */
+  }
+  
+  .btn-action {
+    width: 100%;
+    justify-content: center;
+  }
+}

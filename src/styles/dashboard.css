@@ -1,0 +1,85 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.kpi-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border-left: 4px solid #D4AF6E;
+  display: flex;
+  flex-direction: column;
+}
+
+.kpi-title {
+  font-size: 0.85rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.kpi-value {
+  font-family: 'Times New Roman', serif;
+  font-size: 2rem;
+  color: #2C2420;
+  font-weight: bold;
+}
+
+.charts-section {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.chart-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  min-height: 400px;
+}
+
+.chart-title {
+  font-family: 'Times New Roman', serif;
+  font-size: 1.5rem;
+  color: #2C2420;
+  margin-bottom: 1.5rem;
+}
+
+.top-users-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.user-rank-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.rank-info strong {
+  display: block;
+  color: #2C2420;
+}
+
+.rank-info small {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.rank-badge {
+  background-color: #f4f4f4;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #D4AF6E;
+}

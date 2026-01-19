@@ -8,10 +8,10 @@ import 'swiper/css/pagination';
 import '../styles/photogrid.css';
 
 const photos = [
-  { id: 1, src: '/Inicio.jpg', alt: 'Fotografia de Início' },
-  { id: 2, src: '/Estudio.jpg', alt: 'Fotografia em Estúdio' },
-  { id: 3, src: '/Ambiente.jpg', alt: 'Fotografia de Ambiente' },
-  { id: 4, src: '/Estudio_Deitada.png', alt: 'Fotografia de Ambiente' },
+  { id: 1, src: '/Foto_Inicio.jpg', alt: 'Fotografia de Início' },
+  { id: 2, src: '/Mesa.jpg', alt: 'Fotografia em Estúdio' },
+  { id: 3, src: '/Sofa.jpg', alt: 'Fotografia de Ambiente' },
+  { id: 4, src: '/Cadeiras.jpg', alt: 'Fotografia de Ambiente' },
 
 ];
 

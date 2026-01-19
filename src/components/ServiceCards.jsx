@@ -4,24 +4,24 @@ import '../styles/servicecards.css';
 const services = [
   {
     id: 1,
-    title: 'Ensaio Profissional',
-    description: 'Imagens de alta qualidade para elevar sua carreira e presença no mercado.',
+    title: 'Locação',
+    description: 'loren ipsum dolor sit amet, consectetur adipiscing elit.',
     image: '../public/Ensaio_Card1.jpg',
     buttonText: 'Agendar',
     link: '#agendar-profissional'
   },
   {
     id: 2,
-    title: 'Natal',
-    description: 'Registre a magia das festas com cenários exclusivos e encantadores.',
+    title: 'Ensaio',
+    description: 'loren ipsum dolor sit amet, consectetur adipiscing elit.',
     image: '../public/Ensaio_Card2.jpg',
     buttonText: 'Saiba Mais',
     link: '#natal'
   },
   {
     id: 3,
-    title: 'Ensaio Corporativo',
-    description: 'Transmita credibilidade e profissionalismo para sua empresa e equipe.',
+    title: 'Video',
+    description: 'loren ipsum dolor sit amet, consectetur adipiscing elit.',
     image: '../public/Ensaio_Card3.jpg',
     buttonText: 'Orçamento',
     link: '#orcamento'

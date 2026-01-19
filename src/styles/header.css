@@ -1,39 +1,84 @@
 .header {
+  position: fixed;
+  top: 0; left: 0; width: 100%;
+  padding: 1rem 5%;
+  background: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 5%;
-  background-color: transparent;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  z-index: 1000;
+  height: 80px;
 }
 
-.logo h1 {
-  font-size: 1.5rem;
-  font-weight: 400;
-  letter-spacing: 2px;
-  color: var(--marrom-escuro);
-  text-transform: uppercase;
-  background-image: src('../../public/Logo.png');
+.logo h1 a {
+  font-family: 'Times New Roman', serif;
+  font-size: 1.8rem;
+  color: #2C2420;
+  text-decoration: none;
+  font-weight: bold;
 }
 
-.nav ul {
+/* Menu Desktop */
+.nav-list {
   display: flex;
-  gap: 2rem;
+  gap: 25px;
+  align-items: center;
+  list-style: none;
 }
 
-.nav a {
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--cinza-queimado);
+.nav-list a {
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: 0.3s;
 }
 
-.nav a:hover {
-  color: var(--dourado-suave);
+.nav-list a:hover { color: #D4AF6E; }
+
+/* Botão Hamburger (Escondido no Desktop) */
+.mobile-menu-icon {
+  display: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #2C2420;
 }
 
-@media (max-width: 768px) {
-  .header {
+/* --- VERSÃO MOBILE --- */
+@media (max-width: 850px) {
+  .mobile-menu-icon {
+    display: block; /* Aparece o ícone */
+  }
+
+  .nav-list {
+    position: absolute;
+    top: 80px; /* Altura do header */
+    right: 0;
+    width: 60%; /* Ocupa 60% da tela */
+    height: calc(100vh - 80px);
+    background: #fff;
     flex-direction: column;
-    gap: 1.5rem;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 50px;
+    gap: 30px;
+    transform: translateX(100%); /* Esconde para a direita */
+    transition: transform 0.3s ease-in-out;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+  }
+
+  .nav-list.active {
+    transform: translateX(0); /* Mostra o menu */
+  }
+
+  .nav-list li {
+    opacity: 0; /* Animação dos itens */
+  }
+  
+  .nav-list.active li {
+    animation: fadeInList 0.5s forwards 0.3s;
   }
 }
+
+@keyframes fadeInList { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }

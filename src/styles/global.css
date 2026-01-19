@@ -49,3 +49,30 @@ button {
   background: none;
   font-family: inherit;
 }
+
+/* CSS para o Admin */
+.table-responsive-container {
+  width: 100%;
+  overflow-x: auto; /* Cria rolagem horizontal se não couber */
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 800px; /* Força a tabela a ter um tamanho mínimo, ativando a rolagem */
+  border-collapse: collapse;
+}
+
+/* No celular, o Header do admin diminui */
+@media (max-width: 768px) {
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .admin-title {
+    font-size: 1.8rem;
+  }
+}

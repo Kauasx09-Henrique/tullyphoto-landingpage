@@ -1,0 +1,108 @@
+/* src/styles/auth.css */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--creme-claro); /* Fundo igual ao portfolio */
+  padding: 2rem;
+  animation: pageFadeIn 0.8s ease-out;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* Título elegante igual ao portfolio */
+.auth-title {
+  font-family: 'Times New Roman', serif;
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--marrom-escuro);
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  margin-bottom: 2.5rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input-group {
+  position: relative;
+  text-align: left;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 1rem 0; /* Minimalista: Apenas borda embaixo */
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(44, 36, 32, 0.2);
+  font-size: 1rem;
+  color: var(--marrom-escuro);
+  outline: none;
+  transition: all 0.3s ease;
+  border-radius: 0;
+}
+
+.auth-input::placeholder {
+  color: rgba(44, 36, 32, 0.4);
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.auth-input:focus {
+  border-bottom-color: var(--marrom-escuro);
+}
+
+/* Botão seguindo o estilo "active" dos filtros */
+.auth-btn {
+  margin-top: 1rem;
+  background-color: var(--marrom-escuro);
+  color: var(--creme-claro);
+  padding: 1rem;
+  border: 1px solid var(--marrom-escuro);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.auth-btn:hover {
+  background-color: transparent;
+  color: var(--marrom-escuro);
+  transform: translateY(-2px);
+}
+
+.auth-link {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--cinza-queimado);
+  letter-spacing: 0.5px;
+}
+
+.auth-link a {
+  color: var(--marrom-escuro);
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom: 1px solid transparent;
+  transition: border 0.3s;
+}
+
+.auth-link a:hover {
+  border-bottom-color: var(--marrom-escuro);
+}
+
+/* Animação reutilizada */
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
