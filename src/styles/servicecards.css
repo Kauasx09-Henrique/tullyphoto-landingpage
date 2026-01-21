@@ -1,96 +1,163 @@
+/* src/styles/servicecards.css */
+
+/* 1. IMPORTANDO A FONTE "CINZEL" (Igual à referência VALORES) */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400&display=swap');
+
 .services-section {
-  padding: 4rem 5%;
-  background-color: var(--creme-claro);
+  padding: 100px 20px;
+  background-color: #fff;
 }
 
 .services-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+/* --- O CARD --- */
 .service-card {
   position: relative;
   height: 500px;
+  border-radius: 30px; /* Mantendo arredondado como no vídeo */
+  overflow: hidden;
+  background-color: #000;
+  cursor: pointer;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+  transition: box-shadow 0.4s ease;
+}
+
+.service-card:hover {
+  box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+}
+
+/* --- IMAGEM DE FUNDO --- */
+.card-bg-image {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
   background-size: cover;
   background-position: center;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  z-index: 0;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+.service-card:hover .card-bg-image {
+  transform: scale(1.15); /* Zoom suave */
+}
+
+/* --- OVERLAY --- */
 .card-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4); 
-  transition: background 0.3s ease;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
   z-index: 1;
+  pointer-events: none;
 }
 
-.service-card:hover .card-overlay {
-  background: rgba(0, 0, 0, 0.6); 
-}
-
+/* --- CONTEÚDO --- */
 .card-content {
   position: relative;
   z-index: 2;
-  padding: 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 40px;
   color: #fff;
+}
+
+/* TÍTULO ESTILO "VALORES" */
+.card-title {
+  font-family: 'Cinzel', serif; /* A fonte nova */
+  font-size: 2.8rem; /* Tamanho grande */
+  font-weight: 400; /* Peso regular para ficar elegante */
+  text-transform: uppercase; /* Caixa alta igual à imagem */
+  letter-spacing: 2px; /* Espaçamento entre letras */
+  margin-bottom: 5px;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5); /* Sombra para leitura */
+}
+
+/* ÁREA QUE APARECE NO HOVER (Preço + Descrição + Botão) */
+.reveal-content {
+  max-height: 0;
+  opacity: 0;
   transform: translateY(20px);
-  transition: transform 0.4s ease;
+  transition: all 0.6s ease;
+  overflow: hidden;
 }
 
-.service-card:hover .card-content {
+.service-card:hover .reveal-content {
+  max-height: 300px; /* Altura suficiente para o conteúdo */
+  opacity: 1;
   transform: translateY(0);
+  margin-top: 15px;
 }
 
-.card-content h3 {
-  font-size: 2rem;
+/* PREÇO ELEGANTE */
+.card-price {
+  display: block;
+  font-family: 'Cinzel', serif; /* Mesma fonte do título */
+  font-size: 1.6rem;
+  color: #f0a500; /* Dourado/Laranja */
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+/* DESCRIÇÃO LIMPA */
+.card-description {
+  font-family: 'Lato', sans-serif; /* Fonte limpa para leitura */
+  font-size: 0.95rem;
+  color: #e0e0e0;
+  line-height: 1.6;
+  margin-bottom: 25px;
   font-weight: 300;
-  margin-bottom: 1rem;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  max-width: 95%;
 }
 
-.card-content p {
-  font-size: 1rem;
-  margin-bottom: 2rem;
-  line-height: 1.5;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-  max-width: 300px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
+/* BOTÃO */
 .card-button {
-  background-color: var(--dourado-suave);
-  color: var(--creme-claro);
-  padding: 10px 28px;
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 35px;
+  background-color: #f0a500;
+  color: #fff;
   border-radius: 50px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
   font-size: 0.85rem;
-  text-transform: lowercase;
-  font-weight: 600;
-  display: inline-block;
-  transition: all 0.2s ease;
+  letter-spacing: 1.5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .card-button:hover {
-  background-color: #c49f5e;
+  background-color: #fff;
+  color: #f0a500;
   transform: translateY(-2px);
-  color: #fff;
 }
 
+.card-button span {
+  margin-left: 10px;
+  transition: margin-left 0.3s;
+}
+
+.service-card:hover .card-button span {
+  margin-left: 15px;
+}
+
+/* RESPONSIVIDADE */
 @media (max-width: 900px) {
-  .services-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  
-  .service-card {
-    height: 400px;
-  }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .services-grid { grid-template-columns: 1fr; }
+  .service-card { height: 450px; }
+  .card-title { font-size: 2.2rem; }
 }
