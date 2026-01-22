@@ -1,88 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Lato:wght@300;400;700&display=swap');
+
+:root {
+  --vetra-brown: #4A3B32;
+  --vetra-gold: #C0A062;
+  --vetra-cream: #F5F5F0;
+}
+
 .location-section {
-  padding: 4rem 5%;
-  background-color: var(--creme-claro);
-  border-top: 1px solid rgba(44, 36, 32, 0.1);
+  padding: 100px 5%;
+  background-color: var(--vetra-cream);
+  width: 100%;
 }
 
 .location-container {
   display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Alinhamento pelo topo */
   max-width: 1200px;
   margin: 0 auto;
-  gap: 4rem;
-  align-items: center;
+  gap: 60px;
 }
 
+/* --- LADO ESQUERDO: TEXTO --- */
 .location-info {
   flex: 1;
-  padding-right: 2rem;
+  max-width: 450px;
+  padding-top: 20px; /* Ajuste para alinhar com o topo do mapa */
 }
 
-.location-info h2 {
-  font-size: 2.5rem;
-  font-weight: 300;
-  margin-bottom: 2.5rem;
-  color: var(--marrom-escuro);
+.location-title {
+  font-family: 'Cinzel', serif;
+  font-size: 3rem;
+  color: var(--vetra-brown);
+  font-weight: 400;
+  margin-bottom: 40px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  line-height: 1;
+  border-bottom: 2px solid var(--vetra-gold); /* Detalhe visual fixo */
+  display: inline-block;
+  padding-bottom: 10px;
 }
 
 .info-item {
-  margin-bottom: 2rem;
+  margin-bottom: 40px;
 }
 
 .info-item h3 {
-  font-size: 0.9rem;
+  font-family: 'Cinzel', serif;
+  font-size: 1.2rem;
+  color: var(--vetra-gold);
+  margin-bottom: 15px;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--dourado-suave);
-  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
 }
 
 .info-item p {
+  font-family: 'Lato', sans-serif;
   font-size: 1.1rem;
-  color: var(--cinza-queimado);
-  line-height: 1.6;
+  color: #444;
+  line-height: 1.8;
+  text-transform: uppercase; /* Igual ao PDF */
+  font-weight: 400;
 }
 
+/* --- BOTÃO (Estilo PDF "CLIQUE AQUI") --- */
 .directions-btn {
   display: inline-block;
-  margin-top: 1rem;
-  padding-bottom: 2px;
-  border-bottom: 1px solid var(--marrom-escuro);
-  font-size: 0.9rem;
-  color: var(--marrom-escuro);
-  transition: all 0.2s;
+  padding: 15px 40px;
+  background-color: var(--vetra-brown);
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--vetra-brown);
 }
 
 .directions-btn:hover {
-  color: var(--dourado-suave);
-  border-color: var(--dourado-suave);
-  opacity: 1;
+  background-color: transparent;
+  color: var(--vetra-brown);
+  border-color: var(--vetra-brown);
 }
 
+/* --- LADO DIREITO: MAPA --- */
 .location-map {
-  flex: 1.2;
-  height: 400px;
-  background-color: #e0e0e0;
-  filter: grayscale(100%);
-  transition: filter 0.3s;
+  flex: 1;
+  width: 100%;
+  height: 500px; /* Mapa bem alto */
+  border: 1px solid rgba(74, 59, 50, 0.1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
 
-.location-map:hover {
-  filter: grayscale(0%);
+.location-map iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* Filtro leve para integrar o mapa ao site */
+  filter: grayscale(20%); 
 }
 
-@media (max-width: 768px) {
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 900px) {
   .location-container {
     flex-direction: column;
-    gap: 2rem;
+    gap: 40px;
   }
-  
+
   .location-info {
-    padding-right: 0;
+    max-width: 100%;
     text-align: center;
+    padding-top: 0;
   }
-  
+
   .location-map {
-    width: 100%;
-    height: 300px;
+    height: 350px;
   }
 }

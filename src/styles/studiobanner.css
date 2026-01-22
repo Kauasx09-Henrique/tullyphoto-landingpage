@@ -1,98 +1,248 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Lato:wght@300;400;700&display=swap');
+
+:root {
+  --vetra-brown: #4A3B32;
+  --vetra-brown-light: #5d4a3f;
+  --vetra-gold: #C0A062;
+  --vetra-cream: #F5F5F0;
+}
+
+/* --- ANIMAÇÕES (KEYFRAMES) --- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatReel {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulseGlow {
+  0% { opacity: 0.3; transform: scale(0.95); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+  100% { opacity: 0.3; transform: scale(0.95); }
+}
+
+/* --- ESTRUTURA GERAL --- */
 .studio-banner {
-  width: 100%;
-  height: 85vh; 
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../public/Vetra.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed; 
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 0 5%;
-  position: relative;
+  width: 100%;
+  min-height: 900px;
+  /* Fundo com degradê radial para dar profundidade (Spotlight) */
+  background: radial-gradient(circle at 30% 50%, var(--vetra-brown-light) 0%, var(--vetra-brown) 70%);
+  padding: 80px 5%;
+  margin-top: 90px;
+  overflow: hidden;
+  gap: 80px;
 }
 
+/* --- LADO ESQUERDO: CONTEÚDO --- */
 .banner-content {
-  max-width: 800px;
-  color: var(--creme-claro);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: fadeUp 1s ease-out;
+  flex: 1;
+  max-width: 600px;
+  color: #fff;
+  z-index: 2;
+  /* Estado inicial para animação */
+  opacity: 0; 
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Classe ativada via JS quando visível */
+.banner-content.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .banner-content h2 {
-  font-size: 4rem; 
-  font-weight: 300;
-  letter-spacing: 2px;
-  margin-bottom: 1.5rem;
-  font-family: 'Times New Roman', serif;
+  font-family: 'Cinzel', serif;
+  font-size: 3.5rem;
+  font-weight: 400;
+  margin-bottom: 25px;
+  letter-spacing: 6px;
   text-transform: uppercase;
+  color: #fff;
+  line-height: 1.1;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 .divider {
-  width: 60px;
-  height: 2px;
-  background-color: var(--dourado-suave);
-  margin-bottom: 2rem;
+  width: 0px; /* Começa invisível */
+  height: 3px;
+  background-color: var(--vetra-gold);
+  margin-bottom: 35px;
+  transition: width 1s ease 0.5s; /* Anima a linha crescendo */
+}
+
+.banner-content.visible .divider {
+  width: 80px;
 }
 
 .banner-content p {
-  font-size: 1.2rem;
-  margin-bottom: 3rem;
-  opacity: 0.9;
-  line-height: 1.8;
+  font-family: 'Lato', sans-serif;
+  font-size: 1.15rem;
+  line-height: 1.7;
   font-weight: 300;
-  max-width: 600px;
+  margin-bottom: 50px;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.cta-button {
-  background-color: transparent;
-  color: var(--creme-claro);
-  padding: 15px 40px;
-  border: 1px solid var(--creme-claro);
-  font-size: 0.9rem;
-  font-weight: 400;
+/* --- GRID DE ÍCONES --- */
+.features-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.feature-icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  opacity: 0; /* Invisível inicialmente */
+  transform: translateY(20px);
+  transition: all 0.4s ease;
+  cursor: default;
+}
+
+/* Animação em cascata (Stagger) */
+.banner-content.visible .feature-icon-item:nth-child(1) { animation: fadeInUp 0.6s forwards 0.3s; }
+.banner-content.visible .feature-icon-item:nth-child(2) { animation: fadeInUp 0.6s forwards 0.4s; }
+.banner-content.visible .feature-icon-item:nth-child(3) { animation: fadeInUp 0.6s forwards 0.5s; }
+.banner-content.visible .feature-icon-item:nth-child(4) { animation: fadeInUp 0.6s forwards 0.6s; }
+.banner-content.visible .feature-icon-item:nth-child(5) { animation: fadeInUp 0.6s forwards 0.7s; }
+.banner-content.visible .feature-icon-item:nth-child(6) { animation: fadeInUp 0.6s forwards 0.8s; }
+
+.icon-wrapper {
+  font-size: 2.2rem;
+  color: var(--vetra-gold);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  filter: drop-shadow(0 0 5px rgba(192, 160, 98, 0.2));
+}
+
+.feature-icon-item:hover .icon-wrapper {
+  transform: scale(1.2); /* Zoom no ícone */
+  color: #fff; /* Muda para branco no hover */
+  filter: drop-shadow(0 0 10px var(--vetra-gold)); /* Brilho Dourado */
+}
+
+.feature-icon-item span {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
   text-transform: uppercase;
-  letter-spacing: 3px;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+  letter-spacing: 1px;
+  transition: color 0.3s;
+}
+
+.feature-icon-item:hover span {
+  color: var(--vetra-gold);
+}
+
+/* --- BOTÃO COM EFEITO SHINE --- */
+.cta-button {
+  position: relative;
+  display: inline-block;
+  padding: 16px 45px;
+  background-color: var(--vetra-gold);
+  color: var(--vetra-brown);
   text-decoration: none;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  overflow: hidden; /* Para o brilho não vazar */
+  border: 1px solid var(--vetra-gold);
+}
+
+/* Efeito de brilho passando */
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.5s;
+}
+
+.cta-button:hover::before {
+  left: 100%;
 }
 
 .cta-button:hover {
-  background-color: var(--dourado-suave);
-  border-color: var(--dourado-suave);
-  color: #fff;
-  transform: translateY(-3px);
-  padding-left: 50px; 
+  background-color: transparent;
+  color: var(--vetra-gold);
+  box-shadow: 0 0 20px rgba(192, 160, 98, 0.4);
 }
 
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* --- LADO DIREITO: REEL --- */
+.instagram-side {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-@media (max-width: 768px) {
+/* Aura Dourada Pulsante atrás do Reel */
+.instagram-side::before {
+  content: '';
+  position: absolute;
+  width: 400px; height: 600px;
+  background: radial-gradient(circle, var(--vetra-gold) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: 0;
+  animation: pulseGlow 4s infinite ease-in-out;
+}
+
+.instagram-wrapper {
+  width: 100%;
+  max-width: 500px;
+  z-index: 1;
+  /* Animação de Flutuação */
+  animation: floatReel 6s ease-in-out infinite;
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
+  opacity: 0; /* Começa invisível */
+  transform: scale(0.9);
+  transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.instagram-wrapper.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Ajustes do Iframe */
+.instagram-media {
+  border-radius: 12px !important;
+  margin: 0 auto !important;
+  border: none !important;
+  background: #fff !important; /* Garante fundo branco no card */
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 1024px) {
   .studio-banner {
-    height: 70vh; 
-    background-attachment: scroll; 
+    flex-direction: column-reverse; 
+    padding: 60px 5%;
+    height: auto;
+    text-align: center;
+    gap: 40px;
   }
+  .banner-content { align-items: center; }
+  .divider { margin: 0 auto 35px; }
+  .feature-icon-item { align-items: center; }
+  .features-icon-grid { grid-template-columns: repeat(2, 1fr); }
+  .instagram-side::before { width: 300px; height: 500px; } /* Aura menor */
+}
 
-  .banner-content h2 {
-    font-size: 2.5rem;
-  }
-  
-  .banner-content p {
-    font-size: 1rem;
-  }
+@media (max-width: 600px) {
+  .features-icon-grid { gap: 20px; }
+  .banner-content h2 { font-size: 2.5rem; }
 }
