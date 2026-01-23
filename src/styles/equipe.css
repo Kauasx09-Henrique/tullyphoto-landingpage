@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Lato:wght@300;400&display=swap');
 
 :root {
-  --vetra-brown: #4A3B32; 
-  --vetra-cream: #F5F5F0; 
-  --vetra-gold: #C0A062;  
+  --vetra-brown: #4A3B32;
+  --vetra-cream: #F5F5F0;
+  --vetra-gold: #C0A062;
 }
 
 .equipe-section {
-  padding: 120px 0 0; /* Removi o padding lateral para as fotos colarem na borda */
+  padding: 120px 0 0;
   background-color: #fff;
   width: 100%;
 }
@@ -22,14 +22,14 @@
 }
 
 .equipe-title {
-  font-family: 'Cinzel', serif; 
-  font-size: 3.5rem; 
-  font-weight: 400; 
-  color: var(--vetra-brown); 
+  font-family: 'Cinzel', serif;
+  font-size: 3.5rem;
+  font-weight: 400;
+  color: var(--vetra-brown);
   margin: 0;
   line-height: 1;
-  letter-spacing: 5px; 
-  text-transform: uppercase; 
+  letter-spacing: 5px;
+  text-transform: uppercase;
   flex: 1;
 }
 
@@ -47,46 +47,42 @@
   padding-left: 30px;
 }
 
-/* --- GRID DE 3 COLUNAS PERFEITAS --- */
 .equipe-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Divide exatamente em 3 */
+  grid-template-columns: repeat(4, 1fr);
   width: 100%;
-  gap: 0; /* Fotos coladas */
+  gap: 0;
 }
 
 .member-card {
   position: relative;
-  height: 650px; /* AUMENTADO: Mais altura = Mais qualidade e impacto visual */
+  height: 650px;
   overflow: hidden;
   cursor: pointer;
   background-color: #000;
 }
 
-/* A FOTO (Qualidade Máxima) */
 .member-photo {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Garante que preenche sem esticar */
-  object-position: top center; /* FOCA NO ROSTO (Evita cortar a cabeça) */
+  object-fit: cover;
+  object-position: top center;
   filter: grayscale(100%) contrast(110%);
   transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  image-rendering: -webkit-optimize-contrast; /* Melhora a nitidez */
+  image-rendering: -webkit-optimize-contrast;
 }
 
-/* Efeito Hover */
 .member-card:hover .member-photo {
   filter: grayscale(0%) contrast(100%);
-  transform: scale(1.05); /* Zoom suave */
+  transform: scale(1.05);
 }
 
-/* OVERLAY DE INFORMAÇÃO */
 .member-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 50px 30px; /* Mais espaço interno */
+  padding: 50px 30px;
   background: linear-gradient(to top, rgba(74, 59, 50, 0.95) 0%, rgba(74, 59, 50, 0.6) 50%, transparent 100%);
   color: #fff;
   opacity: 0;
@@ -101,7 +97,7 @@
 
 .member-name {
   font-family: 'Cinzel', serif;
-  font-size: 1.8rem; /* Nome um pouco maior */
+  font-size: 1.8rem;
   margin: 0 0 10px 0;
   font-weight: 500;
   letter-spacing: 1px;
@@ -118,26 +114,33 @@
   font-weight: 400;
 }
 
-/* RESPONSIVIDADE */
 @media (max-width: 1024px) {
   .equipe-header {
     flex-direction: column;
     gap: 40px;
   }
+
   .equipe-description {
     border-left: none;
     padding-left: 0;
     text-align: justify;
   }
-  /* Mantém 3 colunas no tablet, mas diminui a altura se precisar */
-  .member-card { height: 500px; }
+
+  .member-card {
+    height: 500px;
+  }
 }
 
 @media (max-width: 768px) {
-  /* No celular, vira 1 coluna para a foto ficar grande */
   .equipe-grid {
     grid-template-columns: 1fr;
   }
-  .equipe-title { font-size: 2.5rem; }
-  .member-card { height: 550px; } /* Altura boa para celular */
+
+  .equipe-title {
+    font-size: 2.5rem;
+  }
+
+  .member-card {
+    height: 550px;
+  }
 }

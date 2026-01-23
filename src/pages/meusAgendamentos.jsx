@@ -13,7 +13,6 @@ const MeusAgendamentos = () => {
     const [agendamentos, setAgendamentos] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Estado para controlar o Modal de Confirmação
     const [modalData, setModalData] = useState({ show: false, id: null, acao: '' });
 
     useEffect(() => {
@@ -32,12 +31,10 @@ const MeusAgendamentos = () => {
             });
     };
 
-    // 1. Ao clicar no botão, SÓ abre o modal (não chama API ainda)
     const abrirModal = (id, acao) => {
         setModalData({ show: true, id, acao });
     };
 
-    // 2. Se o usuário confirmar no Modal, aí sim chama a API
     const confirmarAcao = async () => {
         const { id, acao } = modalData;
 
@@ -78,7 +75,6 @@ const MeusAgendamentos = () => {
                         const dataEnsaio = new Date(ag.data_inicio);
                         const hoje = new Date();
                         const diasRestantes = differenceInDays(dataEnsaio, hoje);
-                        // Verifica se pode mexer (não está cancelado nem realizado)
                         const podeMexer = ag.status !== 'CANCELADO' && ag.status !== 'REALIZADO' && ag.status !== 'REAGENDAMENTO_SOLICITADO';
 
                         return (
@@ -136,7 +132,6 @@ const MeusAgendamentos = () => {
                 </div>
             )}
 
-            {/* --- MODAL PERSONALIZADO (Substitui o window.confirm) --- */}
             {modalData.show && (
                 <div className="modal-overlay">
                     <div className="modal-content">

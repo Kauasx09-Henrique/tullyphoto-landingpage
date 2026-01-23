@@ -9,7 +9,7 @@ import Agendamento from './pages/Agendamento';
 import Portfolio from './pages/Portfolio';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
-import MeusAgendamentos from './pages/meusAgendamentos.jsx'; 
+import MeusAgendamentos from './pages/meusAgendamentos.jsx';
 
 // Pages Admin
 import AdminLayout from './pages/admin/AdminLayout';
@@ -20,6 +20,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 // Components
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Information from './components/Information';
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
         <Route path="/login" element={<><Header /><Login /><Footer /></>} />
         <Route path="/meus-agendamentos" element={<MeusAgendamentos />} />
         <Route path="/cadastro" element={<><Header /><Cadastro /><Footer /></>} />
-
+        <Route path="/informacoes" element={<Information />} />
 
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<AdminDashboard />} />

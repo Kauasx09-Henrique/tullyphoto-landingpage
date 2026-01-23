@@ -15,17 +15,16 @@
 .location-container {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start; /* Alinhamento pelo topo */
+  align-items: flex-start; 
   max-width: 1200px;
   margin: 0 auto;
   gap: 60px;
 }
 
-/* --- LADO ESQUERDO: TEXTO --- */
 .location-info {
   flex: 1;
   max-width: 450px;
-  padding-top: 20px; /* Ajuste para alinhar com o topo do mapa */
+  padding-top: 20px; 
 }
 
 .location-title {
@@ -37,7 +36,7 @@
   letter-spacing: 3px;
   text-transform: uppercase;
   line-height: 1;
-  border-bottom: 2px solid var(--vetra-gold); /* Detalhe visual fixo */
+  border-bottom: 2px solid var(--vetra-gold); 
   display: inline-block;
   padding-bottom: 10px;
 }
@@ -60,11 +59,11 @@
   font-size: 1.1rem;
   color: #444;
   line-height: 1.8;
-  text-transform: uppercase; /* Igual ao PDF */
+  text-transform: uppercase; 
   font-weight: 400;
 }
 
-/* --- BOTÃO (Estilo PDF "CLIQUE AQUI") --- */
+
 .directions-btn {
   display: inline-block;
   padding: 15px 40px;
@@ -85,11 +84,10 @@
   border-color: var(--vetra-brown);
 }
 
-/* --- LADO DIREITO: MAPA --- */
 .location-map {
   flex: 1;
   width: 100%;
-  height: 500px; /* Mapa bem alto */
+  height: 500px; 
   border: 1px solid rgba(74, 59, 50, 0.1);
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
@@ -98,11 +96,10 @@
   width: 100%;
   height: 100%;
   display: block;
-  /* Filtro leve para integrar o mapa ao site */
+
   filter: grayscale(20%); 
 }
 
-/* --- RESPONSIVIDADE --- */
 @media (max-width: 900px) {
   .location-container {
     flex-direction: column;

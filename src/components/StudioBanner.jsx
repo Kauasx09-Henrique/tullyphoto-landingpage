@@ -83,8 +83,9 @@ const StudioBanner = () => {
             </div>
         </div>
 
-        <Link to="/agendamento" className="cta-button">
-          Ver Disponibilidade
+        <Link to="/informacoes
+        " className="cta-button">
+          Ver informações completas
         </Link>
       </div>
 

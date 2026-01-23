@@ -492,53 +492,48 @@
   }
 }
 
-/* --- RESPONSIVIDADE (MOBILE) --- */
 @media (max-width: 850px) {
   .booking-page {
-    padding: 100px 15px 40px; /* Menos padding lateral */
+    padding: 100px 15px 40px;
   }
 
   .booking-container {
-    padding: 1.5rem; /* Menos espaço interno */
+    padding: 1.5rem;
   }
 
   .booking-title {
-    font-size: 1.8rem; /* Título menor */
+    font-size: 1.8rem;
     margin-bottom: 2rem;
   }
 
-  /* Faz o Calendário e os Horários ficarem um em cima do outro */
   .row-layout {
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
     gap: 2rem;
   }
 
-  /* Ajusta o grid de horários para 3 colunas no celular */
   .time-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-  
-  /* Ajusta os cards de pagamento para empilhar se a tela for muito pequena */
+
   .payment-methods {
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 10px;
   }
-  
+
   .payment-card {
     padding: 1rem;
     font-size: 0.9rem;
   }
-  
+
   .payment-icon {
     font-size: 1.4rem;
   }
 
-  /* Modal do PIX ocupa quase a tela toda */
   .modal-content {
     width: 95%;
     padding: 1.5rem;
     max-height: 90vh;
-    overflow-y: auto; /* Rolagem se for pequeno demais */
+    overflow-y: auto;
   }
 
   .qr-box img {
@@ -546,22 +541,20 @@
     height: 150px;
   }
 
-  /* Rodapé com botão total */
   .footer-summary {
     flex-direction: column;
     gap: 15px;
     text-align: center;
   }
-  
+
   .booking-btn {
-    width: 100%; /* Botão largura total no celular */
+    width: 100%;
     padding: 15px;
   }
 }
 
-/* Telas muito pequenas (iPhone SE, Galaxy antigos) */
 @media (max-width: 400px) {
   .time-grid {
-    grid-template-columns: repeat(2, 1fr); /* Apenas 2 colunas de horário */
+    grid-template-columns: repeat(2, 1fr);
   }
 }

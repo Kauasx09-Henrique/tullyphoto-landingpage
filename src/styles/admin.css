@@ -4,13 +4,11 @@
   display: flex;
   min-height: 100vh;
   background-color: #f4f4f4;
-  font-family: 'Helvetica Neue', sans-serif; /* Mais técnico para leitura de dados */
-}
-
-/* --- SIDEBAR --- */
+  font-family: 'Helvetica Neue', sans-serif; }
+  
 .admin-sidebar {
   width: 260px;
-  background-color: #1a1a1a; /* Marrom quase preto */
+  background-color: #1a1a1a; 
   color: #fff;
   padding: 2rem;
   display: flex;
@@ -23,7 +21,7 @@
   font-family: 'Times New Roman', serif;
   font-size: 1.5rem;
   margin-bottom: 3rem;
-  color: #D4AF6E; /* Dourado */
+  color: #D4AF6E; 
   text-transform: uppercase;
   letter-spacing: 2px;
 }
@@ -61,9 +59,8 @@
   border-radius: 4px;
 }
 
-/* --- CONTEÚDO PRINCIPAL --- */
 .admin-content {
-  margin-left: 260px; /* Mesma largura da sidebar */
+  margin-left: 260px; 
   flex: 1;
   padding: 3rem;
 }
@@ -118,7 +115,6 @@
 .status-PENDENTE { background-color: #fffff0; color: #b7791f; }
 .status-CANCELADO { background-color: #fff5f5; color: #c53030; }
 
-/* --- FORMULÁRIOS ADMIN --- */
 .admin-form-card {
   background: white;
   padding: 2rem;
@@ -154,10 +150,9 @@
   font-size: 0.8rem;
 }
 
-/* CSS para o Admin */
 .table-responsive-container {
   width: 100%;
-  overflow-x: auto; /* Cria rolagem horizontal se não couber */
+  overflow-x: auto;
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
@@ -165,11 +160,10 @@
 
 .admin-table {
   width: 100%;
-  min-width: 800px; /* Força a tabela a ter um tamanho mínimo, ativando a rolagem */
+  min-width: 800px; 
   border-collapse: collapse;
 }
 
-/* No celular, o Header do admin diminui */
 @media (max-width: 768px) {
   .admin-header {
     flex-direction: column;
