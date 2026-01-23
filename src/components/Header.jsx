@@ -11,8 +11,6 @@ import {
 } from 'react-icons/fa';
 import '../styles/header.css';
 
-import logoImg from '/logo/logo.png';
-
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -44,7 +42,7 @@ const Header = () => {
 
         <div className="logo">
           <Link to="/" onClick={closeMenu}>
-            <img src={logoImg} alt="Estúdio Vetra" className="logo-img" />
+            <img src="/logo/logo.png" alt="Estúdio Vetra" className="logo-img" />
           </Link>
         </div>
 
