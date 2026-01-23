@@ -42,7 +42,7 @@ const Header = () => {
 
         <div className="logo">
           <Link to="/" onClick={closeMenu}>
-            <img src="../public/logo.png" alt="Estúdio Vetra" className="logo-img" />
+            <img src="/logo.png" alt="Estúdio Vetra" className="logo-img" />
           </Link>
         </div>
 
