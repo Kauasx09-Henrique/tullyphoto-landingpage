@@ -76,7 +76,6 @@ const Information = () => {
             ]
         }
     ];
-
     const [currentBackdrop, setCurrentBackdrop] = useState(backdrops[0]);
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
