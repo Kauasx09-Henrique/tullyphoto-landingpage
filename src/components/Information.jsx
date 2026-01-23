@@ -13,12 +13,10 @@ const Information = () => {
             name: "White Studio",
             hex: "#FFFFFF",
             bgHex: "#EAEAEA",
-            desc: "A pureza do branco. Essencial para e-commerce, high-key e minimalismo. O fundo infinito branco reflete luz máxima, garantindo foco total no sujeito e facilidade para recortes.",
+            desc: "A pureza do branco. Essencial para e-commerce, high-key e minimalismo. O fundo infinito branco reflete luz máxima.",
             images: [
-
-                "/fundos/Bege.jpg ",
+                "/fundos/Bege.jpg",
                 "/fundos/Bege1.jpg"
-
             ]
         },
         {
@@ -26,10 +24,10 @@ const Information = () => {
             name: "Black Onyx",
             hex: "#111111",
             bgHex: "#222222",
-            desc: "Sofisticação e drama. O fundo preto absorve a luz, criando contornos perfeitos, silhuetas marcantes e uma atmosfera intimista ideal para retratos artísticos.",
+            desc: "Sofisticação e drama. O fundo preto absorve a luz, criando contornos perfeitos e silhuetas marcantes.",
             images: [
                 "/fundos/Black1.jpg",
-                "/fundos/Black2.jpg",
+                "/fundos/Black2.jpg"
             ]
         },
         {
@@ -37,7 +35,7 @@ const Information = () => {
             name: "Bege Vetra",
             hex: "#E8DCCA",
             bgHex: "#F5F0E6",
-            desc: "Nossa assinatura. Um tom quente que traz naturalidade à pele. Perfeito para retratos orgânicos, moda boho e produções que buscam uma estética acolhedora.",
+            desc: "Nossa assinatura. Um tom quente que traz naturalidade à pele. Perfeito para retratos orgânicos.",
             images: [
                 "https://images.unsplash.com/photo-1611558709796-ca5687958862?q=80&w=1887&auto=format&fit=crop",
                 "https://images.unsplash.com/photo-1616091216791-a5360b5fc78a?q=80&w=1895&auto=format&fit=crop"
@@ -48,7 +46,7 @@ const Information = () => {
             name: "Oxford Blue",
             hex: "#2c3e50",
             bgHex: "#D6E4F0",
-            desc: "Confiança e serenidade. Um azul profundo clássico que transmite autoridade corporativa e elegância atemporal.",
+            desc: "Confiança e serenidade. Um azul profundo clássico que transmite autoridade corporativa.",
             images: [
                 "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1727&auto=format&fit=crop",
                 "https://images.unsplash.com/photo-1515347619252-60a6bf4fffce?q=80&w=1935&auto=format&fit=crop"
@@ -57,9 +55,9 @@ const Information = () => {
         {
             id: 5,
             name: "Terracota",
-            hex: "rgb(160, 82, 45)",
-            bgHex: "#eeccaa",
-            desc: "Energia da terra. Tons quentes que adicionam vida, vibração e um toque de outono à composição sem perder a classe.",
+            hex: "#A0522D",
+            bgHex: "#EEDCCA",
+            desc: "Energia da terra. Tons quentes que adicionam vida, vibração e um toque de outono à composição.",
             images: [
                 "/fundos/Marrom_1.jpg",
                 "/fundos/Marrom_2.jpg"
@@ -70,14 +68,14 @@ const Information = () => {
             name: "Olive Green",
             hex: "#556B2F",
             bgHex: "#E3E8DA",
-            desc: "Conexão com a natureza. Um verde sóbrio e chique, escolha excelente para marcas de sustentabilidade ou produtos naturais.",
+            desc: "Conexão com a natureza. Um verde sóbrio e chique, escolha excelente para marcas de sustentabilidade.",
             images: [
                 "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop"
             ]
         }
     ];
-    const [currentBackdrop, setCurrentBackdrop] = useState(backdrops[0]);
 
+    const [currentBackdrop, setCurrentBackdrop] = useState(backdrops[0]);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     useEffect(() => {
@@ -113,7 +111,7 @@ const Information = () => {
                             <img
                                 key={index}
                                 src={imgSrc}
-                                alt={`${currentBackdrop.name} exemplo ${index + 1}`}
+                                alt={`${currentBackdrop.name} view ${index + 1}`}
                                 className={`main-photo ${index === currentImageIndex ? 'active-slide' : ''}`}
                             />
                         ))}
@@ -158,7 +156,6 @@ const Information = () => {
                             Reservar Este Fundo <FaArrowRight />
                         </Link>
                     </div>
-
                 </div>
             </div>
 
