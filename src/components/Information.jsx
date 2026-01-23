@@ -15,8 +15,8 @@ const Information = () => {
             bgHex: "#EAEAEA",
             desc: "A pureza do branco. Essencial para e-commerce, high-key e minimalismo. O fundo infinito branco reflete luz máxima.",
             images: [
-                "/fundos/bege.jpg",
-                "/fundos/bege1.jpg"
+                "/bege.jpg",
+                "/bege1.jpg"
             ]
         },
         {
@@ -26,8 +26,8 @@ const Information = () => {
             bgHex: "#222222",
             desc: "Sofisticação e drama. O fundo preto absorve a luz, criando contornos perfeitos e silhuetas marcantes.",
             images: [
-                "/fundos/black1.jpg",
-                "/fundos/black2.jpg"
+                "/black1.jpg",
+                "/black2.jpg"
             ]
         },
         {
@@ -59,8 +59,8 @@ const Information = () => {
             bgHex: "#EEDCCA",
             desc: "Energia da terra. Tons quentes que adicionam vida, vibração e um toque de outono à composição.",
             images: [
-                "/fundos/marrom_1.jpg",
-                "/fundos/marrom_2.jpg"
+                "/marrom_1.jpg",
+                "/marrom_2.jpg"
             ]
         },
         {
