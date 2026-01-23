@@ -89,10 +89,9 @@ const StudioBanner = () => {
         </Link>
       </div>
 
-      {/* LADO DIREITO: REEL DO INSTAGRAM */}
       <div className="instagram-side">
         <div className={`instagram-wrapper ${isVisible ? 'visible' : ''}`}>
-            {/* CÓDIGO DO INSTAGRAM */}
+          
             <blockquote 
                 className="instagram-media" 
                 data-instgrm-permalink="https://www.instagram.com/reel/DRPW7GFDhUJ/?utm_source=ig_embed&amp;utm_campaign=loading" 
