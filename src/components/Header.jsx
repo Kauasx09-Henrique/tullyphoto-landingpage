@@ -11,6 +11,9 @@ import {
 } from 'react-icons/fa';
 import '../styles/header.css';
 
+// CORREÇÃO AQUI: O arquivo está na mesma pasta (src/components), então usamos "./"
+import logoImg from "./logo.png";
+
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -42,7 +45,8 @@ const Header = () => {
 
         <div className="logo">
           <Link to="/" onClick={closeMenu}>
-            <img src="/logo.png" alt="Estúdio Vetra" className="logo-img" />
+            {/* Uso da variável importada */}
+            <img src={logoImg} alt="Estúdio Vetra" className="logo-img" />
           </Link>
         </div>
 
