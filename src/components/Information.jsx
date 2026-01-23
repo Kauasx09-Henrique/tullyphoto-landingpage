@@ -28,8 +28,8 @@ const Information = () => {
             bgHex: "#222222",
             desc: "Sofisticação e drama. O fundo preto absorve a luz, criando contornos perfeitos, silhuetas marcantes e uma atmosfera intimista ideal para retratos artísticos.",
             images: [
-                "../public/Fundos/Black1.jpg",
-                "../public/Fundos/Black2.jpg",
+                "public/Fundos/Black1.jpg",
+                "public/Fundos/Black2.jpg",
             ]
         },
         {
