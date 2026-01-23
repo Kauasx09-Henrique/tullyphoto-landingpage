@@ -1,47 +1,49 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Store } from 'react-notifications-component';
+import { FaEnvelope, FaLock, FaSpinner } from 'react-icons/fa';
 import api from '../services/api';
 import '../styles/auth.css';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     async function handleLogin(e) {
         e.preventDefault();
+        setLoading(true);
+
         try {
             const response = await api.post('/auth/login', { email, senha });
-            
-            // Salva Token e Usuário
+
             const usuario = response.data.user;
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('user', JSON.stringify(usuario));
 
             Store.addNotification({
                 title: "Sucesso!",
-                message: `Bem-vindo(a), ${usuario.nome.split(' ')[0]}!`,
+                message: `Bem-vindo de volta, ${usuario.nome.split(' ')[0]}!`,
                 type: "success",
                 insert: "top",
                 container: "top-right",
                 animationIn: ["animate__animated", "animate__fadeIn"],
                 animationOut: ["animate__animated", "animate__fadeOut"],
-                dismiss: { duration: 4000, onScreen: true }
+                dismiss: { duration: 3000, onScreen: true }
             });
 
-            // --- LÓGICA DE REDIRECIONAMENTO ---
             if (usuario.tipo === 'ADMIN') {
-                navigate('/admin/dashboard'); // Se for Admin, vai pro painel
+                navigate('/admin/dashboard');
             } else {
-                navigate('/agendamento'); // Se for Cliente, vai agendar
+                navigate('/agendamento');
             }
 
         } catch (err) {
-            const mensagem = err.response?.data?.msg || 'Erro ao fazer login.';
+            const mensagem = err.response?.data?.msg || 'Credenciais inválidas. Tente novamente.';
 
             Store.addNotification({
-                title: "Erro no Login",
+                title: "Acesso Negado",
                 message: mensagem,
                 type: "danger",
                 insert: "top",
@@ -50,43 +52,55 @@ export default function Login() {
                 animationOut: ["animate__animated", "animate__fadeOut"],
                 dismiss: { duration: 4000, onScreen: true }
             });
+        } finally {
+            setLoading(false);
         }
     }
 
     return (
         <div className="auth-page">
             <div className="auth-container">
-                <h2 className="auth-title">Login</h2>
+                <div className="auth-header">
+                    <h2 className="auth-title">Vetra</h2>
+                    <p className="auth-subtitle">Acesse sua área exclusiva</p>
+                </div>
 
                 <form onSubmit={handleLogin} className="auth-form">
-                    <div className="input-group">
-                        <input 
+                    <div className="input-wrapper">
+                        <FaEnvelope className="input-icon" />
+                        <input
                             className="auth-input"
-                            type="email" 
-                            placeholder="SEU EMAIL" 
-                            value={email} 
-                            onChange={e => setEmail(e.target.value)} 
-                            required 
-                        />
-                    </div>
-                    
-                    <div className="input-group">
-                        <input 
-                            className="auth-input"
-                            type="password" 
-                            placeholder="SUA SENHA" 
-                            value={senha} 
-                            onChange={e => setSenha(e.target.value)} 
-                            required 
+                            type="email"
+                            placeholder="Seu E-mail"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            required
                         />
                     </div>
 
-                    <button type="submit" className="auth-btn">Entrar</button>
+                    <div className="input-wrapper">
+                        <FaLock className="input-icon" />
+                        <input
+                            className="auth-input"
+                            type="password"
+                            placeholder="Sua Senha"
+                            value={senha}
+                            onChange={e => setSenha(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <button type="submit" className="auth-btn" disabled={loading}>
+                        {loading ? <FaSpinner className="icon-spin" /> : 'Entrar'}
+                    </button>
                 </form>
 
-                <p className="auth-link">
-                    Não tem uma conta? <Link to="/cadastro">Cadastre-se</Link>
-                </p>
+                <div className="auth-footer">
+                    <p className="auth-text">
+                        Não possui cadastro?
+                        <Link to="/cadastro" className="auth-link">Criar conta</Link>
+                    </p>
+                </div>
             </div>
         </div>
     );
