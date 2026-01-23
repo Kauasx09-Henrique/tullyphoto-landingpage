@@ -5,6 +5,17 @@ import Header from './Header';
 import Footer from './Footer';
 import '../styles/information.css';
 
+// --- IMPORTAÇÃO DAS IMAGENS LOCAIS ---
+// Como as imagens estão na mesma pasta do arquivo, usamos "./"
+import imgBege from './bege.jpg';
+import imgBege1 from './bege1.jpg';
+import imgBlack1 from './black1.jpg';
+import imgBlack2 from './black2.jpg';
+import imgMarrom1 from './marrom_1.jpg'; // Certifique-se que o nome do arquivo é exato
+import imgMarrom2 from './marrom_2.jpg';
+import imgAzul1 from './azul1.jpg';
+import imgAzul2 from './azul2.jpg';
+
 const Information = () => {
 
     const backdrops = [
@@ -15,8 +26,8 @@ const Information = () => {
             bgHex: "#EAEAEA",
             desc: "A pureza do branco. Essencial para e-commerce, high-key e minimalismo. O fundo infinito branco reflete luz máxima.",
             images: [
-                "/bege.jpg",
-                "/bege1.jpg"
+                imgBege,  // Usamos a variável importada, não o texto
+                imgBege1
             ]
         },
         {
@@ -26,8 +37,8 @@ const Information = () => {
             bgHex: "#222222",
             desc: "Sofisticação e drama. O fundo preto absorve a luz, criando contornos perfeitos e silhuetas marcantes.",
             images: [
-                "/black1.jpg",
-                "/black2.jpg"
+                imgBlack1,
+                imgBlack2
             ]
         },
         {
@@ -48,8 +59,8 @@ const Information = () => {
             bgHex: "#D6E4F0",
             desc: "Confiança e serenidade. Um azul profundo clássico que transmite autoridade corporativa.",
             images: [
-                "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1727&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1515347619252-60a6bf4fffce?q=80&w=1935&auto=format&fit=crop"
+                imgAzul1,
+                imgAzul2
             ]
         },
         {
@@ -59,8 +70,8 @@ const Information = () => {
             bgHex: "#EEDCCA",
             desc: "Energia da terra. Tons quentes que adicionam vida, vibração e um toque de outono à composição.",
             images: [
-                "/marrom_1.jpg",
-                "/marrom_2.jpg"
+                imgMarrom1,
+                imgMarrom2
             ]
         },
         {
