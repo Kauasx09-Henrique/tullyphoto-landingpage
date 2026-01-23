@@ -11,7 +11,7 @@ import {
 } from 'react-icons/fa';
 import '../styles/header.css';
 
-import logoImg from '../../public/Logo/Logo.png';
+import logoImg from '../Logo/Logo.png';
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
