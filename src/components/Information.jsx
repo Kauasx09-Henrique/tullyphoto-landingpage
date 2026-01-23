@@ -16,8 +16,8 @@ const Information = () => {
             desc: "A pureza do branco. Essencial para e-commerce, high-key e minimalismo. O fundo infinito branco reflete luz máxima, garantindo foco total no sujeito e facilidade para recortes.",
             images: [
 
-                "../public/Fundos/Bege.jpg ",
-                "../public/Fundos/Bege1.jpg"
+                "../public/fundos/Bege.jpg ",
+                "../public/fundos/Bege1.jpg"
 
             ]
         },
@@ -28,8 +28,8 @@ const Information = () => {
             bgHex: "#222222",
             desc: "Sofisticação e drama. O fundo preto absorve a luz, criando contornos perfeitos, silhuetas marcantes e uma atmosfera intimista ideal para retratos artísticos.",
             images: [
-                "public/Fundos/Black1.jpg",
-                "public/Fundos/Black2.jpg",
+                "../public/fundos/Black1.jpg",
+                "../public/fundos/Black2.jpg",
             ]
         },
         {
@@ -61,8 +61,8 @@ const Information = () => {
             bgHex: "#eeccaa",
             desc: "Energia da terra. Tons quentes que adicionam vida, vibração e um toque de outono à composição sem perder a classe.",
             images: [
-                "../public/Fundos/Marrom_1.jpg",
-                "../public/Fundos/Marrom_2.jpg"
+                "../public/fundos/Marrom_1.jpg",
+                "../public/fundos/Marrom_2.jpg"
             ]
         },
         {
