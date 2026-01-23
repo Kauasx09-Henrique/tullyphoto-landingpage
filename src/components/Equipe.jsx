@@ -3,8 +3,8 @@ import '../styles/equipe.css';
 
 const Equipe = () => {
     const membros = [
-        { id: 1, nome: "Felipe", cargo: "Fotografo", img: "/Equipe/Felipe/Felipe-Photo2.jpg" },
-        { id: 2, nome: "Tully", cargo: "Fotografa", img: "/Equipe/Tully/Tully.jpg" }, // Troquei para uma mulher para variar
+        { id: 1, nome: "Tuly", cargo: "Fotografo", img: "/Equipe/Tully/Tully.jpg" },
+        { id: 2, nome: "Felipe", cargo: "Fotografa", img: "/Equipe/Felipe/Felipe-Photo2.jpg" }, // Troquei para uma mulher para variar
         { id: 3, nome: "André Lima", cargo: "Retratos & Moda", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" },
         { id: 4, nome: "Camila Souza", cargo: "Eventos & Casamentos", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" },
     ];

@@ -7,6 +7,7 @@
   --vetra-cream: #F5F5F0;
 }
 
+/* --- ANIMAÇÕES --- */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -50,12 +51,14 @@
   }
 }
 
+/* --- ESTRUTURA PRINCIPAL --- */
 .studio-banner {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   min-height: 900px;
+  /* Altura imponente no Desktop */
   background: radial-gradient(circle at 30% 50%, var(--vetra-brown-light) 0%, var(--vetra-brown) 70%);
   padding: 80px 5%;
   margin-top: 90px;
@@ -78,9 +81,11 @@
   transform: translateY(0);
 }
 
+/* --- TIPOGRAFIA --- */
 .banner-content h2 {
   font-family: 'Cinzel', serif;
   font-size: 3.5rem;
+  /* Grande no Desktop */
   font-weight: 400;
   margin-bottom: 25px;
   letter-spacing: 6px;
@@ -111,6 +116,7 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
+/* --- GRID DE ÍCONES --- */
 .features-icon-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -129,6 +135,7 @@
   cursor: default;
 }
 
+/* Animação Sequencial (Stagger) */
 .banner-content.visible .feature-icon-item:nth-child(1) {
   animation: fadeInUp 0.6s forwards 0.3s;
 }
@@ -179,6 +186,7 @@
   color: var(--vetra-gold);
 }
 
+/* --- BOTÃO CTA --- */
 .cta-button {
   position: relative;
   display: inline-block;
@@ -216,6 +224,7 @@
   box-shadow: 0 0 20px rgba(192, 160, 98, 0.4);
 }
 
+/* --- LADO DO INSTAGRAM --- */
 .instagram-side {
   flex: 1;
   display: flex;
@@ -239,7 +248,6 @@
   width: 100%;
   max-width: 500px;
   z-index: 1;
-
   animation: floatReel 6s ease-in-out infinite;
   filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.6));
   opacity: 0;
@@ -259,43 +267,104 @@
   background: #fff !important;
 }
 
+/* ==========================================================================
+   RESPONSIVIDADE PREMIUM
+   Aqui está a mágica para manter bonito e funcional em telas menores.
+   ========================================================================== 
+*/
+
+/* TABLET (Até 1024px) */
 @media (max-width: 1024px) {
   .studio-banner {
-    flex-direction: column-reverse;
+    flex-direction: column;
+    /* Coloca texto em cima, Instagram embaixo */
     padding: 60px 5%;
-    height: auto;
+    min-height: auto;
+    /* Remove altura fixa para não esticar demais */
     text-align: center;
-    gap: 40px;
+    gap: 50px;
   }
 
   .banner-content {
     align-items: center;
+    /* Centraliza tudo */
+    width: 100%;
+  }
+
+  .banner-content h2 {
+    font-size: 2.8rem;
+    /* Reduz um pouco */
   }
 
   .divider {
     margin: 0 auto 35px;
+    /* Centraliza o divisor dourado */
   }
 
+  /* Ajusta grid para ficar centralizado */
   .feature-icon-item {
     align-items: center;
+    text-align: center;
+  }
+}
+
+/* CELULAR (Até 600px) */
+@media (max-width: 600px) {
+  .studio-banner {
+    padding: 40px 20px;
+    /* Menos padding nas bordas */
+    margin-top: 60px;
+    gap: 40px;
   }
 
+  .banner-content h2 {
+    font-size: 2rem;
+    /* Tamanho ideal para leitura mobile */
+    letter-spacing: 2px;
+    /* Reduz espaçamento para caber na tela */
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  .banner-content p {
+    font-size: 1rem;
+    margin-bottom: 35px;
+  }
+
+  /* Grid 2x3 fica melhor no celular que 3x2 */
   .features-icon-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 20px 10px;
+    /* gap vertical, gap horizontal */
+    margin-bottom: 40px;
   }
 
+  .icon-wrapper {
+    font-size: 1.8rem;
+    /* Ícones levemente menores */
+  }
+
+  .feature-icon-item span {
+    font-size: 0.7rem;
+  }
+
+  .cta-button {
+    padding: 14px 30px;
+    font-size: 0.9rem;
+    width: 100%;
+    /* Botão largura total no celular fica mais fácil de clicar */
+    text-align: center;
+  }
+
+  /* Ajuste do brilho de fundo do Instagram para não vazar a tela */
   .instagram-side::before {
-    width: 300px;
-    height: 500px;
+    width: 280px;
+    height: 280px;
   }
 
-  @media (max-width: 600px) {
-    .features-icon-grid {
-      gap: 20px;
-    }
-
-    .banner-content h2 {
-      font-size: 2.5rem;
-    }
+  /* Garante que o Instagram não fique maior que a tela */
+  .instagram-wrapper {
+    max-width: 100%;
+    padding: 0 10px;
   }
 }

@@ -46,8 +46,7 @@ const StudioBanner = () => {
                 <div className="divider"></div>
 
                 <p>
-                    Dois estúdios profissionais projetados para oferecer a máxima
-                    liberdade criativa e conforto para sua equipe e clientes.
+                    Um estúdio projetado para elevar sua produção fotográfica e de vídeo.
                 </p>
 
                 {/* Grid de Ícones */}
