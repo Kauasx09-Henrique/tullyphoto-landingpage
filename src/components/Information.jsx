@@ -164,7 +164,7 @@ const Information = () => {
                         )}
 
                         <Link to="/agendamento" className="action-btn">
-                            Reservar Este Fundo <FaArrowRight />
+                            Reservar locação  <FaArrowRight />
                         </Link>
                     </div>
                 </div>

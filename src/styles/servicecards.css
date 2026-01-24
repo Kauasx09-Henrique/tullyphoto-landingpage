@@ -53,25 +53,11 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    to top,
-    rgba(26, 26, 26, 0.95) 0%,
-    rgba(26, 26, 26, 0.6) 40%,
-    rgba(26, 26, 26, 0.1) 100%
-  );
+  background: linear-gradient(to top,
+      rgba(26, 26, 26, 0.98) 0%,
+      rgba(26, 26, 26, 0.8) 40%,
+      rgba(26, 26, 26, 0.2) 100%);
   z-index: 2;
-  transition: opacity 0.5s ease;
-  opacity: 0.8;
-}
-
-.service-card:hover .card-overlay {
-  opacity: 1;
-  background: linear-gradient(
-    to top,
-    rgba(26, 26, 26, 0.98) 0%,
-    rgba(26, 26, 26, 0.7) 50%,
-    rgba(26, 26, 26, 0.2) 100%
-  );
 }
 
 .card-content {
@@ -82,12 +68,9 @@
   padding: 40px;
   z-index: 3;
   color: var(--vetra-white);
-  transform: translateY(110px); 
-  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.service-card:hover .card-content {
-  transform: translateY(0);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .card-title {
@@ -95,45 +78,32 @@
   font-size: 2.2rem;
   font-weight: 500;
   color: var(--vetra-white);
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  position: relative;
-  display: inline-block;
+  line-height: 1;
 }
 
-.card-title::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -10px;
-  width: 0;
-  height: 2px;
-  background-color: var(--vetra-gold);
-  transition: width 0.5s ease;
+.card-subtitle {
+  font-family: 'Lato', sans-serif;
+  color: var(--vetra-gold);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  display: block;
+  font-weight: 700;
 }
 
-.service-card:hover .card-title::after {
-  width: 60px;
-}
-
-.reveal-content {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s ease 0.1s;
-  margin-top: 20px;
-}
-
-.service-card:hover .reveal-content {
-  opacity: 1;
-  transform: translateY(0);
+.static-info {
+  margin-top: 10px;
 }
 
 .card-price {
   display: block;
   font-family: 'Cinzel', serif;
-  color: var(--vetra-gold);
-  font-size: 1.5rem;
+  color: var(--vetra-white);
+  font-size: 1.8rem;
   margin-bottom: 15px;
   font-weight: 600;
 }
@@ -144,7 +114,7 @@
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 30px;
-  max-width: 90%;
+  max-width: 95%;
 }
 
 .card-button {
@@ -162,6 +132,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  width: fit-content;
 }
 
 .card-button:hover {
@@ -180,23 +151,13 @@
   .services-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .service-card {
-    height: 500px;
+    height: auto;
+    min-height: 550px;
   }
-  
+
   .card-content {
-    transform: translateY(0);
     padding: 30px;
-  }
-  
-  .reveal-content {
-    opacity: 1;
-    transform: translateY(0);
-    margin-top: 15px;
-  }
-  
-  .card-title::after {
-    width: 60px;
   }
 }

@@ -4,6 +4,7 @@ import { TbAirConditioning, TbWifi, TbInfinity } from 'react-icons/tb';
 import { IoMdSunny } from 'react-icons/io';
 import { FaCameraRetro, FaParking } from 'react-icons/fa';
 import '../styles/studiobanner.css';
+import { BsLightbulb } from 'react-icons/bs';
 
 const StudioBanner = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -62,7 +63,7 @@ const StudioBanner = () => {
                     </div>
 
                     <div className="feature-icon-item" title="Kit completo disponível">
-                        <div className="icon-wrapper"><FaCameraRetro /></div>
+                        <div className="icon-wrapper"><BsLightbulb /></div>
                         <span>Equip. Godox</span>
                     </div>
 
@@ -73,7 +74,7 @@ const StudioBanner = () => {
 
                     <div className="feature-icon-item" title="Fibra óptica dedicada">
                         <div className="icon-wrapper"><TbWifi /></div>
-                        <span>Wi-Fi Rápido</span>
+                        <span>Wi-Fi</span>
                     </div>
 
                     <div className="feature-icon-item" title="Segurança e comodidade">
