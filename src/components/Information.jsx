@@ -6,11 +6,9 @@ import Footer from './Footer';
 import '../styles/information.css';
 
 import imgBege from './bege.jpg';
-import imgBege1 from './bege1.jpg';
 import GentininGreen1 from './gentiam_green/green1.jpg';
 import GentininGreen2 from './gentiam_green/green2.jpg';
 import GentininGreen3 from './gentiam_green/green3.jpg';
-import flame from './scrarlet_flame/flame1.jpg';
 import grey from './grey/grey1.jpg';
 import coco from './coco/coco1.jpg';
 import blue2 from './deep_blue/blue2.jpg';
@@ -24,7 +22,7 @@ const Information = () => {
             hex: "#f1ddbd",
             bgHex: "#F2F0EB",
             desc: "Suave, acolhedor e sofisticado. O tom claro cria uma atmosfera leve e elegante, com sensação de proximidade e naturalidade.",
-            images: [imgBege, imgBege1]
+            images: [imgBege]
         },
         {
             id: 2,
@@ -55,14 +53,6 @@ const Information = () => {
         },
         {
             id: 5,
-            name: "SCARLET FLAME",
-            hex: "#800404",
-            bgHex: "#E8D5D5",
-            desc: "Impacto e presença imediata. O vermelho traz energia, atitude e personalidade, criando imagens expressivas e cheias de força visual.",
-            images: [flame]
-        },
-        {
-            id: 6,
             name: "Black Onyx",
             hex: "#5c5a59",
             bgHex: "#222222",
@@ -70,7 +60,7 @@ const Information = () => {
             images: [grey]
         },
         {
-            id: 7,
+            id: 6,
             name: "Oxford Blue",
             hex: "#385566",
             bgHex: "#D6E4F0",
@@ -78,7 +68,7 @@ const Information = () => {
             images: [blue2]
         },
         {
-            id: 8,
+            id: 7,
             name: "Branco Puro",
             hex: "#FFFFFF",
             bgHex: "#F5F5F5",

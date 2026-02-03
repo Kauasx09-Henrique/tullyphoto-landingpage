@@ -10,7 +10,7 @@ const services = [
     price: 'R$ 500,00',
     details: '5 fotos / 30 minutos',
     description: 'Um ensaio rápido, direcionado e eficiente, mantendo o padrão Vetra.',
-    image: '/Card/Ensaio_Card1.jpg',
+    image: '/Card/Ensaio_Card1.jpeg',
     message: 'Olá, gostaria de agendar o pacote Frame 05.'
   },
   {

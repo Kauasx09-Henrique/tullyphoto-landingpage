@@ -34,6 +34,9 @@ const AdminLayout = () => {
                     <Link to="/admin/espacos" className={location.pathname.includes('espacos') ? 'active' : ''}>
                         Gerenciar Espaços
                     </Link>
+                    <Link to="/admin/usuarios" className={location.pathname.includes('usuarios') ? 'active' : ''}>
+                    Gereciar Usuarios
+                    </Link>
                     <Link to="/admin/agenda" className={location.pathname.includes('agenda') ? 'active' : ''}>
                         Agenda Global
                     </Link>

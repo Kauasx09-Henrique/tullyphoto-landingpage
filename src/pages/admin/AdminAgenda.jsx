@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { format } from 'date-fns';
-import { FaEye, FaCreditCard, FaMoneyBillWave } from 'react-icons/fa';
-import { Store } from 'react-notifications-component'; // Import para notificações
+import { FaEye, FaCreditCard, FaMoneyBillWave, FaCalendarAlt, FaClock } from 'react-icons/fa';
+import { Store } from 'react-notifications-component';
+import '../../styles/adminAgenda.css'; // Importando o novo CSS
 
 const AdminAgenda = () => {
   const [agendamentos, setAgendamentos] = useState([]);
@@ -23,7 +24,6 @@ const AdminAgenda = () => {
     return `http://localhost:3000/uploads/${nomeArquivo}`;
   };
 
-  // --- FUNÇÃO PARA TROCAR O STATUS ---
   const handleStatusChange = async (id, novoStatus) => {
       try {
           await api.put(`/agendamentos/${id}`, { status: novoStatus });
@@ -37,121 +37,123 @@ const AdminAgenda = () => {
               dismiss: { duration: 3000 }
           });
 
-          // Atualiza a lista na hora sem precisar recarregar a página
           setAgendamentos(prev => prev.map(ag => 
               ag.id === id ? { ...ag, status: novoStatus } : ag
           ));
 
       } catch (error) {
-          alert("Erro ao atualizar status");
+          Store.addNotification({
+              title: "Erro",
+              message: "Falha ao atualizar status",
+              type: "danger",
+              container: "top-right",
+              dismiss: { duration: 3000 }
+          });
       }
   };
 
-  // Estilo dinâmico para o Dropdown
-  const getStatusColor = (status) => {
-      if (status === 'CONFIRMADO') return '#d4edda'; // Fundo Verde claro
-      if (status === 'CANCELADO') return '#f8d7da'; // Fundo Vermelho claro
-      return '#fff3cd'; // Fundo Amarelo (Pendente)
+  // Helper para classe CSS do status
+  const getStatusClass = (status) => {
+      if (status === 'CONFIRMADO') return 'status-confirmed';
+      if (status === 'CANCELADO') return 'status-cancelled';
+      return 'status-pending';
   };
 
   return (
-    <div>
-      <div className="admin-header">
+    <div className="admin-page-container fade-in">
+      <div className="admin-header-row">
         <h2 className="admin-title">Agenda Global</h2>
+        <span className="admin-subtitle">Gerenciamento de todas as reservas</span>
       </div>
 
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>#ID</th>
-            <th>Cliente</th>
-            <th>Data/Hora</th>
-            <th>Espaço</th>
-            <th>Pagamento</th>
-            <th style={{ textAlign: 'center' }}>Comprovante</th>
-            <th>Valor</th>
-            <th>Status (Alterar)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {agendamentos.map(ag => (
-            <tr key={ag.id}>
-              <td>#{ag.id}</td>
-
-              <td>
-                <strong>{ag.usuario_nome}</strong>
-              </td>
-
-              <td>
-                {format(new Date(ag.data_inicio), 'dd/MM/yyyy')}<br />
-                <small style={{ color: '#666' }}>
-                  {format(new Date(ag.data_inicio), 'HH:mm')} - {format(new Date(ag.data_fim), 'HH:mm')}
-                </small>
-              </td>
-
-              <td>{ag.espaco_nome}</td>
-
-              <td>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.85rem' }}>
-                  {ag.metodo_pagamento === 'PIX' ? (
-                    <> <FaMoneyBillWave style={{ color: '#27ae60' }} /> PIX </>
-                  ) : (
-                    <> <FaCreditCard style={{ color: '#2C2420' }} /> {ag.metodo_pagamento} </>
-                  )}
-                </div>
-              </td>
-
-              <td style={{ textAlign: 'center' }}>
-                {(() => {
-                    if (ag.metodo_pagamento !== 'PIX') return <span style={{ color: '#ccc' }}>-</span>;
-                    if (!ag.comprovante_url) return <span style={{ color: 'red', fontSize: '0.7rem' }}>SEM ARQUIVO</span>;
-                    
-                    return (
-                        <a
-                            href={getComprovanteUrl(ag.comprovante_url)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn-view-file"
-                            style={{
-                                display: 'inline-flex', alignItems: 'center', gap: '5px',
-                                padding: '5px 10px', background: '#D4AF6E', color: '#fff',
-                                borderRadius: '4px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold'
-                            }}
-                        >
-                            <FaEye /> Abrir
-                        </a>
-                    );
-                })()}
-              </td>
-
-              <td>
-                <strong>R$ {parseFloat(ag.preco_total).toFixed(2).replace('.', ',')}</strong>
-              </td>
-
-              {/* COLUNA DE STATUS COM SELECT */}
-              <td>
-                <select 
-                    value={ag.status} 
-                    onChange={(e) => handleStatusChange(ag.id, e.target.value)}
-                    style={{
-                        padding: '5px',
-                        borderRadius: '4px',
-                        border: '1px solid #ccc',
-                        backgroundColor: getStatusColor(ag.status),
-                        fontWeight: 'bold',
-                        color: '#333',
-                        cursor: 'pointer'
-                    }}
-                >
-                    <option value="PENDENTE">PENDENTE</option>
-                    <option value="CONFIRMADO">CONFIRMADO</option>
-                    <option value="CANCELADO">CANCELADO</option>
-                </select>
-              </td>
+      <div className="table-container">
+        <table className="vetra-table">
+          <thead>
+            <tr>
+              <th>#ID</th>
+              <th>Cliente</th>
+              <th>Data & Hora</th>
+              <th>Espaço</th>
+              <th>Pagamento</th>
+              <th align="center">Comprovante</th>
+              <th>Valor</th>
+              <th>Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {agendamentos.length === 0 ? (
+                <tr><td colSpan="8" className="text-center">Nenhum agendamento encontrado.</td></tr>
+            ) : agendamentos.map(ag => (
+              <tr key={ag.id}>
+                <td className="id-cell">#{ag.id}</td>
+
+                <td>
+                  <div className="client-info">
+                      <div className="client-avatar">
+                          {ag.usuario_nome ? ag.usuario_nome.substring(0,2).toUpperCase() : 'CL'}
+                      </div>
+                      <strong>{ag.usuario_nome}</strong>
+                  </div>
+                </td>
+
+                <td>
+                  <div className="date-time-cell">
+                    <span className="date-text">
+                        <FaCalendarAlt className="icon-tiny"/> {format(new Date(ag.data_inicio), 'dd/MM/yyyy')}
+                    </span>
+                    <span className="time-text">
+                        <FaClock className="icon-tiny"/> {format(new Date(ag.data_inicio), 'HH:mm')} - {format(new Date(ag.data_fim), 'HH:mm')}
+                    </span>
+                  </div>
+                </td>
+
+                <td className="space-cell">{ag.espaco_nome}</td>
+
+                <td>
+                  <div className={`payment-badge ${ag.metodo_pagamento === 'PIX' ? 'pix' : 'card'}`}>
+                    {ag.metodo_pagamento === 'PIX' ? <FaMoneyBillWave /> : <FaCreditCard />}
+                    {ag.metodo_pagamento}
+                  </div>
+                </td>
+
+                <td align="center">
+                  {ag.metodo_pagamento === 'PIX' && ag.comprovante_url ? (
+                    <a
+                      href={getComprovanteUrl(ag.comprovante_url)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-view-file"
+                      title="Ver Comprovante"
+                    >
+                      <FaEye /> Abrir
+                    </a>
+                  ) : (
+                    <span className="no-file">-</span>
+                  )}
+                </td>
+
+                <td className="price-cell">
+                  R$ {parseFloat(ag.preco_total).toFixed(2).replace('.', ',')}
+                </td>
+
+                <td>
+                  <div className="select-wrapper">
+                    <select 
+                        value={ag.status} 
+                        onChange={(e) => handleStatusChange(ag.id, e.target.value)}
+                        className={`status-select ${getStatusClass(ag.status)}`}
+                    >
+                        <option value="PENDENTE">PENDENTE</option>
+                        <option value="CONFIRMADO">CONFIRMADO</option>
+                        <option value="CANCELADO">CANCELADO</option>
+                    </select>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

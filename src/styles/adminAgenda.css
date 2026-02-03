@@ -1,0 +1,281 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@300;400;700&display=swap');
+
+/* =========================================
+   VARIÁVEIS (Tema Vetra)
+   ========================================= */
+:root {
+  --gold: #D4AF6E;
+  --gold-dim: rgba(212, 175, 110, 0.15);
+  --dark: #2C2420;
+  --gray: #888888;
+  --bg-light: #f4f6f8;
+  --white: #ffffff;
+  --border: #e0e0e0;
+  
+  --status-green-bg: #d1fae5;
+  --status-green-text: #065f46;
+  --status-red-bg: #fee2e2;
+  --status-red-text: #991b1b;
+  --status-yellow-bg: #fef3c7;
+  --status-yellow-text: #92400e;
+}
+
+/* =========================================
+   LAYOUT GERAL
+   ========================================= */
+.admin-page-container {
+  font-family: 'Lato', sans-serif;
+  padding: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+  color: var(--dark);
+}
+
+.fade-in {
+  animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.admin-header-row {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  padding-bottom: 20px;
+}
+
+.admin-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2.2rem;
+  color: var(--dark);
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.admin-subtitle {
+  color: var(--gray);
+  font-size: 1rem;
+}
+
+/* =========================================
+   TABELA
+   ========================================= */
+.table-container {
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+  overflow-x: auto;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.vetra-table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+}
+
+.vetra-table thead {
+  background-color: #fafafa;
+  border-bottom: 2px solid var(--border);
+}
+
+.vetra-table th {
+  text-align: left;
+  padding: 18px 24px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--gray);
+  font-weight: 700;
+}
+
+.vetra-table tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+.vetra-table tbody tr:hover {
+  background-color: #FFFCF5; /* Tom creme muito suave no hover */
+}
+
+.vetra-table td {
+  padding: 16px 24px;
+  vertical-align: middle;
+  font-size: 0.95rem;
+  color: var(--dark);
+}
+
+/* Coluna ID */
+.id-cell {
+  font-family: monospace;
+  color: var(--gray);
+  font-weight: bold;
+}
+
+/* Coluna Cliente */
+.client-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.client-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: var(--dark);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border: 2px solid var(--gold);
+}
+
+/* Coluna Data */
+.date-time-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.date-text {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.time-text {
+  font-size: 0.8rem;
+  color: var(--gray);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon-tiny { font-size: 0.8rem; color: var(--gold); }
+
+/* Coluna Espaço */
+.space-cell {
+  font-weight: 500;
+  color: #555;
+}
+
+/* Coluna Valor */
+.price-cell {
+  font-family: 'Lato', sans-serif;
+  font-weight: 800;
+  color: var(--dark);
+}
+
+/* =========================================
+   COMPONENTES INTERNOS (Badges, Buttons)
+   ========================================= */
+
+/* Pagamento Badge */
+.payment-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.payment-badge.pix {
+  background-color: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+.payment-badge.card {
+  background-color: var(--dark);
+  color: var(--gold);
+  border: 1px solid var(--dark);
+}
+
+/* Botão Ver Arquivo */
+.btn-view-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background-color: var(--gold);
+  color: var(--white);
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: all 0.2s;
+  box-shadow: 0 2px 5px rgba(212, 175, 110, 0.4);
+}
+
+.btn-view-file:hover {
+  background-color: #bfa060;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(212, 175, 110, 0.6);
+}
+
+.no-file {
+  color: #ccc;
+  font-size: 1.2rem;
+}
+
+/* Select de Status Customizado */
+.select-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.status-select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 8px 30px 8px 15px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  border: 1px solid transparent;
+  cursor: pointer;
+  outline: none;
+  text-align: center;
+  transition: all 0.2s;
+  /* Seta customizada via SVG encoded */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px top 50%;
+  background-size: 8px auto;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Cores do Status */
+.status-confirmed {
+  background-color: var(--status-green-bg);
+  color: var(--status-green-text);
+  border-color: #a7f3d0;
+}
+
+.status-cancelled {
+  background-color: var(--status-red-bg);
+  color: var(--status-red-text);
+  border-color: #fecaca;
+}
+
+.status-pending {
+  background-color: var(--status-yellow-bg);
+  color: var(--status-yellow-text);
+  border-color: #fde68a;
+}
+
+.status-select:hover {
+  filter: brightness(0.95);
+}
+
+.text-center { text-align: center; padding: 40px !important; color: #999; }

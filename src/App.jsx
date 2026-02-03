@@ -16,6 +16,7 @@ import AdminLayout from './pages/admin/AdminLayout';
 import AdminEspacos from './pages/admin/AdminEspacos';
 import AdminAgenda from './pages/admin/AdminAgenda';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminUsers from './pages/admin/AdminUsers';
 
 // Components
 import Header from './components/Header';
@@ -41,6 +42,7 @@ function App() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="espacos" element={<AdminEspacos />} />
           <Route path="agenda" element={<AdminAgenda />} />
+          <Route path="usuarios" element={<AdminUsers />} />
         </Route>
       </Routes>
     </BrowserRouter>

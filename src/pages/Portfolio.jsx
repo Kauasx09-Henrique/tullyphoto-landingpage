@@ -1,31 +1,55 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { FaTimes, FaChevronLeft, FaChevronRight, FaPlus } from 'react-icons/fa'; // Instale: npm install react-icons
+import { FaTimes, FaChevronLeft, FaChevronRight, FaPlus } from 'react-icons/fa';
 import '../styles/photogrid.css';
+import { id } from 'date-fns/locale';
 
 const Portfolio = () => {
   const [selectedIndex, setSelectedIndex] = useState(null);
 
-  // Lista de Fotos (IMPORTANTE: Se estiver na pasta public, comece com /)
   const photos = [
-    /* Parte Tiago */
     { id: 1, src: '/Tiago/Foto_Ana.jpg', alt: 'Ensaio Corporativo', category: 'Corporativo' },
-    { id: 2, src: '/Tiago/Foto_Marias.jpg', alt: 'Evento Social', category: 'Social' },
+    { id: 2, src: '../public/portfolio/DSC_8891.jpeg', alt: 'Evento Social', category: 'Social' },
     { id: 3, src: '/Tiago/Foto_Euler.jpg', alt: 'Retrato em Estúdio', category: 'Estúdio' },
-    { id: 4, src: '/Tiago/Foto__Maria.jpg', alt: 'Ensaio Externo', category: 'Externo' },
-
-    /* Parte Tully */
+    { id: 4, src: '../public/portfolio/DSC_8792.jpeg', alt: 'Ensaio Externo', category: 'Externo' },
     { id: 5, src: '/Tully/Portifolio3.jpg', alt: 'Moda Editorial', category: 'Editorial' },
     { id: 6, src: '/Tully/Portifolio4.jpg', alt: 'Casamento', category: 'Wedding' },
     { id: 7, src: '/Tully/Portifolio5.jpg', alt: 'Lifestyle', category: 'Lifestyle' },
     { id: 8, src: '/Tully/Portifolio1.jpg', alt: 'Minimalismo', category: 'Artístico' },
+  { id: 9, src: '../public/portfolio/DSC_0002.jpeg', alt: 'Fotografia de Produto', category: 'Produto' 
+  },
+  {
+    id: 10, src: '/Tiago/Foto__Maria.jpg',
+    alt: 'Fotografia de Arquitetura',
+    category: 'Arquitetura'
+  },
+  {
+    id: 11, src: '../public/portfolio/DSC_0428_(2).jpg',
+    alt: 'Fotografia de Viagem',
+    category: 'Viagem'
+  }, 
+  
+{
+  id: 12, src: '../public/portfolio/DSC_4836.jpeg',
+  alt: 'Fotografia de Rua',
+  category: 'Rua'
+},
+{
+  id: 13, src: '../public/portfolio/DSC_8792.jpeg',
+  alt: 'Fotografia de Eventos',
+  category: 'Eventos'
+},
+{
+id: 14, src: '/Tiago/Foto_Marias.jpg',
+alt: 'Fotografia de Casamento',
+category: 'Casamento'
+}
+
   ];
 
-  // Rolar para o topo ao abrir
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Bloquear scroll do body quando lightbox abrir
   useEffect(() => {
     if (selectedIndex !== null) {
       document.body.style.overflow = 'hidden';
@@ -34,7 +58,6 @@ const Portfolio = () => {
     }
   }, [selectedIndex]);
 
-  // Funções de Navegação
   const handleNext = useCallback((e) => {
     e?.stopPropagation();
     setSelectedIndex((prev) => (prev + 1) % photos.length);
@@ -49,7 +72,6 @@ const Portfolio = () => {
     setSelectedIndex(null);
   }, []);
 
-  // Controle por Teclado (Setas e ESC)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (selectedIndex === null) return;
@@ -74,7 +96,9 @@ const Portfolio = () => {
       <div className="photo-grid fading-in">
         {photos.map((photo, index) => (
           <div key={photo.id} className="photo-item" onClick={() => setSelectedIndex(index)}>
-            <img src={photo.src} alt={photo.alt} loading="lazy" />
+            <div className="image-wrapper">
+                <img src={photo.src} alt={photo.alt} loading="lazy" />
+            </div>
             <div className="overlay">
               <span className="category-tag">{photo.category}</span>
               <div className="icon-container">
@@ -86,10 +110,8 @@ const Portfolio = () => {
         ))}
       </div>
 
-      {/* LIGHTBOX PREMIUM */}
       {currentPhoto && (
         <div className="lightbox" onClick={closeLightbox}>
-          
           <button className="nav-btn prev-btn" onClick={handlePrev}>
             <FaChevronLeft />
           </button>

@@ -1,48 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Lato:wght@300;400;700&display=swap');
 
 :root {
-  --vetra-brown: #4A3B32;
-  --vetra-gold: #C0A062;
-  --vetra-cream: #F5F5F0;
-  --vetra-black: #1a1a1a;
+  --gold: #C0A062;
+  --dark: #1a1a1a;
+  --white: #ffffff;
+  --overlay-bg: rgba(26, 26, 26, 0.85);
 }
 
 .portfolio-page {
+  padding: 120px 5% 80px;
+  background-color: var(--white);
   min-height: 100vh;
-  padding: 8rem 4% 6rem; /* Mais respiro nas laterais */
-  background-color: var(--vetra-cream);
-  animation: pageFadeIn 1s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-@keyframes pageFadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- HEADER --- */
 .portfolio-header {
   text-align: center;
-  margin-bottom: 5rem;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-bottom: 50px;
 }
 
 .portfolio-header h2 {
   font-family: 'Cinzel', serif;
-  font-size: 3.5rem;
-  font-weight: 500;
-  color: var(--vetra-brown);
-  margin-bottom: 1.5rem;
-  letter-spacing: 6px;
+  font-size: 3rem;
+  color: var(--dark);
+  margin-bottom: 20px;
   text-transform: uppercase;
-  line-height: 1;
+  letter-spacing: 4px;
 }
 
 .header-divider {
   width: 60px;
-  height: 2px;
-  background-color: var(--vetra-gold);
+  height: 3px;
+  background-color: var(--gold);
   margin: 0 auto 20px;
 }
 
@@ -50,274 +38,220 @@
   font-family: 'Lato', sans-serif;
   color: #666;
   font-size: 1.1rem;
-  font-weight: 300;
   letter-spacing: 1px;
 }
 
-/* --- GRID --- */
 .photo-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px; /* Gap menor para visual mais "mosaico" */
-  width: 100%;
-  max-width: 1600px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+  max-width: 1400px;
   margin: 0 auto;
+}
+
+.fading-in {
+  animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .photo-item {
   position: relative;
-  overflow: hidden;
   cursor: pointer;
-  aspect-ratio: 3/4; /* Mantém proporção retrato elegante */
-  background-color: #e0e0e0; /* Placeholder cor enquanto carrega */
-  border-radius: 2px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  aspect-ratio: 3 / 4; 
+}
+
+.image-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .photo-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.5s;
-  /* Melhora nitidez em telas retina */
-  image-rendering: -webkit-optimize-contrast; 
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: block;
 }
 
 .photo-item:hover img {
-  transform: scale(1.08);
-  filter: brightness(0.9);
+  transform: scale(1.1);
 }
 
-/* --- OVERLAY HOVER --- */
-.photo-item .overlay {
+.overlay {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(74, 59, 50, 0.5); /* Marrom Vetra transparente */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2));
   opacity: 0;
-  transition: all 0.4s ease;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  backdrop-filter: blur(4px); /* Efeito vidro fosco */
-}
-
-.photo-item:hover .overlay { opacity: 1; }
-
-.category-tag {
-  font-family: 'Cinzel', serif;
-  color: var(--vetra-gold);
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 15px;
-  transform: translateY(-20px);
-  opacity: 0;
+  align-items: center;
   transition: all 0.4s ease;
+  z-index: 2;
+  backdrop-filter: blur(2px);
 }
 
-.icon-container {
-  font-size: 1.5rem;
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.5);
-  border-radius: 50%;
-  width: 50px; height: 50px;
-  display: flex; align-items: center; justify-content: center;
-  transform: scale(0.8);
-  opacity: 0;
-  transition: all 0.4s ease 0.1s;
-}
-
-.overlay .text {
-  margin-top: 15px;
-  color: #fff;
-  font-family: 'Lato', sans-serif;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  transform: translateY(20px);
-  opacity: 0;
-  transition: all 0.4s ease 0.2s;
-}
-
-.photo-item:hover .category-tag,
-.photo-item:hover .icon-container,
-.photo-item:hover .text {
-  transform: translateY(0) scale(1);
+.photo-item:hover .overlay {
   opacity: 1;
 }
 
-/* --- LIGHTBOX (AQUI FICA TOP) --- */
-.lightbox {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(10, 10, 10, 0.95); /* Quase preto absoluto */
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 5000;
-  animation: lightboxFadeIn 0.4s ease-out forwards;
+.category-tag {
+  font-family: 'Lato', sans-serif;
+  color: var(--gold);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  transform: translateY(20px);
+  transition: transform 0.4s ease 0.1s;
 }
 
-@keyframes lightboxFadeIn {
-  from { opacity: 0; }
+.icon-container {
+  font-size: 1.8rem;
+  color: var(--white);
+  transform: scale(0);
+  transition: transform 0.3s ease 0.2s;
+}
+
+.text {
+  font-family: 'Cinzel', serif;
+  color: var(--white);
+  margin-top: 10px;
+  font-size: 1rem;
+  transform: translateY(20px);
+  transition: transform 0.4s ease 0.1s;
+}
+
+.photo-item:hover .category-tag,
+.photo-item:hover .text {
+  transform: translateY(0);
+}
+
+.photo-item:hover .icon-container {
+  transform: scale(1);
+}
+
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeInLightbox 0.3s forwards;
+}
+
+@keyframes fadeInLightbox {
   to { opacity: 1; }
 }
 
 .lightbox-content {
   position: relative;
-  max-width: 90vw;
+  max-width: 90%;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Animação de zoom suave ao abrir */
-  animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes zoomIn {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.lightbox img {
+.lightbox-content img {
   max-width: 100%;
-  max-height: 85vh; /* Garante que a foto inteira apareça */
+  max-height: 85vh;
   object-fit: contain;
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8); /* Sombra profunda para destacar */
-  user-select: none;
+  border-radius: 4px;
+  box-shadow: 0 0 50px rgba(0,0,0,0.5);
 }
 
 .lightbox-info {
   margin-top: 15px;
   text-align: center;
+  color: var(--white);
 }
 
 .lightbox-info h3 {
-  color: #fff;
   font-family: 'Cinzel', serif;
-  font-size: 1.2rem;
-  letter-spacing: 1px;
+  font-size: 1.5rem;
   margin-bottom: 5px;
 }
 
 .lightbox-info span {
-  color: var(--vetra-gold);
   font-family: 'Lato', sans-serif;
-  font-size: 0.9rem;
+  color: var(--gold);
   text-transform: uppercase;
   letter-spacing: 2px;
-}
-
-/* BOTÕES DE NAVEGAÇÃO E FECHAR */
-.close-btn, .nav-btn {
-  background: transparent;
-  border: none;
-  color: rgba(255,255,255,0.6);
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex; align-items: center; justify-content: center;
-}
-
-.close-btn {
-  position: absolute;
-  top: 30px; right: 30px;
-  font-size: 2rem;
-  z-index: 5001;
+  font-size: 0.9rem;
 }
 
 .nav-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 2.5rem;
-  padding: 20px;
-  z-index: 5001;
-}
-
-.prev-btn { left: 20px; }
-.next-btn { right: 20px; }
-
-.close-btn:hover, .nav-btn:hover {
-  color: var(--vetra-gold);
-  transform: translateY(-50%) scale(1.1); /* Escala no hover */
-}
-.close-btn:hover { transform: rotate(90deg); }
-
-/* RESPONSIVIDADE */
-@media (max-width: 768px) {
-  .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .nav-btn { font-size: 1.5rem; padding: 10px; }
-  .prev-btn { left: 5px; }
-  .next-btn { right: 5px; }
-  .lightbox img { max-height: 70vh; }
-  .portfolio-header h2 { font-size: 2.5rem; }
-}
-/* --- CONFIGURAÇÃO DA GRADE (GRID) --- */
-.photo-grid {
-  display: grid;
-  /* O SEGREDO: Apenas 2 colunas gigantes */
-  grid-template-columns: repeat(4, 1fr); 
-  gap: 20px; /* Espaço pequeno entre elas para dar continuidade */
-  width: 100%;
-  max-width: 95%; /* Ocupa quase a tela toda (Full Width) */
-  margin: 0 auto;
-}
-
-.photo-item {
-  position: relative;
-  overflow: hidden;
+  background: transparent;
+  border: none;
+  color: var(--white);
+  font-size: 3rem;
   cursor: pointer;
-  /* Proporção 4:5 (Padrão Retrato Instagram) - Ocupa bastante altura */
-  aspect-ratio: 4/5; 
-  background-color: #e0e0e0;
+  padding: 20px;
+  transition: color 0.3s;
+  z-index: 1001;
 }
 
-.photo-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Zoom bem lento e cinematográfico */
+.nav-btn:hover {
+  color: var(--gold);
 }
 
-/* Zoom suave ao passar o mouse */
-.photo-item:hover img {
-  transform: scale(1.05); 
+.prev-btn { left: 30px; }
+.next-btn { right: 30px; }
+
+.close-btn {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  background: transparent;
+  border: none;
+  color: var(--white);
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  z-index: 1001;
 }
 
-/* --- RESPONSIVIDADE --- */
-
-/* Em telas muito grandes (TVs/Monitores 4k), mantemos 3 para não ficar exagerado */
-@media (min-width: 1920px) {
-  .photo-grid {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 1800px;
-  }
+.close-btn:hover {
+  color: var(--gold);
+  transform: rotate(90deg);
 }
 
-/* Em tablets, mantemos as 2 colunas */
-@media (max-width: 1024px) {
-  .photo-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-  }
-}
-
-/* Em celulares, 1 coluna ocupando tudo */
-@media (max-width: 600px) {
-  .photo-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-    max-width: 100%;
+@media (max-width: 768px) {
+  .portfolio-header h2 {
+    font-size: 2rem;
   }
   
-  .portfolio-page {
-    padding: 6rem 0 4rem; /* Remove padding lateral no mobile para foto de borda a borda */
+  .photo-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+
+  .nav-btn {
+    font-size: 2rem;
+    padding: 10px;
   }
   
-  .photo-item {
-    border-radius: 0; /* No mobile, fotos quadradas sem borda ficam mais modernas */
-  }
+  .prev-btn { left: 10px; }
+  .next-btn { right: 10px; }
 }
