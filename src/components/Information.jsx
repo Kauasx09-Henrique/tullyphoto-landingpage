@@ -12,9 +12,7 @@ import GentininGreen2 from './gentiam_green/green2.jpg';
 import GentininGreen3 from './gentiam_green/green3.jpg';
 import flame from './scrarlet_flame/flame1.jpg';
 import grey from './grey/grey1.jpg';
-import grey2 from './grey/grey2.jpg';
 import coco from './coco/coco1.jpg';
-import blue1 from './deep_blue/blue1.jpg';
 import blue2 from './deep_blue/blue2.jpg';
 
 const Information = () => {
@@ -69,7 +67,7 @@ const Information = () => {
             hex: "#5c5a59",
             bgHex: "#222222",
             desc: "Sofisticação e drama. O fundo preto absorve a luz, criando contornos perfeitos e silhuetas marcantes.",
-            images: [grey, grey2]
+            images: [grey]
         },
         {
             id: 7,
@@ -77,7 +75,18 @@ const Information = () => {
             hex: "#385566",
             bgHex: "#D6E4F0",
             desc: "Confiança e serenidade. Um azul profundo clássico que transmite autoridade corporativa.",
-            images: [blue1, blue2]
+            images: [blue2]
+        },
+        {
+            id: 8,
+            name: "Branco Puro",
+            hex: "#FFFFFF",
+            bgHex: "#F5F5F5",
+            desc: "Versatilidade e clareza. O branco puro oferece um fundo limpo e neutro, ideal para destacar o sujeito com máxima luminosidade.",
+            images: [
+                "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=1470&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1470&auto=format&fit=crop"
+            ]
         }
     ];
 
@@ -177,7 +186,7 @@ const Information = () => {
                             </p>
                         </div>
                         <div className="spec-item">
-                            <h3>Acabamento Matte</h3>
+                            <h3>Acabamento</h3>
                             <p>
                                 Papel de alta gramatura com textura fina e superfície antirreflexo.
                                 Garante distribuição uniforme da luz e facilita a pós-produção e recorte.
@@ -186,8 +195,7 @@ const Information = () => {
                         <div className="spec-item">
                             <h3>Versatilidade</h3>
                             <p>
-                                Projetado para atender desde a fotografia still e lookbooks até
-                                retratos artísticos e headshots, adaptando-se à visão criativa do fotógrafo.
+                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia officiis, cupiditate at voluptatem non impedit. Amet quidem distinctio facilis eligendi, eveniet maiores quibusdam nostrum voluptates eos ullam voluptas ducimus nam!
                             </p>
                         </div>
                     </div>

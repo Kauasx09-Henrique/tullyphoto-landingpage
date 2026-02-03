@@ -23,8 +23,8 @@
 
 .service-card {
   position: relative;
-  height: 600px;
-  /* Altura fixa garantida */
+  height: 650px;
+  /* Aumentei um pouco para dar respiro */
   overflow: hidden;
   border-radius: 4px;
   cursor: pointer;
@@ -41,13 +41,14 @@
   width: 100%;
   height: 100%;
   background-size: cover;
-  background-position: center;
+  background-position: center top;
+  /* Foca no rosto */
   transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   z-index: 1;
 }
 
 .service-card:hover .card-bg-image {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .card-overlay {
@@ -56,11 +57,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to top,
-      rgba(26, 26, 26, 0.98) 0%,
-      rgba(26, 26, 26, 0.85) 50%,
-      /* Overlay mais escuro para leitura */
-      rgba(26, 26, 26, 0.2) 100%);
+  /* Gradiente ajustado: Transparente no topo para ver o rosto, escuro embaixo para o texto */
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.1) 40%,
+      rgba(26, 26, 26, 0.9) 80%,
+      rgba(26, 26, 26, 1) 100%);
   z-index: 2;
 }
 
@@ -70,41 +72,45 @@
   left: 0;
   width: 100%;
   padding: 40px 30px;
-  /* Padding ajustado */
   z-index: 3;
   color: var(--vetra-white);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  /* Força tudo para baixo */
   height: 100%;
-  /* Ocupa altura toda para alinhar no bottom */
+}
+
+.card-header-group {
+  margin-bottom: 10px;
 }
 
 .card-title {
   font-family: 'Cinzel', serif;
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   font-weight: 500;
   color: var(--vetra-white);
   margin-bottom: 5px;
   letter-spacing: 2px;
   text-transform: uppercase;
   line-height: 1;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .card-subtitle {
   font-family: 'Lato', sans-serif;
   color: var(--vetra-gold);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 3px;
-  margin-bottom: 25px;
   display: block;
   font-weight: 700;
+  margin-bottom: 15px;
 }
 
 .static-info {
-  margin-top: auto;
-  /* Empurra para o fundo se houver espaço */
+  display: flex;
+  flex-direction: column;
 }
 
 .card-price {
@@ -112,40 +118,37 @@
   font-family: 'Cinzel', serif;
   color: var(--vetra-white);
   font-size: 1.8rem;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-weight: 600;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 15px;
 }
 
-/* Novo Estilo para os Detalhes (5 fotos / 30 min) */
 .card-details {
   display: block;
   font-family: 'Lato', sans-serif;
   color: var(--vetra-gold);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   letter-spacing: 1px;
 }
 
 .card-description {
   font-family: 'Lato', sans-serif;
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 25px;
   max-width: 100%;
-  min-height: 50px;
-  /* Garante alinhamento dos botões */
 }
 
 .card-button {
   background: transparent;
   border: 1px solid var(--vetra-gold);
   color: var(--vetra-gold);
-  padding: 12px 30px;
+  padding: 12px 25px;
   font-family: 'Lato', sans-serif;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -153,16 +156,18 @@
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
   width: fit-content;
+  text-decoration: none;
+  /* Remove sublinhado do link */
 }
 
 .card-button:hover {
   background: var(--vetra-gold);
   color: var(--vetra-black);
-  padding-left: 40px;
+  padding-left: 35px;
 }
 
 @media (max-width: 1024px) {
@@ -178,7 +183,7 @@
 
   .service-card {
     height: auto;
-    min-height: 580px;
+    min-height: 550px;
   }
 
   .card-content {

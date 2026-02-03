@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Store } from 'react-notifications-component';
-import { FaEnvelope, FaLock, FaSpinner } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaSpinner, FaGoogle } from 'react-icons/fa';
+import { useGoogleLogin } from '@react-oauth/google';
 import api from '../services/api';
 import '../styles/auth.css';
 
@@ -17,43 +18,82 @@ export default function Login() {
 
         try {
             const response = await api.post('/auth/login', { email, senha });
-
-            const usuario = response.data.user;
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(usuario));
-
-            Store.addNotification({
-                title: "Sucesso!",
-                message: `Bem-vindo de volta, ${usuario.nome.split(' ')[0]}!`,
-                type: "success",
-                insert: "top",
-                container: "top-right",
-                animationIn: ["animate__animated", "animate__fadeIn"],
-                animationOut: ["animate__animated", "animate__fadeOut"],
-                dismiss: { duration: 3000, onScreen: true }
-            });
-
-            if (usuario.tipo === 'ADMIN') {
-                navigate('/admin/dashboard');
-            } else {
-                navigate('/agendamento');
-            }
-
+            finalizarLogin(response.data);
         } catch (err) {
-            const mensagem = err.response?.data?.msg || 'Credenciais inválidas. Tente novamente.';
-
+            const mensagem = err.response?.data?.msg || 'Erro ao fazer login.';
             Store.addNotification({
-                title: "Acesso Negado",
+                title: "Erro",
                 message: mensagem,
                 type: "danger",
                 insert: "top",
                 container: "top-right",
-                animationIn: ["animate__animated", "animate__shakeX"],
-                animationOut: ["animate__animated", "animate__fadeOut"],
-                dismiss: { duration: 4000, onScreen: true }
+                dismiss: { duration: 4000 }
             });
         } finally {
             setLoading(false);
+        }
+    }
+
+    const loginComGoogle = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            try {
+                setLoading(true);
+                const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                    headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+                }).then(res => res.json());
+
+                const response = await api.post('/auth/google', {
+                    email: userInfo.email,
+                    nome: userInfo.name,
+                    googleId: userInfo.sub,
+                    foto: userInfo.picture
+                });
+
+                finalizarLogin(response.data);
+
+            } catch (error) {
+                console.error(error);
+                Store.addNotification({
+                    title: "Erro Google",
+                    message: "Falha ao autenticar com Google.",
+                    type: "danger",
+                    insert: "top",
+                    container: "top-right",
+                    dismiss: { duration: 4000 }
+                });
+            } finally {
+                setLoading(false);
+            }
+        },
+        onError: () => {
+            Store.addNotification({
+                title: "Erro",
+                message: "O login com Google falhou.",
+                type: "danger",
+                insert: "top",
+                container: "top-right",
+                dismiss: { duration: 4000 }
+            });
+        }
+    });
+
+    function finalizarLogin(data) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        Store.addNotification({
+            title: "Sucesso!",
+            message: `Bem-vindo, ${data.user.nome.split(' ')[0]}!`,
+            type: "success",
+            insert: "top",
+            container: "top-right",
+            dismiss: { duration: 3000 }
+        });
+
+        if (data.user.tipo === 'ADMIN') {
+            navigate('/admin/dashboard');
+        } else {
+            navigate('/agendamento');
         }
     }
 
@@ -68,25 +108,25 @@ export default function Login() {
                 <form onSubmit={handleLogin} className="auth-form">
                     <div className="input-wrapper">
                         <FaEnvelope className="input-icon" />
-                        <input
+                        <input 
                             className="auth-input"
-                            type="email"
-                            placeholder="Seu E-mail"
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
-                            required
+                            type="email" 
+                            placeholder="Seu E-mail" 
+                            value={email} 
+                            onChange={e => setEmail(e.target.value)} 
+                            required 
                         />
                     </div>
-
+                    
                     <div className="input-wrapper">
                         <FaLock className="input-icon" />
-                        <input
+                        <input 
                             className="auth-input"
-                            type="password"
-                            placeholder="Sua Senha"
-                            value={senha}
-                            onChange={e => setSenha(e.target.value)}
-                            required
+                            type="password" 
+                            placeholder="Sua Senha" 
+                            value={senha} 
+                            onChange={e => setSenha(e.target.value)} 
+                            required 
                         />
                     </div>
 
@@ -95,9 +135,22 @@ export default function Login() {
                     </button>
                 </form>
 
+                <div className="auth-divider">
+                    <span>ou</span>
+                </div>
+
+                <button 
+                    type="button" 
+                    className="google-btn" 
+                    onClick={() => loginComGoogle()}
+                    disabled={loading}
+                >
+                    <FaGoogle /> Continuar com Google
+                </button>
+
                 <div className="auth-footer">
                     <p className="auth-text">
-                        Não possui cadastro?
+                        Não possui cadastro? 
                         <Link to="/cadastro" className="auth-link">Criar conta</Link>
                     </p>
                 </div>
