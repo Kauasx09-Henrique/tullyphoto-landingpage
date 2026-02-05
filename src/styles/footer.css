@@ -1,93 +1,218 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Lato:wght@300;400;700&display=swap');
+
+/* Garante consistência com as variáveis usadas na outra página */
+:root {
+    --vetra-brown: #4A3B32;
+    --vetra-dark: #2C2420;
+    --vetra-gold: #C0A062;
+    --vetra-cream: #F5F5F0;
+    --vetra-gray: #888;
+}
+
 .footer {
-  background-color: var(--marrom-escuro);
-  color: var(--bege-quente);
-  padding: 4rem 5% 1rem;
+    background-color: var(--vetra-dark);
+    color: var(--vetra-cream);
+    padding: 0;
+    position: relative;
+    font-family: 'Lato', sans-serif;
+    margin-top: auto; /* Garante que o footer vá para o fundo se o conteúdo for curto */
+}
+
+/* Linha Dourada no topo */
+.footer-border {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--vetra-dark) 0%, var(--vetra-gold) 50%, var(--vetra-dark) 100%);
 }
 
 .footer-content {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 3rem;
-  max-width: 1200px;
-  margin: 0 auto 3rem;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 5rem 5%;
 }
 
+/* Coluna Marca */
 .footer-brand h3 {
-  font-size: 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 1rem;
-  color: var(--dourado-suave);
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1.2rem;
+    color: var(--vetra-gold);
 }
 
 .footer-brand p {
-  opacity: 0.8;
-  max-width: 250px;
+    opacity: 0.7;
+    line-height: 1.6;
+    max-width: 350px;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
 }
 
+.brand-location {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.icon-gold {
+    color: var(--vetra-gold);
+}
+
+/* Títulos das Colunas */
 .footer-links h4,
 .footer-social h4 {
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 1.5rem;
-  color: var(--creme-claro);
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 2rem;
+    color: #fff;
+    position: relative;
+    display: inline-block;
+}
+
+/* Detalhe sutil abaixo dos títulos */
+.footer-links h4::after,
+.footer-social h4::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 30px;
+    height: 2px;
+    background-color: var(--vetra-gold);
+}
+
+/* Links de Navegação com Efeito Hover */
+.footer-links ul {
+    list-style: none;
+    padding: 0;
 }
 
 .footer-links ul li {
-  margin-bottom: 0.8rem;
+    margin-bottom: 1rem;
 }
 
 .footer-links a {
-  color: var(--bege-quente);
-  opacity: 0.7;
-  transition: all 0.2s;
+    color: #ccc;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    font-size: 0.95rem;
 }
 
 .footer-links a:hover {
-  opacity: 1;
-  color: var(--dourado-suave);
-  padding-left: 5px;
+    color: var(--vetra-gold);
+    padding-left: 5px;
 }
 
+/* Ícones Sociais */
 .social-icons {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
+    display: flex;
+    gap: 1.2rem;
+    margin-top: 1.5rem;
 }
 
 .social-icons a {
-  color: var(--bege-quente);
-  transition: color 0.2s, transform 0.2s;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--vetra-cream);
+    font-size: 1.2rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
 }
 
 .social-icons a:hover {
-  color: var(--dourado-suave);
-  transform: translateY(-3px);
+    background-color: var(--vetra-gold);
+    color: var(--vetra-dark);
+    transform: translateY(-5px);
+    border-color: var(--vetra-gold);
 }
 
-.contact-mail {
-  font-size: 0.9rem;
-  opacity: 0.6;
-}
-
-.footer-bottom {
-  border-top: 1px solid rgba(214, 198, 182, 0.1);
-  text-align: center;
-  padding-top: 2rem;
-  font-size: 0.8rem;
-  opacity: 0.5;
-}
-
-@media (max-width: 768px) {
-  .footer-content {
-    flex-direction: column;
-    text-align: center;
+.contact-item {
+    display: flex;
     align-items: center;
-  }
-  
-  .footer-links a:hover {
-    padding-left: 0;
-  }
+    gap: 10px;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+}
+
+.contact-item:hover {
+    color: var(--vetra-gold);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 2rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0,0,0,0.2); /* Um pouco mais escuro */
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.back-to-top {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--vetra-gold);
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-to-top:hover {
+    background: var(--vetra-gold);
+    color: var(--vetra-dark);
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+    }
+
+    .footer-brand p {
+        margin: 0 auto 1.5rem;
+    }
+
+    .brand-location {
+        justify-content: center;
+    }
+
+    .footer-links h4::after,
+    .footer-social h4::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .social-icons {
+        justify-content: center;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
 }

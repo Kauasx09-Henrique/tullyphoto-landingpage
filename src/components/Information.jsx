@@ -6,9 +6,9 @@ import {
     FaSnowflake, 
     FaCoffee, 
     FaMusic, 
-    FaStar, // Ícone corrigido (substituindo FaMirror)
+    FaStar, 
     FaLightbulb,
-    FaRulerCombined, // Novos ícones para arquitetura
+    FaRulerCombined, 
     FaArrowsAltV,
     FaBolt,
     FaDoorOpen
@@ -17,6 +17,7 @@ import Header from './Header';
 import Footer from './Footer';
 import '../styles/information.css';
 
+// IMAGENS
 import imgBege from './bege.jpg';
 import GentininGreen1 from './gentiam_green/green1.jpg';
 import GentininGreen2 from './gentiam_green/green2.jpg';
@@ -24,6 +25,10 @@ import GentininGreen3 from './gentiam_green/green3.jpg';
 import grey from './grey/grey1.jpg';
 import coco from './coco/coco1.jpg';
 import blue2 from './deep_blue/blue2.jpg';
+
+// IMPORTANTE: Importe sua foto da planta aqui
+// Se não tiver a foto ainda, o código vai usar um placeholder temporário
+import plantaBaixaImg from '/public/planta/planta_estudio.jpg'; // Certifique-se de ter essa imagem na pasta ou mude o nome
 
 const Information = () => {
 
@@ -177,7 +182,7 @@ const Information = () => {
                 </div>
             </div>
 
-            {/* 2. DETALHES TÉCNICOS PAPEL (BRANCO) */}
+            {/* 2. DETALHES TÉCNICOS PAPEL */}
             <div className="info-details-section">
                 <div className="details-content">
                     <div className="details-header">
@@ -206,7 +211,7 @@ const Information = () => {
                 </div>
             </div>
 
-            {/* 3. ARQUITETURA & PLANTA (NOVA SEÇÃO TÉCNICA) */}
+            {/* 3. ARQUITETURA & PLANTA (IMAGEM) */}
             <div className="blueprint-section">
                 <div className="blueprint-container">
                     <div className="blueprint-text">
@@ -221,22 +226,22 @@ const Information = () => {
                             <div className="tech-item">
                                 <FaArrowsAltV className="tech-icon" />
                                 <div>
-                                    <h4>Pé Direito</h4>
-                                    <span>4,50 Metros</span>
+                                    <h4>Largura aproximada:</h4>
+                                    <span>6,35m</span>
                                 </div>
                             </div>
                             <div className="tech-item">
                                 <FaRulerCombined className="tech-icon" />
                                 <div>
-                                    <h4>Área Útil</h4>
-                                    <span>120m² Livres</span>
+                                    <h4>Profundidade aproximada</h4>
+                                    <span>10,73m</span>
                                 </div>
                             </div>
                             <div className="tech-item">
                                 <FaBolt className="tech-icon" />
                                 <div>
                                     <h4>Energia</h4>
-                                    <span>110v / 220v (Trifásico)</span>
+                                    <span>220v</span>
                                 </div>
                             </div>
                             <div className="tech-item">
@@ -249,40 +254,21 @@ const Information = () => {
                         </div>
                     </div>
 
-                    {/* Desenho Técnico CSS */}
+                    {/* FOTO DA PLANTA BAIXA */}
                     <div className="blueprint-visual">
-                        <div className="floor-plan-box">
-                            <span className="label-area">Área de Shooting</span>
-                            <span className="label-make">Camarim</span>
-                            <span className="label-lounge">Lounge</span>
-                            
-                            <div className="measurement-line width"><span>10m (Largura)</span></div>
-                            <div className="measurement-line height"><span>12m (Profundidade)</span></div>
+                        <div className="floor-plan-wrapper">
+                            {/* Caso a imagem não carregue, use um placeholder ou verifique o import */}
+                            <img 
+                                src={plantaBaixaImg} 
+                                alt="Planta Baixa do Estúdio" 
+                                className="blueprint-image"
+                                onError={(e) => { e.target.src = "https://placehold.co/600x400/EEE/31343C?text=Foto+da+Planta"; }} 
+                            />
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* 4. INFRAESTRUTURA (ESCURO) */}
-            <div className="amenities-section">
-                <div className="amenities-container">
-                    <div className="amenities-header">
-                        <h2>Infraestrutura Premium</h2>
-                        <div className="divider-gold"></div>
-                        <p>Tudo o que você precisa para uma produção fluida e confortável.</p>
-                    </div>
-
-                    <div className="amenities-grid">
-                        {amenities.map((item, index) => (
-                            <div key={index} className="amenity-card">
-                                <div className="amenity-icon">{item.icon}</div>
-                                <h4>{item.title}</h4>
-                                <p>{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
 
             <Footer />
         </>

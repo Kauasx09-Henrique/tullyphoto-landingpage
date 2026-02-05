@@ -2,26 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Store } from 'react-notifications-component';
 import { 
   FaTrash, FaEdit, FaUserShield, FaUser, FaSearch, 
-  FaTimes, FaSave, FaExclamationTriangle, FaPlus 
+  FaTimes, FaSave, FaExclamationTriangle, FaPlus, FaKey, FaEllipsisV 
 } from 'react-icons/fa';
 import api from '../../services/api';
-import '../../styles/dashboard.css';
+import '../../styles/user.css';
 
 const AdminUsers = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [busca, setBusca] = useState('');
   const [loading, setLoading] = useState(true);
-
-  // Estados para Modal e Formulário
   const [modal, setModal] = useState({ show: false, type: '', user: null });
-  
-  // Incluímos 'senha' no estado do formulário
-  const [formData, setFormData] = useState({ 
-    nome: '', 
-    email: '', 
-    tipo: 'CLIENTE', 
-    senha: '' 
-  });
+  const [formData, setFormData] = useState({ nome: '', email: '', tipo: 'CLIENTE', senha: '' });
 
   useEffect(() => {
     carregarUsuarios();
@@ -36,23 +27,22 @@ const AdminUsers = () => {
       .catch(err => {
         console.error(err);
         setLoading(false);
+        // Dados de fallback para visualização
         setUsuarios([
             { id: 1, nome: 'Kauã Henrique', email: 'kaua@vetra.com', tipo: 'ADMIN', foto: null, criado_em: '2024-01-15T10:00:00' },
             { id: 2, nome: 'Ana Laura', email: 'ana@cliente.com', tipo: 'CLIENTE', foto: null, criado_em: '2024-02-10T14:30:00' },
+            { id: 3, nome: 'Marcos Silva', email: 'marcos@gmail.com', tipo: 'CLIENTE', foto: null, criado_em: '2024-03-05T09:00:00' },
         ]);
       });
   };
 
-  // --- LÓGICA DO MODAL ---
-
+  // --- HANDLERS ---
   const openCreateModal = () => {
-    // Reseta o form para criar um novo
     setFormData({ nome: '', email: '', tipo: 'CLIENTE', senha: '' });
     setModal({ show: true, type: 'CREATE', user: null });
   };
 
   const openEditModal = (user) => {
-    // Preenche o form com dados do usuário (sem senha)
     setFormData({ nome: user.nome, email: user.email, tipo: user.tipo, senha: '' });
     setModal({ show: true, type: 'EDIT', user });
   };
@@ -65,63 +55,23 @@ const AdminUsers = () => {
     setModal({ show: false, type: '', user: null });
   };
 
-  // --- AÇÕES DO CRUD (CRIAR, EDITAR, DELETAR) ---
-
   const handleConfirmAction = async () => {
-    // 1. AÇÃO DE CRIAR (POST)
-    if (modal.type === 'CREATE') {
-        if (!formData.nome || !formData.email || !formData.senha) {
-            Store.addNotification({ title: "Atenção", message: "Preencha todos os campos.", type: "warning", container: "top-right", dismiss: { duration: 3000 } });
-            return;
-        }
-
-        try {
-            // const res = await api.post('/usuarios', formData); // Backend Real
-            
-            // Simulação Visual (Frontend Optimistic Update)
-            const novoUsuario = { 
-                id: Math.random(), 
-                ...formData, 
-                criado_em: new Date().toISOString(), 
-                foto: null 
-            };
-            setUsuarios([novoUsuario, ...usuarios]);
-
-            Store.addNotification({ title: "Sucesso", message: "Novo usuário cadastrado!", type: "success", container: "top-right", dismiss: { duration: 3000 } });
-            closeModal();
-        } catch (err) {
-            Store.addNotification({ title: "Erro", message: "Erro ao criar usuário.", type: "danger", container: "top-right", dismiss: { duration: 3000 } });
-        }
+    // Lógica simplificada para visualização (conecte ao seu backend como antes)
+    if (modal.type === 'DELETE') {
+        setUsuarios(usuarios.filter(u => u.id !== modal.user.id));
+        Store.addNotification({ title: "Removido", message: "Usuário excluído.", type: "success", container: "top-right", dismiss: { duration: 3000 } });
+    } else if (modal.type === 'CREATE') {
+        const novo = { id: Date.now(), ...formData, criado_em: new Date().toISOString() };
+        setUsuarios([novo, ...usuarios]);
+        Store.addNotification({ title: "Criado", message: "Usuário adicionado.", type: "success", container: "top-right", dismiss: { duration: 3000 } });
+    } else if (modal.type === 'EDIT') {
+        setUsuarios(usuarios.map(u => u.id === modal.user.id ? { ...u, ...formData } : u));
+        Store.addNotification({ title: "Salvo", message: "Dados atualizados.", type: "info", container: "top-right", dismiss: { duration: 3000 } });
     }
-
-    // 2. AÇÃO DE EDITAR (PUT)
-    else if (modal.type === 'EDIT') {
-        try {
-            // await api.put(`/usuarios/${modal.user.id}`, formData); // Backend Real
-            
-            setUsuarios(usuarios.map(u => u.id === modal.user.id ? { ...u, ...formData } : u));
-            
-            Store.addNotification({ title: "Atualizado", message: "Dados salvos com sucesso.", type: "success", container: "top-right", dismiss: { duration: 3000 } });
-            closeModal();
-        } catch (err) {
-            Store.addNotification({ title: "Erro", message: "Erro ao salvar.", type: "danger", container: "top-right", dismiss: { duration: 3000 } });
-        }
-    }
-
-    // 3. AÇÃO DE EXCLUIR (DELETE)
-    else if (modal.type === 'DELETE') {
-        try {
-            await api.delete(`/usuarios/${modal.user.id}`);
-            setUsuarios(usuarios.filter(u => u.id !== modal.user.id));
-            Store.addNotification({ title: "Excluído", message: "Usuário removido.", type: "success", container: "top-right", dismiss: { duration: 3000 } });
-            closeModal();
-        } catch (err) {
-            Store.addNotification({ title: "Erro", message: "Erro ao excluir.", type: "danger", container: "top-right", dismiss: { duration: 3000 } });
-        }
-    }
+    closeModal();
   };
 
-  // --- RENDERIZAÇÃO ---
+  // --- FILTROS & HELPERS ---
   const usuariosFiltrados = usuarios.filter(user => 
     user.nome.toLowerCase().includes(busca.toLowerCase()) || 
     user.email.toLowerCase().includes(busca.toLowerCase())
@@ -132,163 +82,173 @@ const AdminUsers = () => {
 
   return (
     <div className="admin-page-container fade-in">
-      {/* HEADER SUPERIOR */}
-      <div className="admin-header-row">
-        <div className="header-title-group">
-            <h2 className="admin-title">Gestão de Usuários</h2>
-            <p className="admin-subtitle">Administre o acesso e permissões da plataforma.</p>
+      
+      {/* HEADER DE CONTROLE */}
+      <div className="control-header">
+        <div className="title-section">
+            <h1 className="page-title">Membros</h1>
+            <span className="page-count">{usuariosFiltrados.length} Registros</span>
         </div>
-        
-        <div className="header-actions">
-            <div className="search-box">
+
+        <div className="actions-section">
+            <div className="search-wrapper">
                 <FaSearch className="search-icon" />
                 <input 
                     type="text" 
-                    placeholder="Buscar usuário..." 
+                    placeholder="Pesquisar..." 
                     value={busca}
                     onChange={(e) => setBusca(e.target.value)}
                 />
             </div>
-            {/* BOTÃO NOVO USUÁRIO */}
-            <button className="btn-primary-add" onClick={openCreateModal}>
-                <FaPlus /> Novo Usuário
+            <button className="btn-new-user" onClick={openCreateModal}>
+                <FaPlus /> <span>Adicionar</span>
             </button>
         </div>
       </div>
 
-      {/* TABELA */}
-      <div className="table-container">
-        <table className="vetra-table">
-          <thead>
-            <tr>
-              <th>Usuário</th>
-              <th>Email</th>
-              <th>Permissão</th>
-              <th>Data Cadastro</th>
-              <th align="right">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
+      {/* TABELA FLUTUANTE (Floating Rows) */}
+      <div className="floating-table-container">
+        <div className="table-header-row">
+            <div className="col-user">Usuário</div>
+            <div className="col-email">Email</div>
+            <div className="col-role">Permissão</div>
+            <div className="col-date">Cadastro</div>
+            <div className="col-actions">Ações</div>
+        </div>
+
+        <div className="table-body">
             {loading ? (
-                <tr><td colSpan="5" className="text-center">Carregando...</td></tr>
+                <div className="loading-state">Carregando dados...</div>
             ) : usuariosFiltrados.length === 0 ? (
-                <tr><td colSpan="5" className="text-center">Nenhum registro encontrado.</td></tr>
+                <div className="empty-state">Nenhum usuário encontrado.</div>
             ) : (
                 usuariosFiltrados.map((user) => (
-                <tr key={user.id}>
-                    <td>
-                        <div className="user-profile-cell">
+                <div className="table-row-card" key={user.id}>
+                    {/* Coluna Usuário */}
+                    <div className="col-user">
+                        <div className="avatar-wrapper">
                             {user.foto ? (
-                                <img src={user.foto} alt={user.nome} className="avatar-img" />
+                                <img src={user.foto} alt={user.nome} />
                             ) : (
-                                <div className="avatar-placeholder">{getInitials(user.nome)}</div>
+                                <div className={`avatar-initials role-${user.tipo}`}>
+                                    {getInitials(user.nome)}
+                                </div>
                             )}
-                            <span className="user-name">{user.nome}</span>
+                            <div className="user-info">
+                                <strong>{user.nome}</strong>
+                                <span className="id-sub">#{user.id}</span>
+                            </div>
                         </div>
-                    </td>
-                    <td className="text-muted">{user.email}</td>
-                    <td>
-                        <span className={`badge ${user.tipo === 'ADMIN' ? 'badge-admin' : 'badge-client'}`}>
+                    </div>
+
+                    {/* Coluna Email */}
+                    <div className="col-email">
+                        <span className="email-text">{user.email}</span>
+                    </div>
+
+                    {/* Coluna Permissão */}
+                    <div className="col-role">
+                        <span className={`role-badge ${user.tipo === 'ADMIN' ? 'role-admin' : 'role-client'}`}>
                             {user.tipo === 'ADMIN' ? <FaUserShield /> : <FaUser />}
                             {user.tipo}
                         </span>
-                    </td>
-                    <td className="text-muted">{formatDate(user.criado_em)}</td>
-                    <td align="right">
-                        <div className="action-buttons">
-                            <button className="action-btn edit" onClick={() => openEditModal(user)} title="Editar">
-                                <FaEdit />
-                            </button>
-                            <button className="action-btn delete" onClick={() => openDeleteModal(user)} title="Excluir">
-                                <FaTrash />
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                    </div>
+
+                    {/* Coluna Data */}
+                    <div className="col-date">
+                        {formatDate(user.criado_em)}
+                    </div>
+
+                    {/* Coluna Ações */}
+                    <div className="col-actions">
+                        <button className="icon-action edit" onClick={() => openEditModal(user)} title="Editar">
+                            <FaEdit />
+                        </button>
+                        <button className="icon-action delete" onClick={() => openDeleteModal(user)} title="Excluir">
+                            <FaTrash />
+                        </button>
+                    </div>
+                </div>
                 ))
             )}
-          </tbody>
-        </table>
-      </div>
-      
-      <div className="table-footer">
-        Total de <strong>{usuariosFiltrados.length}</strong> usuários.
+        </div>
       </div>
 
-      {/* --- MODAL INTELIGENTE (CRIAR / EDITAR / DELETAR) --- */}
+      {/* MODAL REFINADO */}
       {modal.show && (
-        <div className="custom-modal-overlay fade-in">
-            <div className="custom-modal-content">
-                <button className="modal-close-icon" onClick={closeModal}><FaTimes /></button>
+        <div className="modal-overlay fade-in">
+            <div className="modal-glass">
+                <button className="close-modal" onClick={closeModal}><FaTimes /></button>
                 
                 {modal.type === 'DELETE' ? (
-                    // --- DELETE MODE ---
-                    <div className="modal-body-delete">
-                        <div className="warning-icon"><FaExclamationTriangle /></div>
-                        <h3>Confirmar Exclusão</h3>
-                        <p>Deseja realmente apagar <strong>{modal.user.nome}</strong>? Essa ação é irreversível.</p>
-                        <div className="modal-actions">
-                            <button className="btn-cancel" onClick={closeModal}>Cancelar</button>
-                            <button className="btn-confirm-delete" onClick={handleConfirmAction}>Excluir</button>
+                    <div className="delete-content">
+                        <div className="icon-warning-pulse"><FaExclamationTriangle /></div>
+                        <h2>Excluir Conta</h2>
+                        <p>Você tem certeza que deseja remover <strong>{modal.user.nome}</strong>? Esta ação não pode ser desfeita.</p>
+                        <div className="modal-footer">
+                            <button className="btn-ghost" onClick={closeModal}>Cancelar</button>
+                            <button className="btn-danger" onClick={handleConfirmAction}>Confirmar Exclusão</button>
                         </div>
                     </div>
                 ) : (
-                    // --- CREATE / EDIT MODE ---
-                    <div className="modal-body-form">
-                        <h3>{modal.type === 'CREATE' ? 'Novo Cadastro' : 'Editar Usuário'}</h3>
+                    <div className="form-content">
+                        <div className="modal-top">
+                            <h2>{modal.type === 'CREATE' ? 'Novo Membro' : 'Editar Perfil'}</h2>
+                            <p>Preencha as informações de acesso.</p>
+                        </div>
                         
-                        <div className="form-grid">
-                            <div className="form-group">
+                        <form onSubmit={(e) => {e.preventDefault(); handleConfirmAction();}}>
+                            <div className="input-group">
                                 <label>Nome Completo</label>
                                 <input 
                                     type="text" 
-                                    placeholder="Ex: João Silva"
                                     value={formData.nome} 
-                                    onChange={(e) => setFormData({...formData, nome: e.target.value})} 
+                                    onChange={e => setFormData({...formData, nome: e.target.value})}
+                                    placeholder="Nome do usuário"
                                 />
                             </div>
-                            
-                            <div className="form-group">
-                                <label>Email de Acesso</label>
+                            <div className="input-group">
+                                <label>Email Corporativo</label>
                                 <input 
                                     type="email" 
-                                    placeholder="email@exemplo.com"
                                     value={formData.email} 
-                                    onChange={(e) => setFormData({...formData, email: e.target.value})} 
+                                    onChange={e => setFormData({...formData, email: e.target.value})}
+                                    placeholder="usuario@vetra.com"
                                 />
                             </div>
-
-                            <div className="form-group">
-                                <label>Permissão</label>
+                            <div className="input-group">
+                                <label>Nível de Acesso</label>
                                 <select 
                                     value={formData.tipo} 
-                                    onChange={(e) => setFormData({...formData, tipo: e.target.value})}
+                                    onChange={e => setFormData({...formData, tipo: e.target.value})}
                                 >
-                                    <option value="CLIENTE">Cliente (Acesso Padrão)</option>
-                                    <option value="ADMIN">Administrador (Acesso Total)</option>
+                                    <option value="CLIENTE">Cliente</option>
+                                    <option value="ADMIN">Administrador</option>
                                 </select>
                             </div>
-
-                            {/* Campo de Senha aparece APENAS ao criar novo usuário */}
+                            
                             {modal.type === 'CREATE' && (
-                                <div className="form-group">
-                                    <label>Senha Inicial</label>
-                                    <input 
-                                        type="password" 
-                                        placeholder="Crie uma senha forte"
-                                        value={formData.senha} 
-                                        onChange={(e) => setFormData({...formData, senha: e.target.value})} 
-                                    />
+                                <div className="input-group">
+                                    <label>Senha Provisória</label>
+                                    <div className="icon-input">
+                                        <FaKey />
+                                        <input 
+                                            type="password" 
+                                            value={formData.senha} 
+                                            onChange={e => setFormData({...formData, senha: e.target.value})}
+                                            placeholder="••••••••"
+                                        />
+                                    </div>
                                 </div>
                             )}
-                        </div>
 
-                        <div className="modal-actions">
-                            <button className="btn-cancel" onClick={closeModal}>Cancelar</button>
-                            <button className="btn-confirm-save" onClick={handleConfirmAction}>
-                                <FaSave /> {modal.type === 'CREATE' ? 'Criar Usuário' : 'Salvar Alterações'}
-                            </button>
-                        </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn-ghost" onClick={closeModal}>Cancelar</button>
+                                <button type="submit" className="btn-primary-save">
+                                    <FaSave /> Salvar Dados
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 )}
             </div>

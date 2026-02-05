@@ -15,9 +15,7 @@
     position: relative;
     overflow-x: hidden;
     transition: background-color 1s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: flex; flex-direction: column; align-items: center;
 }
 
 .bg-watermark {
@@ -114,8 +112,7 @@
     transition: transform 0.3s ease; background-color: #fafafa;
 }
 .spec-item:hover {
-    transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
-    border-color: var(--vetra-gold); background-color: #fff;
+    transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05); border-color: var(--vetra-gold); background-color: #fff;
 }
 .spec-item h3 {
     font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--vetra-brown); margin-bottom: 15px;
@@ -126,7 +123,7 @@
 .blueprint-section {
     width: 100%;
     background-color: var(--vetra-cream);
-    /* Grid de Engenharia no fundo */
+    /* Grid de Engenharia sutil */
     background-image: radial-gradient(var(--vetra-grid) 1px, transparent 1px);
     background-size: 20px 20px;
     padding: 100px 5%;
@@ -136,12 +133,12 @@
 }
 
 .blueprint-container {
-    max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 60px;
+    max-width: 1300px; margin: 0 auto; display: flex; align-items: center; gap: 60px;
 }
 
 .blueprint-text { flex: 1; }
 .blueprint-text h2 {
-    font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--vetra-brown); margin-bottom: 15px;
+    font-family: 'Cinzel', serif; font-size: 2.8rem; color: var(--vetra-brown); margin-bottom: 15px;
 }
 .blueprint-text p {
     font-family: 'Lato', sans-serif; color: #666; margin-bottom: 40px; line-height: 1.6; font-size: 1.1rem;
@@ -151,8 +148,9 @@
 .tech-item {
     display: flex; align-items: center; gap: 15px; padding: 20px;
     background: #fff; border-radius: 4px; border-left: 3px solid var(--vetra-gold);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03); transition: transform 0.3s;
 }
+.tech-item:hover { transform: translateX(5px); }
 .tech-icon { font-size: 1.8rem; color: var(--vetra-gold); }
 .tech-item h4 {
     font-family: 'Cinzel', serif; font-size: 0.8rem; color: #999; margin-bottom: 3px;
@@ -161,58 +159,22 @@
     font-family: 'Lato', sans-serif; font-weight: 700; color: var(--vetra-brown); font-size: 1.1rem;
 }
 
-/* Desenho da Planta */
+/* Visual da Imagem da Planta */
 .blueprint-visual { flex: 1; display: flex; justify-content: center; }
-.floor-plan-box {
-    width: 400px; height: 320px; border: 3px solid var(--vetra-brown);
-    position: relative; background-color: #fff;
-    box-shadow: 15px 15px 0px rgba(192, 160, 98, 0.2); /* Sombra Dourada Sólida */
+
+.floor-plan-wrapper {
+    position: relative;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 20px 20px 0px rgba(192, 160, 98, 0.2); /* Sombra Sólida Dourada */
 }
 
-/* Paredes Internas */
-.floor-plan-box::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100px;
-    border-bottom: 1px dashed #ccc; background: linear-gradient(to bottom, #f9f9f9, transparent);
-}
-.floor-plan-box::after {
-    content: ''; position: absolute; bottom: 0; right: 0; width: 100px; height: 80px;
-    border-top: 2px solid var(--vetra-brown); border-left: 2px solid var(--vetra-brown);
-    background-color: #fafafa;
-}
-
-.label-area {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    font-family: 'Cinzel', serif; color: var(--vetra-brown); font-weight: 700;
-    letter-spacing: 2px; font-size: 1.1rem; z-index: 2;
-    background: #fff; padding: 5px 10px; border: 1px solid var(--vetra-brown);
-}
-.label-make {
-    position: absolute; top: 20px; left: 20px; font-size: 0.75rem; color: #888;
-    border: 1px solid #ccc; padding: 2px 5px; font-family: 'Lato', sans-serif;
-}
-.label-lounge {
-    position: absolute; bottom: 20px; left: 20px; font-size: 0.75rem; color: #888;
-    border: 1px solid #ccc; padding: 2px 5px; font-family: 'Lato', sans-serif;
-}
-
-/* Medidas */
-.measurement-line {
-    position: absolute; background: var(--vetra-brown);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem; color: #fff; font-weight: bold; font-family: 'Lato', sans-serif;
-}
-.measurement-line.width {
-    bottom: -20px; left: 0; width: 100%; height: 1px; background: #888;
-}
-.measurement-line.width span {
-    background: var(--vetra-cream); color: var(--vetra-brown); padding: 0 10px;
-}
-.measurement-line.height {
-    left: -20px; top: 0; height: 100%; width: 1px; background: #888;
-    writing-mode: vertical-lr; transform: rotate(180deg);
-}
-.measurement-line.height span {
-    background: var(--vetra-cream); color: var(--vetra-brown); padding: 10px 0;
+.blueprint-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border: 2px solid var(--vetra-brown); /* Moldura interna */
 }
 
 /* --- SEÇÃO 4: INFRAESTRUTURA (AMENITIES) --- */
@@ -227,9 +189,7 @@
 .amenities-header p {
     font-family: 'Lato', sans-serif; font-size: 1.1rem; color: #bbb; margin-bottom: 60px;
 }
-.amenities-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
-}
+.amenities-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
 .amenity-card {
     background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 40px 30px; border-radius: 8px; transition: all 0.4s ease;
@@ -258,5 +218,5 @@
     .specs-grid, .amenities-grid, .tech-grid { grid-template-columns: 1fr; gap: 20px; }
     
     .blueprint-container { flex-direction: column; gap: 40px; }
-    .floor-plan-box { width: 100%; max-width: 350px; height: 250px; }
+    .floor-plan-wrapper { width: 100%; max-width: 500px; }
 }
