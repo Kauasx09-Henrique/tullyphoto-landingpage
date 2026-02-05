@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaArrowRight, FaRulerCombined, FaBolt, FaArrowsAltV, FaDoorOpen } from 'react-icons/fa';
+import { 
+    FaArrowRight, 
+    FaWifi, 
+    FaSnowflake, 
+    FaCoffee, 
+    FaMusic, 
+    FaStar, // Ícone corrigido (substituindo FaMirror)
+    FaLightbulb,
+    FaRulerCombined, // Novos ícones para arquitetura
+    FaArrowsAltV,
+    FaBolt,
+    FaDoorOpen
+} from 'react-icons/fa'; 
 import Header from './Header';
 import Footer from './Footer';
 import '../styles/information.css';
 
-// Mantenha suas importações de imagens
 import imgBege from './bege.jpg';
 import GentininGreen1 from './gentiam_green/green1.jpg';
 import GentininGreen2 from './gentiam_green/green2.jpg';
@@ -30,7 +41,7 @@ const Information = () => {
             name: "COCO BROWN",
             hex: "#553e31",
             bgHex: "#EBE5DE",
-            desc: "Quente e autêntico. O marrom coco cria uma atmosfera sofisticada e natural.",
+            desc: "Quente e autêntico. O marrom coco cria uma atmosfera sofisticada.",
             images: [coco]
         },
         {
@@ -81,6 +92,15 @@ const Information = () => {
         }
     ];
 
+    const amenities = [
+        { icon: <FaStar />, title: "Camarim Privativo", desc: "Espelho iluminado, arara e vaporizador." },
+        { icon: <FaWifi />, title: "Wi-Fi 6 High Speed", desc: "Conexão de fibra para upload imediato." },
+        { icon: <FaSnowflake />, title: "Climatização Total", desc: "Ambiente controlado para conforto da equipe." },
+        { icon: <FaCoffee />, title: "Vetra Lounge", desc: "Café espresso, frigobar e área de descanso." },
+        { icon: <FaMusic />, title: "Sistema de Som", desc: "Controle via Bluetooth para criar o mood." },
+        { icon: <FaLightbulb />, title: "Acervo de Luz", desc: "Locação de equipamentos Profoto (Opcional)." },
+    ];
+
     const [currentBackdrop, setCurrentBackdrop] = useState(backdrops[0]);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -122,7 +142,7 @@ const Information = () => {
 
                     <div className="glass-panel">
                         <div className="panel-header">
-                            <h2>Acervo de Cores</h2>
+                            <h2>Cenários & Acervo</h2>
                         </div>
                         <h1 className="color-title">{currentBackdrop.name}</h1>
                         <div className="colors-row">
@@ -151,41 +171,42 @@ const Information = () => {
                         )}
 
                         <Link to="/agendamento" className="action-btn">
-                            Reservar Agora <FaArrowRight />
+                            Reservar Locação <FaArrowRight />
                         </Link>
                     </div>
                 </div>
             </div>
 
-            {/* 2. DETALHES DO PAPEL (Branco) */}
+            {/* 2. DETALHES TÉCNICOS PAPEL (BRANCO) */}
             <div className="info-details-section">
                 <div className="details-content">
                     <div className="details-header">
-                        <h2>Qualidade de Estúdio</h2>
+                        <h2>Experiência Vetra</h2>
                         <div className="divider-gold"></div>
                         <p className="details-text">
-                            Nossos fundos são curados meticulosamente para elevar ensaios fotográficos, 
-                            editoriais de moda e produções de conteúdo.
+                            Mais do que apenas cores, oferecemos uma atmosfera. Nossos fundos são curados meticulosamente
+                            para elevar produções que exigem acabamento impecável.
                         </p>
                     </div>
+
                     <div className="specs-grid">
                         <div className="spec-item">
                             <h3>Dimensões Amplas</h3>
-                            <p>Rolos profissionais de 2,70m de largura para enquadramentos de corpo inteiro.</p>
+                            <p>Rolos profissionais de 2,70m de largura, permitindo enquadramentos de corpo inteiro.</p>
                         </div>
                         <div className="spec-item">
                             <h3>Acabamento Matte</h3>
                             <p>Papel de alta gramatura com textura fina e superfície antirreflexo.</p>
                         </div>
                         <div className="spec-item">
-                            <h3>Sistema Elétrico</h3>
-                            <p>Troca ágil de fundos através de sistema motorizado via controle remoto.</p>
+                            <h3>Versatilidade</h3>
+                            <p>Troca ágil de fundos através de sistema de roldanas elétricas.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* 3. NOVA SEÇÃO: FICHA TÉCNICA (Blueprint) */}
+            {/* 3. ARQUITETURA & PLANTA (NOVA SEÇÃO TÉCNICA) */}
             <div className="blueprint-section">
                 <div className="blueprint-container">
                     <div className="blueprint-text">
@@ -228,15 +249,37 @@ const Information = () => {
                         </div>
                     </div>
 
-                    {/* Representação visual da planta */}
+                    {/* Desenho Técnico CSS */}
                     <div className="blueprint-visual">
                         <div className="floor-plan-box">
                             <span className="label-area">Área de Shooting</span>
                             <span className="label-make">Camarim</span>
                             <span className="label-lounge">Lounge</span>
-                            <div className="measurement-line width">10m</div>
-                            <div className="measurement-line height">12m</div>
+                            
+                            <div className="measurement-line width"><span>10m (Largura)</span></div>
+                            <div className="measurement-line height"><span>12m (Profundidade)</span></div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* 4. INFRAESTRUTURA (ESCURO) */}
+            <div className="amenities-section">
+                <div className="amenities-container">
+                    <div className="amenities-header">
+                        <h2>Infraestrutura Premium</h2>
+                        <div className="divider-gold"></div>
+                        <p>Tudo o que você precisa para uma produção fluida e confortável.</p>
+                    </div>
+
+                    <div className="amenities-grid">
+                        {amenities.map((item, index) => (
+                            <div key={index} className="amenity-card">
+                                <div className="amenity-icon">{item.icon}</div>
+                                <h4>{item.title}</h4>
+                                <p>{item.desc}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
