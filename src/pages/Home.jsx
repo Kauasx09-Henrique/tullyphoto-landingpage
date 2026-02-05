@@ -5,6 +5,7 @@ import ServiceCards from '../components/ServiceCards';
 import Location from '../components/Location';
 import VideoSection from '../components/VideoSection';
 import Equipe from '../components/Equipe';
+import Footer from '../components/Footer';
 
 const Home = () => {
   return (

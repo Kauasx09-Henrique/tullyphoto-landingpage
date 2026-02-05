@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Lato:wght@300;400;700&display=swap');
 
 :root {
-    --vetra-gold: #C0A062;
+    --vetra-white2: #ffffff;
     --vetra-brown: #4A3B32;
     --vetra-white: #ffffff;
 }
@@ -82,7 +82,7 @@
     text-transform: uppercase;
     margin-bottom: 10px;
     font-weight: 300;
-    color: var(--vetra-gold);
+    color: var(--vetra-white2);
 }
 
 .slide-content h2 {

@@ -16,25 +16,25 @@ const photos = [
     id: 1,
     src: '/Foto_Inicio.jpg',
     title: 'Espaço Criativo',
-    subtitle: 'Onde suas ideias ganham vida'
+    subtitle: 'Ambientes inspiradores para suas fotos'
   },
   {
     id: 2,
     src: '/Mesa.jpg',
     title: 'Estúdio Profissional',
-    subtitle: 'Infraestrutura completa para produção'
+    subtitle: 'Alugue o estudio'
   },
   {
     id: 3,
     src: '/Sofa.jpg',
     title: 'Conforto & Design',
-    subtitle: 'Ambientes pensados para o bem-estar'
+    subtitle: 'conheça nosso espaço'
   },
   {
     id: 4,
     src: '/Cadeiras.jpg',
-    title: 'Acervo Exclusivo',
-    subtitle: 'Mobiliário de design para seus cenários'
+    title: 'Mobiliário de design para seus cenários',
+    subtitle: 'Alugue o estudio'
   },
 ];
 
@@ -43,8 +43,8 @@ const PhotoGrid = () => {
     <section id="portfolio" className="carousel-section">
       <Swiper
         modules={[Navigation, Pagination, Autoplay, A11y, EffectFade]}
-        effect={'fade'} // Efeito de transição premium
-        speed={1000} // Transição suave de 1 segundo
+        effect={'fade'} 
+        speed={1000} 
         spaceBetween={0}
         slidesPerView={1}
         navigation

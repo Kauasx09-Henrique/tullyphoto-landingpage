@@ -30,7 +30,7 @@ const services = [
     price: 'R$ 1.450,00',
     details: '30 fotos / 90 minutos',
     description: 'Um acervo de imagens pensado para sustentar sua marca no longo prazo.',
-    image: '/Card/Ensaio_Card3.jpg',
+    image: '/Card/Ensaio_Card3.jpeg',
     message: 'Olá, gostaria de agendar o pacote Frame 30.'
   }
 ];

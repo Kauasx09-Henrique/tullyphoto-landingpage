@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaArrowRight } from 'react-icons/fa';
+import { FaArrowRight, FaRulerCombined, FaBolt, FaArrowsAltV, FaDoorOpen } from 'react-icons/fa';
 import Header from './Header';
 import Footer from './Footer';
 import '../styles/information.css';
 
+// Mantenha suas importações de imagens
 import imgBege from './bege.jpg';
 import GentininGreen1 from './gentiam_green/green1.jpg';
 import GentininGreen2 from './gentiam_green/green2.jpg';
@@ -21,7 +22,7 @@ const Information = () => {
             name: "CREME",
             hex: "#f1ddbd",
             bgHex: "#F2F0EB",
-            desc: "Suave, acolhedor e sofisticado. O tom claro cria uma atmosfera leve e elegante, com sensação de proximidade e naturalidade.",
+            desc: "Suave, acolhedor e sofisticado. O tom claro cria uma atmosfera leve e elegante.",
             images: [imgBege]
         },
         {
@@ -29,7 +30,7 @@ const Information = () => {
             name: "COCO BROWN",
             hex: "#553e31",
             bgHex: "#EBE5DE",
-            desc: "Quente e autêntico. O marrom coco cria uma atmosfera sofisticada e natural, trazendo sensação de estabilidade e proximidade.",
+            desc: "Quente e autêntico. O marrom coco cria uma atmosfera sofisticada e natural.",
             images: [coco]
         },
         {
@@ -37,7 +38,7 @@ const Information = () => {
             name: "GENTIAN GREEN",
             hex: "#8da89a",
             bgHex: "#E3E8DA",
-            desc: "Sofisticado e atemporal. O verde Gentian cria uma base visual elegante, transmitindo equilíbrio e personalidade sem excessos.",
+            desc: "Sofisticado e atemporal. O verde Gentian cria uma base visual elegante.",
             images: [GentininGreen1, GentininGreen2, GentininGreen3]
         },
         {
@@ -45,7 +46,7 @@ const Information = () => {
             name: "DEEP GREEN",
             hex: "#1A332A",
             bgHex: "#C8D1CE",
-            desc: "Profundo, elegante e contemporâneo. O verde transmite estabilidade e conexão com o natural.",
+            desc: "Profundo, elegante e contemporâneo.",
             images: [
                 "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1527&auto=format&fit=crop",
                 "https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=1932&auto=format&fit=crop"
@@ -56,7 +57,7 @@ const Information = () => {
             name: "Black Onyx",
             hex: "#5c5a59",
             bgHex: "#222222",
-            desc: "Sofisticação e drama. O fundo preto absorve a luz, criando contornos perfeitos e silhuetas marcantes.",
+            desc: "Sofisticação e drama. O fundo preto absorve a luz.",
             images: [grey]
         },
         {
@@ -64,7 +65,7 @@ const Information = () => {
             name: "Oxford Blue",
             hex: "#385566",
             bgHex: "#D6E4F0",
-            desc: "Confiança e serenidade. Um azul profundo clássico que transmite autoridade corporativa.",
+            desc: "Confiança e serenidade.",
             images: [blue2]
         },
         {
@@ -72,7 +73,7 @@ const Information = () => {
             name: "Branco Puro",
             hex: "#FFFFFF",
             bgHex: "#F5F5F5",
-            desc: "Versatilidade e clareza. O branco puro oferece um fundo limpo e neutro, ideal para destacar o sujeito com máxima luminosidade.",
+            desc: "Versatilidade e clareza. Ideal para High-Key.",
             images: [
                 "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=1470&auto=format&fit=crop",
                 "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1470&auto=format&fit=crop"
@@ -103,6 +104,7 @@ const Information = () => {
         <>
             <Header />
 
+            {/* 1. VISUALIZADOR DE CORES */}
             <div className="info-page" style={{ backgroundColor: currentBackdrop.bgHex }}>
                 <div className="bg-watermark">{currentBackdrop.name}</div>
 
@@ -120,7 +122,7 @@ const Information = () => {
 
                     <div className="glass-panel">
                         <div className="panel-header">
-                            <h2>Cenários & Acervo</h2>
+                            <h2>Acervo de Cores</h2>
                         </div>
                         <h1 className="color-title">{currentBackdrop.name}</h1>
                         <div className="colors-row">
@@ -149,44 +151,91 @@ const Information = () => {
                         )}
 
                         <Link to="/agendamento" className="action-btn">
-                            Reservar Locação <FaArrowRight />
+                            Reservar Agora <FaArrowRight />
                         </Link>
                     </div>
                 </div>
             </div>
 
+            {/* 2. DETALHES DO PAPEL (Branco) */}
             <div className="info-details-section">
                 <div className="details-content">
                     <div className="details-header">
-                        <h2>Experiência Vetra</h2>
+                        <h2>Qualidade de Estúdio</h2>
                         <div className="divider-gold"></div>
                         <p className="details-text">
-                            Mais do que apenas cores, oferecemos uma atmosfera. Nossos fundos são curados meticulosamente
-                            para elevar <strong>ensaios fotográficos</strong>, editoriais de moda, retratos corporativos
-                            e produções de conteúdo digital que exigem acabamento impecável.
+                            Nossos fundos são curados meticulosamente para elevar ensaios fotográficos, 
+                            editoriais de moda e produções de conteúdo.
                         </p>
                     </div>
-
                     <div className="specs-grid">
                         <div className="spec-item">
                             <h3>Dimensões Amplas</h3>
-                            <p>
-                                Rolos profissionais de 2,70m de largura, permitindo enquadramentos de corpo inteiro,
-                                movimentos dinâmicos e composições em grupo com total liberdade.
-                            </p>
+                            <p>Rolos profissionais de 2,70m de largura para enquadramentos de corpo inteiro.</p>
                         </div>
                         <div className="spec-item">
-                            <h3>Acabamento</h3>
-                            <p>
-                                Papel de alta gramatura com textura fina e superfície antirreflexo.
-                                Garante distribuição uniforme da luz e facilita a pós-produção e recorte.
-                            </p>
+                            <h3>Acabamento Matte</h3>
+                            <p>Papel de alta gramatura com textura fina e superfície antirreflexo.</p>
                         </div>
                         <div className="spec-item">
-                            <h3>Versatilidade</h3>
-                            <p>
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia officiis, cupiditate at voluptatem non impedit. Amet quidem distinctio facilis eligendi, eveniet maiores quibusdam nostrum voluptates eos ullam voluptas ducimus nam!
-                            </p>
+                            <h3>Sistema Elétrico</h3>
+                            <p>Troca ágil de fundos através de sistema motorizado via controle remoto.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* 3. NOVA SEÇÃO: FICHA TÉCNICA (Blueprint) */}
+            <div className="blueprint-section">
+                <div className="blueprint-container">
+                    <div className="blueprint-text">
+                        <h2>Layout & Dimensões</h2>
+                        <div className="divider-gold"></div>
+                        <p>
+                            Um espaço pensado geometricamente para maximizar a luz e a profundidade de campo.
+                            Ideal para lentes longas e iluminação complexa.
+                        </p>
+                        
+                        <div className="tech-grid">
+                            <div className="tech-item">
+                                <FaArrowsAltV className="tech-icon" />
+                                <div>
+                                    <h4>Pé Direito</h4>
+                                    <span>4,50 Metros</span>
+                                </div>
+                            </div>
+                            <div className="tech-item">
+                                <FaRulerCombined className="tech-icon" />
+                                <div>
+                                    <h4>Área Útil</h4>
+                                    <span>120m² Livres</span>
+                                </div>
+                            </div>
+                            <div className="tech-item">
+                                <FaBolt className="tech-icon" />
+                                <div>
+                                    <h4>Energia</h4>
+                                    <span>110v / 220v (Trifásico)</span>
+                                </div>
+                            </div>
+                            <div className="tech-item">
+                                <FaDoorOpen className="tech-icon" />
+                                <div>
+                                    <h4>Acesso</h4>
+                                    <span>Porta larga (Térreo)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Representação visual da planta */}
+                    <div className="blueprint-visual">
+                        <div className="floor-plan-box">
+                            <span className="label-area">Área de Shooting</span>
+                            <span className="label-make">Camarim</span>
+                            <span className="label-lounge">Lounge</span>
+                            <div className="measurement-line width">10m</div>
+                            <div className="measurement-line height">12m</div>
                         </div>
                     </div>
                 </div>
