@@ -1,161 +1,173 @@
 import React, { useState, useEffect } from 'react';
-import api from '../../services/api';
-import { format } from 'date-fns';
-import { FaEye, FaCreditCard, FaMoneyBillWave, FaCalendarAlt, FaClock } from 'react-icons/fa';
 import { Store } from 'react-notifications-component';
-import '../../styles/adminAgenda.css'; // Importando o novo CSS
+import { 
+    FaCalendarCheck, FaCheck, FaTimes, FaClock, FaUser, 
+    FaMapMarkerAlt, FaFileInvoiceDollar, FaDownload, FaFilter 
+} from 'react-icons/fa';
+import api from '../../services/api';
+import '../../styles/adminAgenda.css';
 
 const AdminAgenda = () => {
-  const [agendamentos, setAgendamentos] = useState([]);
+    const [agendamentos, setAgendamentos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [filtro, setFiltro] = useState('PENDENTE'); // Começa vendo os pendentes
 
-  useEffect(() => {
-    carregarAgenda();
-  }, []);
+    useEffect(() => {
+        carregarAgenda();
+    }, []);
 
-  const carregarAgenda = () => {
-    api.get('/agendamentos')
-      .then(res => setAgendamentos(res.data))
-      .catch(err => console.error("Erro ao buscar agendamentos:", err));
-  };
+    const carregarAgenda = async () => {
+        try {
+            const res = await api.get('/agendamentos');
+            setAgendamentos(res.data);
+        } catch (err) {
+            console.error(err);
+            Store.addNotification({
+                title: "Erro", message: "Falha ao carregar agenda.", type: "danger", container: "top-right", dismiss: { duration: 3000 }
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const getComprovanteUrl = (caminho) => {
-    if (!caminho) return '#';
-    const nomeArquivo = caminho.split(/[\\/]/).pop();
-    return `http://localhost:3000/uploads/${nomeArquivo}`;
-  };
+    const handleStatus = async (id, novoStatus) => {
+        try {
+            // Atualiza status (isso dispara a notificação no backend)
+            await api.put(`/agendamentos/${id}`, { status: novoStatus });
+            
+            // Atualiza a lista visualmente sem recarregar
+            setAgendamentos(prev => prev.map(ag => 
+                ag.id === id ? { ...ag, status: novoStatus } : ag
+            ));
 
-  const handleStatusChange = async (id, novoStatus) => {
-      try {
-          await api.put(`/agendamentos/${id}`, { status: novoStatus });
-          
-          Store.addNotification({
-              title: "Atualizado!",
-              message: `Status alterado para ${novoStatus}`,
-              type: "success",
-              insert: "top",
-              container: "top-right",
-              dismiss: { duration: 3000 }
-          });
+            Store.addNotification({
+                title: novoStatus === 'CONFIRMADO' ? "Aprovado" : "Recusado", 
+                message: `O status foi atualizado e o cliente notificado.`, 
+                type: "success", 
+                container: "top-right", 
+                dismiss: { duration: 3000 }
+            });
+        } catch (err) {
+            Store.addNotification({
+                title: "Erro", message: "Não foi possível atualizar.", type: "danger", container: "top-right", dismiss: { duration: 3000 }
+            });
+        }
+    };
 
-          setAgendamentos(prev => prev.map(ag => 
-              ag.id === id ? { ...ag, status: novoStatus } : ag
-          ));
+    // Lógica de Filtro
+    const filtrados = agendamentos.filter(ag => 
+        filtro === 'TODOS' ? true : ag.status === filtro
+    );
 
-      } catch (error) {
-          Store.addNotification({
-              title: "Erro",
-              message: "Falha ao atualizar status",
-              type: "danger",
-              container: "top-right",
-              dismiss: { duration: 3000 }
-          });
-      }
-  };
+    // Formata Data e Hora
+    const formatDate = (isoString) => {
+        if (!isoString) return '--';
+        const data = new Date(isoString);
+        return {
+            dia: data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' }),
+            hora: data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+        };
+    };
 
-  // Helper para classe CSS do status
-  const getStatusClass = (status) => {
-      if (status === 'CONFIRMADO') return 'status-confirmed';
-      if (status === 'CANCELADO') return 'status-cancelled';
-      return 'status-pending';
-  };
+    return (
+        <div className="admin-page-container fade-in">
+            {/* CABEÇALHO DA PÁGINA */}
+            <div className="admin-header-row">
+                <div className="header-text">
+                    <h2 className="admin-title">Gestão de Agenda</h2>
+                    <p className="admin-subtitle">Visualize e aprove as solicitações de reserva.</p>
+                </div>
+                
+                {/* BOTÕES DE FILTRO */}
+                <div className="filter-group">
+                    <button className={`filter-btn ${filtro === 'PENDENTE' ? 'active' : ''}`} onClick={() => setFiltro('PENDENTE')}>
+                        Pendentes
+                    </button>
+                    <button className={`filter-btn ${filtro === 'CONFIRMADO' ? 'active' : ''}`} onClick={() => setFiltro('CONFIRMADO')}>
+                        Aprovados
+                    </button>
+                    <button className={`filter-btn ${filtro === 'TODOS' ? 'active' : ''}`} onClick={() => setFiltro('TODOS')}>
+                        Todos
+                    </button>
+                </div>
+            </div>
 
-  return (
-    <div className="admin-page-container fade-in">
-      <div className="admin-header-row">
-        <h2 className="admin-title">Agenda Global</h2>
-        <span className="admin-subtitle">Gerenciamento de todas as reservas</span>
-      </div>
+            {/* GRID DE CARDS */}
+            <div className="agenda-grid">
+                {loading ? (
+                    <div className="loading-state">Carregando solicitações...</div>
+                ) : filtrados.length === 0 ? (
+                    <div className="empty-state-agenda">
+                        <FaCalendarCheck />
+                        <p>Nenhum agendamento {filtro !== 'TODOS' ? filtro.toLowerCase() : ''} encontrado.</p>
+                    </div>
+                ) : (
+                    filtrados.map(ag => {
+                        const { dia, hora } = formatDate(ag.data_inicio);
+                        
+                        return (
+                            <div key={ag.id} className={`agenda-card status-${ag.status}`}>
+                                <div className="card-header">
+                                    <div className="date-badge">
+                                        <span className="db-day">{dia}</span>
+                                        <span className="db-time">{hora}</span>
+                                    </div>
+                                    <span className={`status-pill pill-${ag.status}`}>{ag.status}</span>
+                                </div>
 
-      <div className="table-container">
-        <table className="vetra-table">
-          <thead>
-            <tr>
-              <th>#ID</th>
-              <th>Cliente</th>
-              <th>Data & Hora</th>
-              <th>Espaço</th>
-              <th>Pagamento</th>
-              <th align="center">Comprovante</th>
-              <th>Valor</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {agendamentos.length === 0 ? (
-                <tr><td colSpan="8" className="text-center">Nenhum agendamento encontrado.</td></tr>
-            ) : agendamentos.map(ag => (
-              <tr key={ag.id}>
-                <td className="id-cell">#{ag.id}</td>
+                                <div className="card-body">
+                                    <div className="info-group">
+                                        <label>Cliente</label>
+                                        <div className="info-val">
+                                            <FaUser /> {ag.usuario_nome || "Nome não disponível"}
+                                        </div>
+                                        <small>{ag.usuario_email}</small>
+                                    </div>
 
-                <td>
-                  <div className="client-info">
-                      <div className="client-avatar">
-                          {ag.usuario_nome ? ag.usuario_nome.substring(0,2).toUpperCase() : 'CL'}
-                      </div>
-                      <strong>{ag.usuario_nome}</strong>
-                  </div>
-                </td>
+                                    <div className="info-group">
+                                        <label>Cenário</label>
+                                        <div className="info-val">
+                                            <FaMapMarkerAlt /> {ag.espaco_nome || "Cenário não disponível"}
+                                        </div>
+                                    </div>
 
-                <td>
-                  <div className="date-time-cell">
-                    <span className="date-text">
-                        <FaCalendarAlt className="icon-tiny"/> {format(new Date(ag.data_inicio), 'dd/MM/yyyy')}
-                    </span>
-                    <span className="time-text">
-                        <FaClock className="icon-tiny"/> {format(new Date(ag.data_inicio), 'HH:mm')} - {format(new Date(ag.data_fim), 'HH:mm')}
-                    </span>
-                  </div>
-                </td>
+                                    <div className="info-group">
+                                        <label>Pagamento</label>
+                                        <div className="info-val">
+                                            <FaFileInvoiceDollar /> {ag.metodo_pagamento}
+                                        </div>
+                                    </div>
 
-                <td className="space-cell">{ag.espaco_nome}</td>
+                                    {ag.comprovante_url && (
+                                        <a 
+                                            href={`http://localhost:3000/${ag.comprovante_url}`} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer" 
+                                            className="btn-download"
+                                        >
+                                            <FaDownload /> Ver Comprovante
+                                        </a>
+                                    )}
+                                </div>
 
-                <td>
-                  <div className={`payment-badge ${ag.metodo_pagamento === 'PIX' ? 'pix' : 'card'}`}>
-                    {ag.metodo_pagamento === 'PIX' ? <FaMoneyBillWave /> : <FaCreditCard />}
-                    {ag.metodo_pagamento}
-                  </div>
-                </td>
-
-                <td align="center">
-                  {ag.metodo_pagamento === 'PIX' && ag.comprovante_url ? (
-                    <a
-                      href={getComprovanteUrl(ag.comprovante_url)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-view-file"
-                      title="Ver Comprovante"
-                    >
-                      <FaEye /> Abrir
-                    </a>
-                  ) : (
-                    <span className="no-file">-</span>
-                  )}
-                </td>
-
-                <td className="price-cell">
-                  R$ {parseFloat(ag.preco_total).toFixed(2).replace('.', ',')}
-                </td>
-
-                <td>
-                  <div className="select-wrapper">
-                    <select 
-                        value={ag.status} 
-                        onChange={(e) => handleStatusChange(ag.id, e.target.value)}
-                        className={`status-select ${getStatusClass(ag.status)}`}
-                    >
-                        <option value="PENDENTE">PENDENTE</option>
-                        <option value="CONFIRMADO">CONFIRMADO</option>
-                        <option value="CANCELADO">CANCELADO</option>
-                    </select>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
+                                {/* AÇÕES (SÓ APARECEM SE PENDENTE) */}
+                                {ag.status === 'PENDENTE' && (
+                                    <div className="card-actions">
+                                        <button className="action-btn reject" onClick={() => handleStatus(ag.id, 'CANCELADO')}>
+                                            <FaTimes /> Recusar
+                                        </button>
+                                        <button className="action-btn approve" onClick={() => handleStatus(ag.id, 'CONFIRMADO')}>
+                                            <FaCheck /> Confirmar
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })
+                )}
+            </div>
+        </div>
+    );
 };
 
 export default AdminAgenda;

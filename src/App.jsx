@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import MeusAgendamentos from './pages/meusAgendamentos.jsx';
 
+
 // Pages Admin
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminEspacos from './pages/admin/AdminEspacos';

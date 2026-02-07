@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import { Store } from 'react-notifications-component';
@@ -6,13 +6,15 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import {
   FaCreditCard, FaBarcode, FaQrcode, FaTimes, FaCloudUploadAlt,
-  FaCcVisa, FaCcMastercard, FaCcAmex, FaMoneyBillWave, FaCheckCircle,
-  FaClock, FaCalendarAlt, FaCameraRetro, FaMinus, FaPlus, FaCopy
+  FaCheckCircle, FaClock, FaCalendarAlt, FaCameraRetro, FaMinus, FaPlus, 
+  FaCopy, FaArrowRight, FaTree, FaLightbulb, FaCube, 
+  FaCcVisa, FaCcMastercard, FaCcAmex
 } from 'react-icons/fa';
 import api from '../services/api';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/agendamento.css';
 
+// --- PIX HELPERS ---
 const PIX_KEY = "kaua@vetra.com";
 const MERCHANT_NAME = "ESTUDIO VETRA";
 const MERCHANT_CITY = "SAO PAULO";
@@ -34,9 +36,7 @@ const generatePixPayload = (key, name, city, amount, txId = '***') => {
     const len = value.length.toString().padStart(2, '0');
     return `${id}${len}${value}`;
   };
-
   const amountStr = amount.toFixed(2);
-
   let payload =
     formatField('00', '01') +
     formatField('26', `0014BR.GOV.BCB.PIX01${key.length}${key}`) +
@@ -47,53 +47,71 @@ const generatePixPayload = (key, name, city, amount, txId = '***') => {
     formatField('59', name) +
     formatField('60', city) +
     formatField('62', formatField('05', txId));
-
   payload += '6304';
   payload += generateCRC16(payload);
-
   return payload;
 };
 
 const Agendamento = () => {
   const [espacos, setEspacos] = useState([]);
-  const [selectedEspaco, setSelectedEspaco] = useState('');
+  const [selectedEspaco, setSelectedEspaco] = useState(null);
   const [date, setDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
-  const [duracao, setDuracao] = useState(1);
-  const [total, setTotal] = useState(0);
+  
+  // Duração começa em 2
+  const [duracao, setDuracao] = useState(2);
+  
   const [horariosOcupados, setHorariosOcupados] = useState([]);
   const [metodoPagamento, setMetodoPagamento] = useState('');
   const [comprovante, setComprovante] = useState(null);
   const [showPixModal, setShowPixModal] = useState(false);
-  const [pixCopiaCola, setPixCopiaCola] = useState('');
+  const [loading, setLoading] = useState(true);
+  
   const navigate = useNavigate();
-
   const timeSlots = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
 
+  // 1. CARREGAR ESPAÇOS
   useEffect(() => {
-    api.get('/espacos').then((res) => setEspacos(res.data)).catch(() => {
-      setEspacos([
-        { id: 1, nome: 'Estúdio Infinito', preco_por_hora: 150 },
-        { id: 2, nome: 'Sala Industrial', preco_por_hora: 200 },
-        { id: 3, nome: 'Jardim Externo', preco_por_hora: 120 }
-      ]);
-    });
+    api.get('/espacos')
+        .then(res => {
+            const dados = res.data.map(e => ({ ...e, icon: getIconForSpace(e.nome) }));
+            setEspacos(dados);
+            setLoading(false);
+        })
+        .catch(err => {
+            console.error("Erro API:", err);
+            setLoading(false);
+        });
   }, []);
 
-  useEffect(() => {
-    if (selectedEspaco && espacos.length > 0) {
-      const espacoInfo = espacos.find(e => e.id === parseInt(selectedEspaco));
-      if (espacoInfo) setTotal(espacoInfo.preco_por_hora * duracao);
-    }
-  }, [selectedEspaco, duracao, espacos]);
+  const getIconForSpace = (nome) => {
+      const n = nome ? nome.toLowerCase() : '';
+      if (n.includes('jardim')) return <FaTree />;
+      if (n.includes('industrial')) return <FaLightbulb />;
+      return <FaCameraRetro />;
+  };
 
-  useEffect(() => {
-    if (total > 0) {
-      const payload = generatePixPayload(PIX_KEY, MERCHANT_NAME, MERCHANT_CITY, total);
-      setPixCopiaCola(payload);
-    }
-  }, [total]);
+  // --- LÓGICA DE CÁLCULO ---
+  const espacoAtivo = espacos.find(e => String(e.id) === String(selectedEspaco));
 
+  const getPrecoNumerico = (preco) => {
+      if (!preco) return 0;
+      const limpo = String(preco).replace('R$', '').replace(/\s/g, '').replace(',', '.');
+      const numero = parseFloat(limpo);
+      return isNaN(numero) ? 0 : numero;
+  };
+
+  const precoHora = espacoAtivo ? getPrecoNumerico(espacoAtivo.preco_por_hora) : 0;
+  
+  // Total Calculado na hora
+  const totalCalculado = precoHora * duracao;
+
+  const pixCopiaCola = useMemo(() => {
+      if (totalCalculado <= 0) return '';
+      return generatePixPayload(PIX_KEY, MERCHANT_NAME, MERCHANT_CITY, totalCalculado);
+  }, [totalCalculado]);
+
+  // --- DISPONIBILIDADE ---
   useEffect(() => {
     if (selectedEspaco && date) {
       const dataFormatada = format(date, 'yyyy-MM-dd');
@@ -107,37 +125,28 @@ const Agendamento = () => {
           });
           setHorariosOcupados(ocupados);
         })
-        .catch(() => { });
+        .catch(() => {});
     }
   }, [selectedEspaco, date]);
 
-  const isTimeBlocked = (timeString) => {
-    const hora = parseInt(timeString.split(':')[0]);
+  const isTimeBlocked = (time) => {
+    const hora = parseInt(time.split(':')[0]);
     return horariosOcupados.includes(hora);
   };
 
-  const handleDurationChange = (operation) => {
-    if (operation === 'inc' && duracao < 8) setDuracao(duracao + 1);
-    if (operation === 'dec' && duracao > 1) setDuracao(duracao - 1);
+  const handleDurationChange = (op) => {
+    if (op === 'inc' && duracao < 12) setDuracao(duracao + 1);
+    if (op === 'dec' && duracao > 1) setDuracao(duracao - 1);
   };
 
   const handlePreSubmit = (e) => {
     e.preventDefault();
     if (!selectedEspaco || !date || !selectedTime || !metodoPagamento) {
-      Store.addNotification({
-        title: "Campos incompletos", message: "Por favor, preencha todos os detalhes da reserva.", type: "warning", container: "top-right", dismiss: { duration: 3000 }
-      });
+      Store.addNotification({ title: "Atenção", message: "Preencha todos os campos.", type: "warning", container: "top-right", dismiss: { duration: 3000 } });
       return;
     }
     if (metodoPagamento === 'PIX') setShowPixModal(true);
     else enviarReserva();
-  };
-
-  const copyPixCode = () => {
-    navigator.clipboard.writeText(pixCopiaCola);
-    Store.addNotification({
-      title: "Copiado!", message: "Código Pix copiado para a área de transferência.", type: "default", container: "top-right", dismiss: { duration: 2000 }
-    });
   };
 
   const enviarReserva = async () => {
@@ -156,78 +165,76 @@ const Agendamento = () => {
     try {
       await api.post('/agendamentos', formData);
       setShowPixModal(false);
-      Store.addNotification({ title: "Sucesso!", message: "Agendamento realizado.", type: "success", container: "top-right", dismiss: { duration: 5000 } });
+      Store.addNotification({ title: "Sucesso!", message: "Solicitação enviada.", type: "success", container: "top-right", dismiss: { duration: 5000 } });
       navigate('/');
     } catch (err) {
-      const msg = err.response?.data?.msg || "Erro ao processar reserva.";
-      Store.addNotification({ title: "Erro", message: msg, type: "danger", container: "top-right", dismiss: { duration: 4000 } });
+        console.error(err);
+        Store.addNotification({ title: "Erro", message: "Erro ao reservar.", type: "danger", container: "top-right", dismiss: { duration: 4000 } });
     }
-  };
-
-  const getEspacoNome = () => {
-    const e = espacos.find(item => item.id === selectedEspaco);
-    return e ? e.nome : 'Selecione...';
   };
 
   return (
     <div className="booking-page fade-in">
       <div className="booking-header">
-        <h1>Agendamento de Estúdio</h1>
-        <p>Configure sua sessão fotográfica com exclusividade.</p>
+        <h1>Reservar Estúdio</h1>
+        <div className="header-divider"></div>
+        <p>Experiência Vetra Exclusiva</p>
       </div>
 
       <div className="booking-layout">
         <div className="booking-form-col">
           <form onSubmit={handlePreSubmit}>
+            
+            {/* 1. CENÁRIO */}
             <section className="form-section">
-              <div className="section-title">
-                <span className="step-number">1</span>
+              <div className="section-header">
+                <span className="step-number">01</span>
                 <h3>Escolha o Cenário</h3>
               </div>
-              <div className="espacos-grid">
-                {espacos.map((espaco) => (
-                  <div
-                    key={espaco.id}
-                    className={`espaco-card ${selectedEspaco === espaco.id ? 'selected' : ''}`}
-                    onClick={() => { setSelectedEspaco(espaco.id); setSelectedTime(null); }}
-                  >
-                    <div className="espaco-icon"><FaCameraRetro /></div>
-                    <div className="espaco-info">
-                      <span className="name">{espaco.nome}</span>
-                      <span className="price">R$ {espaco.preco_por_hora}/h</span>
-                    </div>
-                    {selectedEspaco === espaco.id && <div className="check-badge"><FaCheckCircle /></div>}
+              
+              {loading ? <div className="loading-spinner">Carregando...</div> : (
+                  <div className="espacos-grid">
+                    {espacos.map((espaco) => (
+                      <div
+                        key={espaco.id}
+                        className={`espaco-card ${String(selectedEspaco) === String(espaco.id) ? 'selected' : ''}`}
+                        onClick={() => { 
+                            setSelectedEspaco(espaco.id); 
+                            setSelectedTime(null); 
+                        }}
+                      >
+                        <div className="espaco-icon">{espaco.icon}</div>
+                        <div className="espaco-info">
+                          <span className="name">{espaco.nome}</span>
+                          
+                          {/* BLINDAGEM DE TRADUÇÃO AQUI */}
+                          <span className="price notranslate" translate="no">
+                             R$ {getPrecoNumerico(espaco.preco_por_hora).toFixed(2).replace('.', ',')}
+                             <small>/h</small>
+                          </span>
+
+                        </div>
+                        {String(selectedEspaco) === String(espaco.id) && <div className="check-badge"><FaCheckCircle /></div>}
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+              )}
             </section>
 
+            {/* 2. DATA/HORA */}
             <section className="form-section">
-              <div className="section-title">
-                <span className="step-number">2</span>
-                <h3>Data e Horário</h3>
-              </div>
+              <div className="section-header"><span className="step-number">02</span><h3>Data e Horário</h3></div>
               <div className="datetime-container">
-                <div className="calendar-box">
-                  <Calendar
-                    onChange={(d) => { setDate(d); setSelectedTime(null); }}
-                    value={date}
-                    minDate={new Date()}
-                    locale="pt-BR"
-                    prev2Label={null}
-                    next2Label={null}
-                  />
+                <div className="calendar-wrapper">
+                  <Calendar onChange={(d) => { setDate(d); setSelectedTime(null); }} value={date} minDate={new Date()} locale="pt-BR" className="vetra-calendar" />
                 </div>
-                <div className="time-box">
-                  <h4>Horários Disponíveis</h4>
+                <div className="time-wrapper">
+                  <h4>Horários</h4>
                   <div className="time-grid">
                     {timeSlots.map(time => {
                       const blocked = isTimeBlocked(time);
                       return (
-                        <button
-                          type="button"
-                          key={time}
-                          disabled={blocked}
+                        <button type="button" key={time} disabled={blocked}
                           className={`time-btn ${selectedTime === time ? 'active' : ''} ${blocked ? 'blocked' : ''}`}
                           onClick={() => !blocked && setSelectedTime(time)}
                         >
@@ -236,123 +243,125 @@ const Agendamento = () => {
                       );
                     })}
                   </div>
-                  <div className="legend">
-                    <span><i className="dot free"></i> Livre</span>
-                    <span><i className="dot busy"></i> Ocupado</span>
-                  </div>
                 </div>
               </div>
             </section>
 
+            {/* 3. DURAÇÃO */}
             <section className="form-section">
-              <div className="section-title">
-                <span className="step-number">3</span>
-                <h3>Tempo de Sessão</h3>
-              </div>
-              <div className="duration-wrapper">
-                <div className="stepper">
+              <div className="section-header"><span className="step-number">03</span><h3>Duração</h3></div>
+              <div className="duration-control">
+                <div className="stepper-box">
                   <button type="button" onClick={() => handleDurationChange('dec')} disabled={duracao <= 1}><FaMinus /></button>
-                  <span className="value">{duracao}h</span>
-                  <button type="button" onClick={() => handleDurationChange('inc')} disabled={duracao >= 8}><FaPlus /></button>
+                  
+                  {/* BLINDAGEM DE TRADUÇÃO AQUI */}
+                  <span className="value notranslate" translate="no">{duracao}h</span>
+                  
+                  <button type="button" onClick={() => handleDurationChange('inc')} disabled={duracao >= 12}><FaPlus /></button>
                 </div>
-                <p className="duration-hint">Recomendamos pelo menos 2h para ensaios completos.</p>
+                <p className="duration-hint">
+                    {precoHora > 0 ? (
+                        <span className="notranslate" translate="no">
+                             R$ {precoHora}/h x {duracao}h
+                        </span>
+                    ) : 'Selecione um cenário'}
+                </p>
               </div>
             </section>
 
+            {/* 4. PAGAMENTO */}
             <section className="form-section">
-              <div className="section-title">
-                <span className="step-number">4</span>
-                <h3>Método de Pagamento</h3>
-              </div>
+              <div className="section-header"><span className="step-number">04</span><h3>Pagamento</h3></div>
               <div className="payment-grid">
+                <div className={`payment-option ${metodoPagamento === 'PIX' ? 'active' : ''}`} onClick={() => setMetodoPagamento('PIX')}>
+                  <FaQrcode className="pay-icon" /><div className="pay-text"><strong>PIX</strong></div>
+                </div>
                 <div className={`payment-option ${metodoPagamento === 'CREDITO' ? 'active' : ''}`} onClick={() => setMetodoPagamento('CREDITO')}>
-                  <FaCreditCard className="icon" />
-                  <span>Crédito</span>
+                  <FaCreditCard className="pay-icon" /><div className="pay-text"><strong>Crédito</strong></div>
                 </div>
                 <div className={`payment-option ${metodoPagamento === 'DEBITO' ? 'active' : ''}`} onClick={() => setMetodoPagamento('DEBITO')}>
-                  <FaBarcode className="icon" />
-                  <span>Débito</span>
-                </div>
-                <div className={`payment-option ${metodoPagamento === 'PIX' ? 'active' : ''}`} onClick={() => setMetodoPagamento('PIX')}>
-                  <FaQrcode className="icon" />
-                  <span>PIX</span>
+                  <FaBarcode className="pay-icon" /><div className="pay-text"><strong>Débito</strong></div>
                 </div>
               </div>
-
-              {(metodoPagamento === 'CREDITO' || metodoPagamento === 'DEBITO') && (
-                <div className="payment-info-box">
-                  <div className="card-logos">
-                    <FaCcVisa /><FaCcMastercard /><FaCcAmex />
-                  </div>
-                  <p><FaCheckCircle className="green" /> O pagamento será realizado presencialmente na recepção do estúdio.</p>
-                </div>
-              )}
             </section>
           </form>
         </div>
 
+        {/* RESUMO */}
         <div className="booking-summary-col">
           <div className="summary-card">
-            <h3>Resumo da Reserva</h3>
-            <div className="summary-row">
-              <span><FaCameraRetro /> Cenário</span>
-              <strong>{getEspacoNome()}</strong>
+            <h3 className="summary-title">Resumo</h3>
+            <div className="summary-item">
+              <span className="label"><FaCameraRetro /> Cenário</span>
+              <span className="value highlight">{espacoAtivo ? espacoAtivo.nome : 'Selecione...'}</span>
             </div>
-            <div className="summary-row">
-              <span><FaCalendarAlt /> Data</span>
-              <strong>{format(date, "dd 'de' MMMM", { locale: ptBR })}</strong>
+            <div className="summary-item">
+              <span className="label"><FaCalendarAlt /> Data</span>
+              <span className="value">{format(date, "dd 'de' MMMM", { locale: ptBR })}</span>
             </div>
-            <div className="summary-row">
-              <span><FaClock /> Horário</span>
-              <strong>{selectedTime || '--:--'}</strong>
+            <div className="summary-item">
+              <span className="label"><FaClock /> Horário</span>
+              <span className="value">{selectedTime || '--:--'}</span>
             </div>
-            <div className="summary-row">
-              <span><FaClock /> Duração</span>
-              <strong>{duracao} horas</strong>
-            </div>
+            <div className="summary-item">
+              <span className="label"><FaClock /> Duração</span>
+              
+              {/* BLINDAGEM DE TRADUÇÃO AQUI */}
+              <span className="value notranslate" translate="no">{duracao}h</span>
 
+            </div>
             <div className="summary-divider"></div>
-
-            <div className="total-row">
+            
+            <div className="total-box">
               <span>Total Estimado</span>
-              <span className="price">R$ {total.toFixed(2).replace('.', ',')}</span>
+              
+              {/* BLINDAGEM DE TRADUÇÃO NO TOTAL (MUITO IMPORTANTE) */}
+              <span className="total-price notranslate" translate="no">
+                R$ {totalCalculado.toFixed(2).replace('.', ',')}
+              </span>
+
             </div>
 
-            <button type="button" onClick={handlePreSubmit} className="confirm-btn">
-              {metodoPagamento === 'PIX' ? 'Pagar com PIX' : 'Confirmar Agendamento'}
+            <button type="button" onClick={handlePreSubmit} className="btn-confirm-booking">
+              {metodoPagamento === 'PIX' ? 'Gerar Pagamento' : 'Confirmar Reserva'} <FaArrowRight />
             </button>
           </div>
         </div>
       </div>
 
+      {/* MODAL PIX */}
       {showPixModal && (
         <div className="modal-overlay fade-in">
           <div className="modal-content pix-modal">
             <button className="close-btn" onClick={() => setShowPixModal(false)}><FaTimes /></button>
-            <h3>Pagamento via PIX</h3>
-            <p className="pix-inst">Valor total: <strong className="gold-text">R$ {total.toFixed(2).replace('.', ',')}</strong></p>
-
+            <div className="pix-header">
+                <FaQrcode className="pix-icon-lg" />
+                <h3>Pagamento Pix</h3>
+            </div>
             <div className="qr-container">
-              {/* Gera o QR Code visual baseado na string do payload gerada */}
-              <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pixCopiaCola)}`} alt="QR Code Pix" />
-            </div>
-
-            <div className="pix-copy-box">
-              <span className="label">Pix Copia e Cola</span>
-              <div className="copy-input-group">
-                <input type="text" readOnly value={pixCopiaCola} />
-                <button onClick={copyPixCode} title="Copiar código"><FaCopy /></button>
+              <div className="qr-box">
+                 <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pixCopiaCola)}`} alt="QR Code" />
               </div>
+              
+              {/* BLINDAGEM NO VALOR DO PIX */}
+              <div className="pix-value notranslate" translate="no">
+                  R$ {totalCalculado.toFixed(2).replace('.', ',')}
+              </div>
+
             </div>
-
-            <label className="upload-zone">
-              <FaCloudUploadAlt size={24} />
-              <span>{comprovante ? comprovante.name : 'Anexar Comprovante'}</span>
-              <input type="file" accept="image/*,application/pdf" onChange={(e) => setComprovante(e.target.files[0])} hidden />
-            </label>
-
-            <button className="modal-action-btn" onClick={() => !comprovante ? alert("Anexe o comprovante!") : enviarReserva()}>
-              <FaMoneyBillWave /> Enviar e Finalizar
+            <div className="pix-copy-section">
+               <input type="text" readOnly value={pixCopiaCola} />
+               <button onClick={() => navigator.clipboard.writeText(pixCopiaCola)} className="copy-btn"><FaCopy /> Copiar</button>
+            </div>
+            <div className="upload-section">
+                <label className="upload-zone">
+                    <FaCloudUploadAlt size={28} />
+                    <strong>{comprovante ? comprovante.name : 'Anexar Comprovante'}</strong>
+                    <input type="file" onChange={(e) => setComprovante(e.target.files[0])} hidden />
+                </label>
+            </div>
+            <button className="btn-finalize-pix" onClick={() => !comprovante ? alert("Anexe o comprovante!") : enviarReserva()}>
+              <FaCheckCircle /> Confirmar
             </button>
           </div>
         </div>
