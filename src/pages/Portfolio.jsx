@@ -44,8 +44,77 @@ const Portfolio = () => {
       id: 14, src: '/Tiago/Foto_Marias.jpg',
       alt: 'Ensaio Corporativo',
       category: 'Estúdio'
-    }
-
+    },
+  {
+    id: 15, src: '/portfolio/Felipe/Foto2.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 16, src: '/portfolio/Felipe/Foto3.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  
+  },{
+    id: 17, src: '/portfolio/Felipe/Foto4.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 18, src: '/portfolio/Felipe/Foto5.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 19, src: '/portfolio/Felipe/Foto6.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 20, src: '/portfolio/Felipe/Foto7.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 21, src: '/portfolio/Felipe/Foto8.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 22, src: '/portfolio/Felipe/Foto9.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 23, src: '/portfolio/Felipe/Foto10.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 24, src: '/portfolio/Felipe/Foto11.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 25, src: '/portfolio/Felipe/Foto12.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 26, src: '/portfolio/Felipe/Foto13.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 27, src: '/portfolio/Felipe/Foto14.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 28, src: '/portfolio/Felipe/Foto15.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 29, src: '/portfolio/Felipe/Foto16.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 30, src: '/portfolio/Felipe/Foto17.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  },{
+    id: 31, src: '/portfolio/Felipe/Foto18.jpg',
+    alt: 'Ensaio Corporativo',
+    category: 'Estúdio'
+  }
   ];
 
   useEffect(() => {

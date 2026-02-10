@@ -25,6 +25,10 @@ import GentininGreen3 from './gentiam_green/green3.jpg';
 import grey from './grey/grey1.jpg';
 import coco from './coco/coco1.jpg';
 import blue2 from './deep_blue/blue2.jpg';
+import depgreen from './green/foto1.jpg';
+import depgreen2 from './green/foto2.jpg';
+import branco1 from './branco/foto1.jpg';
+import branco2 from './branco/foto2.jpg';
 
 // IMPORTANTE: Importe sua foto da planta aqui
 // Se não tiver a foto ainda, o código vai usar um placeholder temporário
@@ -63,7 +67,7 @@ const Information = () => {
             hex: "#1A332A",
             bgHex: "#C8D1CE",
             desc: "Profundo, elegante e contemporâneo.",
-            images: [
+            images: [depgreen,depgreen2
                
             ]
         },
@@ -90,8 +94,7 @@ const Information = () => {
             bgHex: "#F5F5F5",
             desc: "Versatilidade e clareza. Ideal para High-Key.",
             images: [
-                "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=1470&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1470&auto=format&fit=crop"
+            branco1, branco2
             ]
         }
     ];
