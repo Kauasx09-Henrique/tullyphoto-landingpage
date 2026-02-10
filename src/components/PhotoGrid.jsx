@@ -22,7 +22,7 @@ const photos = [
     id: 2,
     src: '/Mesa.jpg',
     title: 'Estúdio Profissional',
-    subtitle: 'Alugue o estudio'
+    subtitle: 'Alugue o estúdio'
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ const photos = [
     id: 4,
     src: '/Cadeiras.jpg',
     title: 'Mobiliário de design para seus cenários',
-    subtitle: 'Alugue o estudio'
+    subtitle: 'Alugue o estúdio'
   },
 ];
 
