@@ -64,8 +64,7 @@ const Information = () => {
             bgHex: "#C8D1CE",
             desc: "Profundo, elegante e contemporâneo.",
             images: [
-                "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1527&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=1932&auto=format&fit=crop"
+               
             ]
         },
         {
@@ -200,8 +199,8 @@ const Information = () => {
                             <p>Rolos profissionais de 2,70m de largura, permitindo enquadramentos de corpo inteiro.</p>
                         </div>
                         <div className="spec-item">
-                            <h3>Acabamento Matte</h3>
-                            <p>Papel de alta gramatura com textura fina e superfície antirreflexo.</p>
+                            <h3>CICLORAMA - FUNDO INFINITO BRANCO</h3>
+                            <p>Duas paredes brancas com curvatura contínua que ligam o chão à parede sem ângulos visíveis, criando um fundo infinito que elimina linhas, cantos e distrações.</p>
                         </div>
                         <div className="spec-item">
                             <h3>Versatilidade</h3>

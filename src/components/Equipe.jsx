@@ -4,9 +4,8 @@ import '../styles/equipe.css';
 const Equipe = () => {
     const membros = [
         { id: 1, nome: "Tuly", cargo: "Fotógrafa e Fundadora do Estúdio", img: "/Equipe/Tully/Tully.jpg" },
-        { id: 2, nome: "Felipe", cargo: "Fotógrafo", img: "/Equipe/Felipe/Felipe-Photo2.jpg" }, // Troquei para uma mulher para variar
-     //   { id: 2, nome: "Felipe", cargo: "Fotógrafo", img: "/Equipe/Felipe/Felipe-Photo1.jpg" },
-     //   { id: 3, nome: "Ana", cargo: "Assistente de Fotografia", img: "/Equipe/Ana/Ana-Photo1.jpg" },
+        { id: 2, nome: "Felipe", cargo: "Fotógrafo", img: "/Equipe/Felipe/Felipe-Photo2.jpg" }, // Troquei para uma mulher para variar o time, mas pode ser revertido se preferir
+     { id: 3, nome: "Thiago", cargo: "Fotografo", img: "/Equipe/Thiago/Thiago.jpeg" },
     ];
 
     return (

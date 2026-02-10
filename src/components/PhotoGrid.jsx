@@ -33,7 +33,7 @@ const photos = [
   {
     id: 4,
     src: '/Cadeiras.jpg',
-    title: 'Mobiliário de design para seus cenários',
+    title: 'Mobiliário diversos para seus cenários',
     subtitle: 'Alugue o estúdio'
   },
 ];

@@ -43,9 +43,9 @@ const StudioBanner = () => {
 
             {/* LADO ESQUERDO: CONTEÚDO */}
             <div className={`banner-content ${isVisible ? 'visible' : ''}`}>
-                <h2>Infraestrutura Premium</h2>
+                <h2>Alugue o estúdio </h2>
                 <div className="divider"></div>
-
+                <h3>Infraestrutura Premium</h3>
                 <p>
                     Um estúdio projetado para elevar sua produção fotográfica e de vídeo.
                 </p>

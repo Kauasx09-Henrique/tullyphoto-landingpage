@@ -84,13 +84,27 @@
 /* --- TIPOGRAFIA --- */
 .banner-content h2 {
   font-family: 'Cinzel', serif;
-  font-size: 3.5rem;
+  font-size: 2.54rem;
   /* Grande no Desktop */
   font-weight: 400;
   margin-bottom: 25px;
   letter-spacing: 6px;
   text-transform: uppercase;
   color: #fff;
+  line-height: 1.1;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* --- TIPOGRAFIA --- */
+.banner-content h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 2.54rem;
+  /* Grande no Desktop */
+  font-weight: 400;
+  margin-bottom: 25px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--vetra-gold);
   line-height: 1.1;
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
