@@ -8,41 +8,42 @@ const Portfolio = () => {
 
   const photos = [
     { id: 1, src: '/Tiago/Foto_Ana.jpg', alt: 'Ensaio Corporativo', category: 'Corporativo' },
-    { id: 2, src: '/portfolio/DSC_8891.jpeg', alt: 'Evento Social', category: 'Social' },
-    { id: 3, src: '/Tiago/Foto_Euler.jpg', alt: 'Retrato em Estúdio', category: 'Estúdio' },
-    { id: 4, src: '/portfolio/DSC_8792.jpeg', alt: 'Ensaio Externo', category: 'Externo' },
-    { id: 5, src: '/Tully/Portifolio3.jpg', alt: 'Moda Editorial', category: 'Editorial' },
-    { id: 6, src: '/Tully/Portifolio4.jpg', alt: 'Casamento', category: 'Wedding' },
-    { id: 7, src: '/Tully/Portifolio5.jpg', alt: 'Lifestyle', category: 'Lifestyle' },
-    { id: 8, src: '/Tully/Portifolio1.jpg', alt: 'Minimalismo', category: 'Artístico' },
+    /*{ id: 2, src: '/portfolio/DSC_8891.jpeg', alt: 'Evento Social', category: 'Social' },*/
+
+    { id: 3, src: '/Tiago/Foto_Euler.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 4, src: '/portfolio/foto4.jpeg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 5, src: '/Tully/Portifolio3.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 6, src: '/Tully/Portifolio4.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 7, src: '/Tully/Portifolio5.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 8, src: '/Tully/Portifolio1.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
     {
-      id: 9, src: '/portfolio/DSC_0002.jpeg', alt: 'Fotografia Profissional', category: 'Profissional'
+      id: 9, src: '/portfolio/foto9.jpeg', alt: 'Ensaio Corporativo', category: 'Estúdio'
     },
     {
       id: 10, src: '/Tiago/Foto__Maria.jpg',
-      alt: 'Fotografia de Arquitetura',
-      category: 'Arquitetura'
+      alt: 'Ensaio Corporativo',
+      category: 'Estúdio'
     },
     {
       id: 11, src: '/portfolio/foto11.jpg',
-      alt: 'Fotografia Profissional',
-      category: 'Profissional'
+      alt: 'Ensaio Corporativo',
+      category: 'Estúdio'
     },
 
     {
       id: 12, src: '/portfolio/foto12.jpeg',
-      alt: 'Fotografia Profissional',
-      category: 'Profissional'
+      alt: 'Ensaio Corporativo',
+      category: 'Estúdio'
     },
     {
       id: 13, src: '/portfolio/foto13.jpeg',
-      alt: 'Fotografia de Eventos',
-      category: 'Eventos'
+      alt: 'Ensaio Corporativo',
+      category: 'Estúdio'
     },
     {
       id: 14, src: '/Tiago/Foto_Marias.jpg',
-      alt: 'Fotografia de Casamento',
-      category: 'Casamento'
+      alt: 'Ensaio Corporativo',
+      category: 'Estúdio'
     }
 
   ];
