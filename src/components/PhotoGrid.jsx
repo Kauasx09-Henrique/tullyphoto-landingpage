@@ -37,7 +37,6 @@ const photos = [
     isPortrait: true
   },
 ];
-
 const PhotoGrid = () => {
   return (
     <section id="portfolio" className="carousel-section">
