@@ -94,6 +94,11 @@ const Information = () => {
             images: [
             branco1, branco2
             ]
+        },{
+            id: 8,
+            name: "Scarlet flame",
+            hex: "#dc293e",
+            bgHex: "#FDEDEC",
         }
     ];
 
@@ -204,7 +209,7 @@ const Information = () => {
                         </div>
                         <div className="spec-item">
                             <h3>Versatilidade</h3>
-                            <p>Troca ágil de fundos através de sistema de roldanas elétricas.</p>
+                            <p>Uma variedade de cores na composição da sua fotografia enriquece a imagem, cria contraste e a torna mais atraente visualmente.</p>
                         </div>
                     </div>
                 </div>

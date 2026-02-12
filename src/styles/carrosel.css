@@ -4,6 +4,7 @@
     --vetra-white2: #ffffff;
     --vetra-brown: #4A3B32;
     --vetra-white: #ffffff;
+    --vetra-gold: #C0A062;
 }
 
 .carousel-section {
@@ -160,5 +161,21 @@
     .swiper-button-next,
     .swiper-button-prev {
         display: none !important;
+    }
+}
+
+.carousel-item.vertical {
+    grid-row: span 2;
+    aspect-ratio: 9 / 16;
+}
+
+.carousel-item.vertical img {
+    object-fit: cover; 
+}
+
+@media (max-width: 768px) {
+    .carousel-item.vertical {
+        grid-row: auto;
+        aspect-ratio: 3 / 4;
     }
 }
