@@ -30,8 +30,6 @@ import depgreen2 from './green/foto2.jpg';
 import branco1 from './branco/foto1.jpg';
 import branco2 from './branco/foto2.jpg';
 
-// IMPORTANTE: Importe sua foto da planta aqui
-// Se não tiver a foto ainda, o código vai usar um placeholder temporário
 import plantaBaixaImg from '/public/planta/planta_estudio.jpg'; // Certifique-se de ter essa imagem na pasta ou mude o nome
 
 const Information = () => {
@@ -131,7 +129,6 @@ const Information = () => {
         <>
             <Header />
 
-            {/* 1. VISUALIZADOR DE CORES */}
             <div className="info-page" style={{ backgroundColor: currentBackdrop.bgHex }}>
                 <div className="bg-watermark">{currentBackdrop.name}</div>
 
