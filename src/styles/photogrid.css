@@ -67,8 +67,14 @@
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  background-color: var(--gray-bg); /* Fundo cinza padrão */
-  aspect-ratio: 3 / 4; /* Mantém o tamanho fixo antes da foto carregar */
+  background-color: var(--gray-bg);
+  aspect-ratio: 3 / 4;
+  
+  /* --- ADICIONE ISSO AQUI PARA PERFORMANCE --- */
+  content-visibility: auto; /* O navegador ignora renderização se estiver fora da tela */
+  contain-intrinsic-size: 300px 400px; /* Reserva o espaço para a barra de rolagem não pular */
+  transform: translateZ(0); /* Ativa aceleração de hardware (GPU) */
+  will-change: transform, opacity; /* Avisa o navegador que isso vai mudar */
 }
 
 .image-wrapper {
@@ -144,6 +150,8 @@
   font-size: 1rem;
   transform: translateY(15px);
   transition: transform 0.3s ease;
+
+
 }
 
 .photo-item:hover .category-tag,
