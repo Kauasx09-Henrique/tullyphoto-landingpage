@@ -10,6 +10,8 @@ import Portfolio from './pages/Portfolio';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import MeusAgendamentos from './pages/meusAgendamentos.jsx';
+import EsqueceuSenha from './pages/EsqueceuSenha.jsx';
+import RedefinirSenha from './pages/RedefinirSenha.jsx';
 
 
 // Pages Admin
@@ -18,6 +20,7 @@ import AdminEspacos from './pages/admin/AdminEspacos';
 import AdminAgenda from './pages/admin/AdminAgenda';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminUsers from './pages/admin/AdminUsers';
+
 
 // Components
 import Header from './components/Header';
@@ -38,12 +41,15 @@ function App() {
         <Route path="/meus-agendamentos" element={<MeusAgendamentos />} />
         <Route path="/cadastro" element={<><Header /><Cadastro /><Footer /></>} />
         <Route path="/informacoes" element={<Information />} />
+        <Route path="/esqueceu-senha" element={<EsqueceuSenha />} />
+        <Route path="/redefinir-senha" element={<RedefinirSenha />} />
 
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="espacos" element={<AdminEspacos />} />
           <Route path="agenda" element={<AdminAgenda />} />
           <Route path="usuarios" element={<AdminUsers />} />
+
         </Route>
       </Routes>
     </BrowserRouter>

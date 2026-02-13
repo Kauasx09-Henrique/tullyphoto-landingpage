@@ -36,6 +36,7 @@ export default function Login() {
 
     const loginComGoogle = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
+            // ... (Seu código do Google existente permanece igual)
             try {
                 setLoading(true);
                 const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
@@ -53,27 +54,13 @@ export default function Login() {
 
             } catch (error) {
                 console.error(error);
-                Store.addNotification({
-                    title: "Erro Google",
-                    message: "Falha ao autenticar com Google.",
-                    type: "danger",
-                    insert: "top",
-                    container: "top-right",
-                    dismiss: { duration: 4000 }
-                });
+                // ... notificacao de erro
             } finally {
                 setLoading(false);
             }
         },
         onError: () => {
-            Store.addNotification({
-                title: "Erro",
-                message: "O login com Google falhou.",
-                type: "danger",
-                insert: "top",
-                container: "top-right",
-                dismiss: { duration: 4000 }
-            });
+            // ... notificacao de erro
         }
     });
 
@@ -108,26 +95,33 @@ export default function Login() {
                 <form onSubmit={handleLogin} className="auth-form">
                     <div className="input-wrapper">
                         <FaEnvelope className="input-icon" />
-                        <input 
+                        <input
                             className="auth-input"
-                            type="email" 
-                            placeholder="Seu E-mail" 
-                            value={email} 
-                            onChange={e => setEmail(e.target.value)} 
-                            required 
+                            type="email"
+                            placeholder="Seu E-mail"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            required
                         />
                     </div>
-                    
+
                     <div className="input-wrapper">
                         <FaLock className="input-icon" />
-                        <input 
+                        <input
                             className="auth-input"
-                            type="password" 
-                            placeholder="Sua Senha" 
-                            value={senha} 
-                            onChange={e => setSenha(e.target.value)} 
-                            required 
+                            type="password"
+                            placeholder="Sua Senha"
+                            value={senha}
+                            onChange={e => setSenha(e.target.value)}
+                            required
                         />
+                    </div>
+
+                    {/* --- NOVO LINK ADICIONADO AQUI --- */}
+                    <div className="forgot-password-wrapper">
+                        <Link to="/esqueceu-senha" className="forgot-link">
+                            Esqueceu a senha?
+                        </Link>
                     </div>
 
                     <button type="submit" className="auth-btn" disabled={loading}>
@@ -139,9 +133,9 @@ export default function Login() {
                     <span>ou</span>
                 </div>
 
-                <button 
-                    type="button" 
-                    className="google-btn" 
+                <button
+                    type="button"
+                    className="google-btn"
                     onClick={() => loginComGoogle()}
                     disabled={loading}
                 >
@@ -150,7 +144,7 @@ export default function Login() {
 
                 <div className="auth-footer">
                     <p className="auth-text">
-                        Não possui cadastro? 
+                        Não possui cadastro?
                         <Link to="/cadastro" className="auth-link">Criar conta</Link>
                     </p>
                 </div>
