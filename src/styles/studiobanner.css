@@ -382,3 +382,67 @@
     padding: 0 10px;
   }
 }
+/* --- CONTAINER DOS BOTÕES --- */
+.banner-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap; /* Para telas menores, eles caem um embaixo do outro */
+}
+
+/* --- BASE DO BOTÃO --- */
+.cta-button {
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- ESTILO PRIMÁRIO (FAZER LOCAÇÃO) --- */
+.cta-button.primary {
+    background-color: var(--vetra-gold, #C0A062);
+    color: var(--vetra-dark, #1a1a1a);
+    border: 2px solid var(--vetra-gold, #C0A062);
+    box-shadow: 0 4px 15px rgba(192, 160, 98, 0.3);
+}
+
+.cta-button.primary:hover {
+    background-color: transparent;
+    color: var(--vetra-gold, #C0A062);
+    box-shadow: 0 6px 20px rgba(192, 160, 98, 0.4);
+    transform: translateY(-2px);
+}
+
+/* --- ESTILO SECUNDÁRIO (VER INFORMAÇÕES) --- */
+.cta-button.secondary {
+    background-color: transparent;
+    color: var(--vetra-gold, #C0A062);
+    border: 2px solid var(--vetra-gold, #C0A062);
+}
+
+.cta-button.secondary:hover {
+    background-color: var(--vetra-gold, #C0A062);
+    color: var(--vetra-dark, #1a1a1a);
+    transform: translateY(-2px);
+}
+
+/* Responsividade para celulares */
+@media (max-width: 576px) {
+    .banner-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .cta-button {
+        width: 100%; /* Botões ocupam a largura toda no celular */
+    }
+}

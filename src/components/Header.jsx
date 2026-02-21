@@ -38,12 +38,11 @@ const Header = () => {
             const interval = setInterval(fetchNotificacoes, 30000);
             return () => clearInterval(interval);
         }
-    }, [user]); // Adicionado dependência user
+    }, [user]);
 
     const fetchNotificacoes = async () => {
         try {
             const res = await api.get('/notificacoes');
-            // Verifica se voltou array, senão define vazio para evitar erro
             const lista = Array.isArray(res.data) ? res.data : [];
             setNotificacoes(lista);
 
@@ -57,7 +56,6 @@ const Header = () => {
     const handleMarkAsRead = async (id) => {
         try {
             await api.put(`/notificacoes/${id}/ler`);
-            // Atualiza visualmente na hora
             setNotificacoes(prev => prev.map(n => n.id === id ? { ...n, lida: true } : n));
             setUnreadCount(prev => Math.max(0, prev - 1));
         } catch (err) {
@@ -72,11 +70,21 @@ const Header = () => {
         navigate('/login');
     };
 
-    const isActive = (path) => location.pathname === path ? 'active-link' : '';
+    // --- REGRA DO BOTÃO AGENDAR ---
+    const handleAgendarClick = (e) => {
+        e.preventDefault();
+        setMobileOpen(false);
 
-console.log("=== DEBUG HEADER ===");
-console.log("Usuário logado:", user);
-console.log("Notificações no Estado:", notificacoes);
+        const token = localStorage.getItem('token');
+
+        if (token) {
+            navigate('/agendamento');
+        } else {
+            navigate('/login');
+        }
+    };
+
+    const isActive = (path) => location.pathname === path ? 'active-link' : '';
 
     return (
         <header className={`header ${scrolled ? 'header-scrolled' : ''}`}>
@@ -116,7 +124,7 @@ console.log("Notificações no Estado:", notificacoes);
                     <div className="user-actions">
                         {user ? (
                             <>
-                                {/* --- SINO DE NOTIFICAÇÃO (Aqui está ele!) --- */}
+                                {/* --- SINO DE NOTIFICAÇÃO --- */}
                                 <div className="notif-wrapper">
                                     <div className="notif-icon-box" onClick={() => setShowNotif(!showNotif)}>
                                         <FaBell />
@@ -149,7 +157,6 @@ console.log("Notificações no Estado:", notificacoes);
                                         </div>
                                     )}
                                 </div>
-                                {/* --- FIM DO SINO --- */}
 
                                 {/* NOME USUÁRIO */}
                                 <div className="user-badge">
@@ -157,10 +164,10 @@ console.log("Notificações no Estado:", notificacoes);
                                     <span>Olá, <strong>{user.nome ? user.nome.split(' ')[0] : 'User'}</strong></span>
                                 </div>
 
-                                {/* BOTÃO AGENDAR */}
-                                <Link to="/agendamento" className="btn-gold" onClick={() => setMobileOpen(false)}>
+                                {/* BOTÃO AGENDAR (LOGADO) */}
+                                <button onClick={handleAgendarClick} className="btn-gold">
                                     Agendar <FaArrowRight className="btn-arrow" />
-                                </Link>
+                                </button>
 
                                 {/* LOGOUT */}
                                 <button onClick={handleLogout} className="btn-icon-logout" title="Sair">
@@ -168,9 +175,17 @@ console.log("Notificações no Estado:", notificacoes);
                                 </button>
                             </>
                         ) : (
-                            <Link to="/login" className="btn-outline" onClick={() => setMobileOpen(false)}>
-                                <FaSignInAlt /> Login
-                            </Link>
+                            <>
+                                {/* BOTÃO AGENDAR (NÃO LOGADO) */}
+                                <button onClick={handleAgendarClick} className="btn-gold">
+                                    Agendar <FaArrowRight className="btn-arrow" />
+                                </button>
+
+                                {/* BOTÃO LOGIN */}
+                                <Link to="/login" className="btn-outline" onClick={() => setMobileOpen(false)}>
+                                    <FaSignInAlt /> Login
+                                </Link>
+                            </>
                         )}
                     </div>
                 </div>
@@ -182,7 +197,6 @@ console.log("Notificações no Estado:", notificacoes);
 
             </div>
         </header>
-        
     );
 };
 

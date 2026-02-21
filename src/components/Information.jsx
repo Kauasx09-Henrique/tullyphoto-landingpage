@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { 
-    FaArrowRight, 
-    FaWifi, 
-    FaSnowflake, 
-    FaCoffee, 
-    FaMusic, 
-    FaStar, 
+import { useNavigate } from 'react-router-dom';
+import {
+    FaArrowRight,
+    FaWifi,
+    FaSnowflake,
+    FaCoffee,
+    FaMusic,
+    FaStar,
     FaLightbulb,
-    FaRulerCombined, 
+    FaRulerCombined,
     FaArrowsAltV,
     FaBolt,
     FaDoorOpen
-} from 'react-icons/fa'; 
+} from 'react-icons/fa';
 import Header from './Header';
 import Footer from './Footer';
 import '../styles/information.css';
 
-// IMAGENS
 import imgBege from './bege.jpg';
 import GentininGreen1 from './gentiam_green/green1.jpg';
 import GentininGreen2 from './gentiam_green/green2.jpg';
@@ -30,9 +29,20 @@ import depgreen2 from './green/foto2.jpg';
 import branco1 from './branco/foto1.jpg';
 import branco2 from './branco/foto2.jpg';
 
-import plantaBaixaImg from '/public/planta/planta_estudio.jpg'; // Certifique-se de ter essa imagem na pasta ou mude o nome
+import plantaBaixaImg from '/public/planta/planta_estudio.jpg';
 
 const Information = () => {
+    const navigate = useNavigate();
+
+    const handleLocacao = () => {
+        window.scrollTo(0, 0);
+        const token = localStorage.getItem('token');
+        if (token) {
+            navigate('/agendamento');
+        } else {
+            navigate('/login');
+        }
+    };
 
     const backdrops = [
         {
@@ -65,9 +75,7 @@ const Information = () => {
             hex: "#1A332A",
             bgHex: "#C8D1CE",
             desc: "Profundo, elegante e contemporâneo.",
-            images: [depgreen,depgreen2
-               
-            ]
+            images: [depgreen, depgreen2]
         },
         {
             id: 5,
@@ -91,14 +99,15 @@ const Information = () => {
             hex: "#FFFFFF",
             bgHex: "#F5F5F5",
             desc: "Versatilidade e clareza. Ideal para High-Key.",
-            images: [
-            branco1, branco2
-            ]
-        },{
+            images: [branco1, branco2]
+        },
+        {
             id: 8,
             name: "Scarlet flame",
             hex: "#dc293e",
             bgHex: "#FDEDEC",
+            desc: "Energia e paixão. O vermelho vibrante destaca a cena.",
+            images: []
         }
     ];
 
@@ -134,7 +143,39 @@ const Information = () => {
         <>
             <Header />
 
-            <div className="info-page" style={{ backgroundColor: currentBackdrop.bgHex }}>
+            {/* 1. SEÇÃO: EXPERIÊNCIA VETRA (Movida para o topo) */}
+            {/* Adicionado paddingTop para não ficar escondido atrás do Header */}
+            <div className="info-details-section" style={{ paddingTop: '140px' }}>
+                <div className="details-content">
+                    <div className="details-header">
+                        <h2>Experiência Vetra</h2>
+                        <div className="divider-gold"></div>
+                        <p className="details-text">
+                            Mais do que apenas cores, oferecemos uma atmosfera. Nossos fundos são curados meticulosamente
+                            para elevar produções que exigem acabamento impecável.
+                        </p>
+                    </div>
+
+                    <div className="specs-grid">
+                        <div className="spec-item">
+                            <h3>Dimensões Amplas</h3>
+                            <p>Rolos profissionais de 2,70m de largura, permitindo enquadramentos de corpo inteiro.</p>
+                        </div>
+                        <div className="spec-item">
+                            <h3>CICLORAMA - FUNDO INFINITO BRANCO</h3>
+                            <p>Duas paredes brancas com curvatura contínua que ligam o chão à parede sem ângulos visíveis, criando um fundo infinito que elimina linhas, cantos e distrações.</p>
+                        </div>
+                        <div className="spec-item">
+                            <h3>Versatilidade</h3>
+                            <p>Uma variedade de cores na composição da sua fotografia enriquece a imagem, cria contraste e a torna mais atraente visualmente.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* 2. SEÇÃO: FUNDOS E CORES (Visualizador) */}
+            {/* Adicionado padding para respirar bem com a seção de cima */}
+            <div className="info-page" style={{ backgroundColor: currentBackdrop.bgHex, padding: '80px 5%' }}>
                 <div className="bg-watermark">{currentBackdrop.name}</div>
 
                 <div className="visualizer-container">
@@ -179,43 +220,14 @@ const Information = () => {
                             </div>
                         )}
 
-                        <Link to="/agendamento" className="action-btn">
+                        <button onClick={handleLocacao} className="action-btn-pill">
                             Reservar Locação <FaArrowRight />
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </div>
 
-            {/* 2. DETALHES TÉCNICOS PAPEL */}
-            <div className="info-details-section">
-                <div className="details-content">
-                    <div className="details-header">
-                        <h2>Experiência Vetra</h2>
-                        <div className="divider-gold"></div>
-                        <p className="details-text">
-                            Mais do que apenas cores, oferecemos uma atmosfera. Nossos fundos são curados meticulosamente
-                            para elevar produções que exigem acabamento impecável.
-                        </p>
-                    </div>
-
-                    <div className="specs-grid">
-                        <div className="spec-item">
-                            <h3>Dimensões Amplas</h3>
-                            <p>Rolos profissionais de 2,70m de largura, permitindo enquadramentos de corpo inteiro.</p>
-                        </div>
-                        <div className="spec-item">
-                            <h3>CICLORAMA - FUNDO INFINITO BRANCO</h3>
-                            <p>Duas paredes brancas com curvatura contínua que ligam o chão à parede sem ângulos visíveis, criando um fundo infinito que elimina linhas, cantos e distrações.</p>
-                        </div>
-                        <div className="spec-item">
-                            <h3>Versatilidade</h3>
-                            <p>Uma variedade de cores na composição da sua fotografia enriquece a imagem, cria contraste e a torna mais atraente visualmente.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* 3. ARQUITETURA & PLANTA (IMAGEM) */}
+            {/* 3. SEÇÃO: PLANTA E DIMENSÕES */}
             <div className="blueprint-section">
                 <div className="blueprint-container">
                     <div className="blueprint-text">
@@ -225,7 +237,7 @@ const Information = () => {
                             Um espaço pensado geometricamente para maximizar a luz e a profundidade de campo.
                             Ideal para lentes longas e iluminação complexa.
                         </p>
-                        
+
                         <div className="tech-grid">
                             <div className="tech-item">
                                 <FaArrowsAltV className="tech-icon" />
@@ -258,21 +270,18 @@ const Information = () => {
                         </div>
                     </div>
 
-                    {/* FOTO DA PLANTA BAIXA */}
                     <div className="blueprint-visual">
                         <div className="floor-plan-wrapper">
-                            {/* Caso a imagem não carregue, use um placeholder ou verifique o import */}
-                            <img 
-                                src={plantaBaixaImg} 
-                                alt="Planta Baixa do Estúdio" 
+                            <img
+                                src={plantaBaixaImg}
+                                alt="Planta Baixa do Estúdio"
                                 className="blueprint-image"
-                                onError={(e) => { e.target.src = "https://placehold.co/600x400/EEE/31343C?text=Foto+da+Planta"; }} 
+                                onError={(e) => { e.target.src = "https://placehold.co/600x400/EEE/31343C?text=Foto+da+Planta"; }}
                             />
                         </div>
                     </div>
                 </div>
             </div>
-
 
             <Footer />
         </>
