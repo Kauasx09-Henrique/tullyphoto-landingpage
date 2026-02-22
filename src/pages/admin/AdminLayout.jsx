@@ -1,44 +1,101 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
+import { Store } from 'react-notifications-component';
 import { 
     FaChartPie, FaBuilding, FaUsers, FaCalendarAlt, 
-    FaSignOutAlt, FaBell, FaSearch, FaUserCircle 
+    FaSignOutAlt, FaSearch, FaUserCircle, FaCamera 
 } from 'react-icons/fa';
-import '../../styles/admin.css';
+import api from '../../services/api';
+import './styles/adminlayout.css';
 
 const AdminLayout = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Mock de usuário (Substitua pelo seu contexto real)
-    const user = { nome: 'Kauã Henrique', cargo: 'CEO & Founder' };
+    const [user, setUser] = useState(() => {
+        const savedUser = localStorage.getItem('user');
+        return savedUser ? JSON.parse(savedUser) : { nome: 'Admin', tipo: 'ADMIN', logo_url: null, foto: null };
+    });
 
     const handleLogout = () => {
         localStorage.clear();
         navigate('/login');
     };
 
+    const handleLogoUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('logo', file);
+
+        try {
+            const res = await api.put(`/usuarios/${user.id}/logo`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            
+            const updatedUser = { ...user, logo_url: res.data.logo_url };
+            setUser(updatedUser);
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+
+            Store.addNotification({
+                title: "Sucesso",
+                message: "Sua logo foi atualizada!",
+                type: "success",
+                insert: "top",
+                container: "top-right",
+                dismiss: { duration: 3000 }
+            });
+        } catch (error) {
+            Store.addNotification({
+                title: "Erro",
+                message: "Não foi possível atualizar a logo.",
+                type: "danger",
+                insert: "top",
+                container: "top-right",
+                dismiss: { duration: 3000 }
+            });
+        }
+    };
+
     return (
-        <div className="admin-wrapper">
-            {/* --- SIDEBAR --- */}
+        <div className="admin-wrapper fade-in">
             <aside className="vetra-sidebar">
-                {/* Logo */}
-                <div className="sidebar-brand">
-                    <h1 className="brand-text">VETRA<span>.ADMIN</span></h1>
+                <div className="sidebar-brand-container">
+                    <div className="sidebar-brand-upload" onClick={() => document.getElementById('logoInput').click()}>
+                        {user.logo_url ? (
+                            <img src={user.logo_url} alt="Logo" className="custom-brand-logo" />
+                        ) : (
+                            <h1 className="brand-text">VETRA<span>.ADMIN</span></h1>
+                        )}
+                        <div className="brand-upload-overlay">
+                            <FaCamera />
+                            <span>Alterar Logo</span>
+                        </div>
+                    </div>
+                    <input 
+                        type="file" 
+                        id="logoInput" 
+                        hidden 
+                        accept="image/png, image/jpeg" 
+                        onChange={handleLogoUpload} 
+                    />
                 </div>
 
-                {/* Perfil Mini */}
                 <div className="sidebar-profile">
                     <div className="profile-avatar">
-                        <FaUserCircle />
+                        {user.foto ? (
+                            <img src={user.foto} alt={user.nome} referrerPolicy="no-referrer" />
+                        ) : (
+                            <FaUserCircle />
+                        )}
                     </div>
                     <div className="profile-info">
-                        <strong>{user.nome}</strong>
-                        <span>{user.cargo}</span>
+                        <strong>{user.nome.split(' ')[0]} {user.nome.split(' ')[1] || ''}</strong>
+                        <span>{user.tipo === 'ADMIN' ? 'Administrador' : user.tipo}</span>
                     </div>
                 </div>
 
-                {/* Navegação */}
                 <nav className="sidebar-nav">
                     <p className="nav-label">ANALYTICS</p>
                     
@@ -65,7 +122,6 @@ const AdminLayout = () => {
                     </Link>
                 </nav>
 
-                {/* Footer Sidebar */}
                 <div className="sidebar-footer">
                     <button onClick={handleLogout} className="logout-btn">
                         <FaSignOutAlt /> Sair
@@ -73,9 +129,7 @@ const AdminLayout = () => {
                 </div>
             </aside>
 
-            {/* --- CONTEÚDO PRINCIPAL --- */}
             <main className="main-content">
-                {/* Topbar Flutuante */}
                 <header className="topbar">
                     <div className="search-bar">
                         <FaSearch className="search-icon" />
@@ -83,18 +137,12 @@ const AdminLayout = () => {
                     </div>
                     
                     <div className="topbar-actions">
-                        <button className="icon-btn">
-                            <FaBell />
-                            <span className="badge-dot"></span>
-                        </button>
-                        <div className="divider-vertical"></div>
                         <span className="date-display">
                             {new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })}
                         </span>
                     </div>
                 </header>
 
-                {/* Área de Renderização das Páginas */}
                 <div className="content-scroll">
                     <Outlet />
                 </div>

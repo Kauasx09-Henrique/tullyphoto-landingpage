@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import api from '../services/api';
 import { format, differenceInDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { Store } from 'react-notifications-component'; // <-- Biblioteca importada
 import {
     FaCalendarAlt, FaClock, FaHistory,
     FaMoneyBillWave, FaCreditCard, FaTimesCircle, FaExchangeAlt,
-    FaExclamationTriangle, FaTimes, FaBarcode, FaMapMarkerAlt, FaChevronRight
+    FaExclamationTriangle, FaTimes, FaBarcode, FaMapMarkerAlt, FaArrowLeft
 } from 'react-icons/fa';
 import '../styles/meusAgendamentos.css';
 
@@ -48,7 +49,7 @@ const MeusAgendamentos = () => {
             'CONFIRMADO': 'Confirmado',
             'CANCELADO': 'Cancelado',
             'REALIZADO': 'Concluído',
-            'REAGENDAMENTO_SOLICITADO': 'Reagendamento em Análise'
+            'REAGENDAMENTO_SOLICITADO': 'Em Análise'
         };
         return mapa[status] || status;
     };
@@ -61,26 +62,59 @@ const MeusAgendamentos = () => {
         try {
             await api.patch(`/agendamentos/${id}/gerenciar`, { acao });
             fecharModal();
-            alert(acao === 'CANCELAR' ? "Agendamento cancelado." : "Solicitação enviada.");
+            
+            // Notificação de Sucesso com a biblioteca
+            Store.addNotification({
+                title: "Sucesso!",
+                message: acao === 'CANCELAR' ? "Agendamento cancelado." : "Solicitação enviada com sucesso.",
+                type: "success",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animate__animated", "animate__fadeIn"],
+                animationOut: ["animate__animated", "animate__fadeOut"],
+                dismiss: { duration: 4000, onScreen: true }
+            });
+
             carregarDados();
         } catch (err) {
-            alert("Erro ao processar.");
             fecharModal();
+            
+            // Notificação de Erro com a biblioteca
+            Store.addNotification({
+                title: "Erro",
+                message: "Ocorreu um erro ao processar sua solicitação. Tente novamente.",
+                type: "danger",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animate__animated", "animate__fadeIn"],
+                animationOut: ["animate__animated", "animate__fadeOut"],
+                dismiss: { duration: 4000, onScreen: true }
+            });
         }
     };
 
     if (loading) return (
         <div className="my-bookings-page loading-center">
             <div className="loader"></div>
+            <p>Buscando suas reservas...</p>
         </div>
     );
 
     return (
         <div className="my-bookings-page fade-in">
+            
+            {/* BOTÃO VOLTAR PARA HOME */}
+            <div className="top-nav-bar">
+                <Link to="/" className="btn-back-home">
+                    <FaArrowLeft /> Voltar para o Início
+                </Link>
+            </div>
+
             <div className="page-header">
                 <span className="overline">Área do Cliente</span>
                 <h2 className="page-title">Meus Agendamentos</h2>
                 <div className="header-line"></div>
+                <p className="page-subtitle">Acompanhe e gerencie suas sessões no Estúdio Vetra</p>
             </div>
 
             {agendamentos.length === 0 ? (
@@ -90,7 +124,7 @@ const MeusAgendamentos = () => {
                     </div>
                     <h3>Histórico Vazio</h3>
                     <p>Você ainda não possui reservas em nossos estúdios.</p>
-                    <Link to="/agendamento" className="btn-gold-outline">Fazer Reserva</Link>
+                    <Link to="/agendamento" className="btn-gold-pill">Fazer Primeira Reserva</Link>
                 </div>
             ) : (
                 <div className="bookings-grid">
@@ -109,61 +143,59 @@ const MeusAgendamentos = () => {
                         if (ag.metodo_pagamento === 'DEBITO') IconPay = FaBarcode;
 
                         return (
-                            <div key={ag.id} className={`ticket-card ${ag.status.toLowerCase()}`}>
-                                <div className="ticket-left-border"></div>
+                            <div key={ag.id} className={`vetra-ticket ${ag.status.toLowerCase()}`}>
+                                <div className="ticket-status-border"></div>
 
-                                <div className="ticket-content">
-                                    {/* CABEÇALHO */}
-                                    <div className="ticket-header">
-                                        <span className={`status-pill ${ag.status}`}>
+                                <div className="ticket-inner">
+                                    <div className="ticket-top">
+                                        <span className={`badge-status ${ag.status}`}>
                                             {formatarStatus(ag.status)}
                                         </span>
-                                        <span className="ticket-id">#{ag.id.toString().padStart(4, '0')}</span>
+                                        <span className="ticket-number">#{ag.id.toString().padStart(4, '0')}</span>
                                     </div>
 
-                                    {/* CORPO */}
-                                    <div className="ticket-body">
-                                        <h3 className="studio-title">{ag.espaco_nome || "Estúdio Vetra"}</h3>
-                                        <div className="location-tag">
+                                    <div className="ticket-main">
+                                        <h3 className="studio-name">{ag.espaco_nome || "Estúdio Vetra"}</h3>
+                                        <div className="studio-location">
                                             <FaMapMarkerAlt /> Unidade Principal
                                         </div>
 
-                                        <div className="info-grid">
-                                            <div className="info-box">
-                                                <label>Data</label>
-                                                <span>{format(dataInicio, "dd/MM/yyyy")}</span>
+                                        <div className="ticket-details">
+                                            <div className="detail-col">
+                                                <span className="detail-label"><FaCalendarAlt /> Data</span>
+                                                <span className="detail-value">{format(dataInicio, "dd/MM/yyyy")}</span>
                                             </div>
-                                            <div className="info-box">
-                                                <label>Horário</label>
-                                                <span>{format(dataInicio, 'HH:mm')} - {format(dataFim, 'HH:mm')}</span>
+                                            <div className="detail-col">
+                                                <span className="detail-label"><FaClock /> Horário</span>
+                                                <span className="detail-value">{format(dataInicio, 'HH:mm')} - {format(dataFim, 'HH:mm')}</span>
                                             </div>
-                                            <div className="info-box">
-                                                <label>Valor</label>
-                                                <span className="price-highlight">{formatarValor(ag.preco_total)}</span>
-                                            </div>
+                                        </div>
+
+                                        <div className="ticket-price-box">
+                                            <span className="price-label">Valor Total</span>
+                                            <span className="price-amount">{formatarValor(ag.preco_total)}</span>
                                         </div>
                                     </div>
 
-                                    {/* RODAPÉ */}
-                                    <div className="ticket-footer">
-                                        <div className="payment-info">
+                                    <div className="ticket-bottom">
+                                        <div className="payment-method">
                                             <IconPay className="pay-icon" />
-                                            <span>{ag.metodo_pagamento}</span>
+                                            <span>Pago via {ag.metodo_pagamento}</span>
                                         </div>
 
                                         {podeMexer && (
                                             <div className="ticket-actions">
                                                 {ag.metodo_pagamento === 'PIX' ? (
                                                     diasRestantes >= 3 ? (
-                                                        <button onClick={() => abrirModal(ag.id, 'REAGENDAR')} className="btn-link">
-                                                            Reagendar <FaExchangeAlt />
+                                                        <button onClick={() => abrirModal(ag.id, 'REAGENDAR')} className="action-link gold">
+                                                            <FaExchangeAlt /> Reagendar
                                                         </button>
                                                     ) : (
-                                                        <span className="text-alert">Prazo expirado</span>
+                                                        <span className="alert-text"><FaExclamationTriangle /> Prazo expirado</span>
                                                     )
                                                 ) : (
-                                                    <button onClick={() => abrirModal(ag.id, 'CANCELAR')} className="btn-link cancel">
-                                                        Cancelar <FaTimes />
+                                                    <button onClick={() => abrirModal(ag.id, 'CANCELAR')} className="action-link red">
+                                                        <FaTimesCircle /> Cancelar
                                                     </button>
                                                 )}
                                             </div>
@@ -177,19 +209,21 @@ const MeusAgendamentos = () => {
             )}
 
             {modalData.show && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <button className="close-modal" onClick={fecharModal}><FaTimes /></button>
-                        <FaExclamationTriangle className="modal-icon-lg" />
-                        <h3>Atenção</h3>
-                        <p>
+                <div className="modal-backdrop fade-in">
+                    <div className="modal-box">
+                        <button className="btn-close-modal" onClick={fecharModal}><FaTimes /></button>
+                        <div className="modal-icon-wrapper">
+                            <FaExclamationTriangle />
+                        </div>
+                        <h3 className="modal-title">Atenção</h3>
+                        <p className="modal-desc">
                             {modalData.acao === 'CANCELAR'
-                                ? "Tem certeza que deseja cancelar este agendamento? Esta ação é irreversível."
-                                : "Deseja solicitar uma alteração de data? Nossa equipe entrará em contato."}
+                                ? "Tem certeza que deseja cancelar esta reserva? Esta ação é irreversível e o horário será liberado."
+                                : "Deseja solicitar o reagendamento? Nossa equipe analisará a disponibilidade e entrará em contato."}
                         </p>
-                        <div className="modal-btns">
-                            <button className="btn-flat" onClick={fecharModal}>Voltar</button>
-                            <button className="btn-solid" onClick={confirmarAcao}>Confirmar</button>
+                        <div className="modal-actions-row">
+                            <button className="btn-modal-outline" onClick={fecharModal}>Voltar</button>
+                            <button className="btn-modal-solid" onClick={confirmarAcao}>Confirmar</button>
                         </div>
                     </div>
                 </div>
