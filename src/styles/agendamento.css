@@ -613,3 +613,51 @@
     margin-top: 30px;
   }
 }
+/* Container do icone/imagem no Card de escolha */
+.espaco-icon-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* Quando NÃO TEM imagem (ícone padrão) */
+.espaco-icon-box:not(.has-image) {
+    background-color: rgba(212, 175, 110, 0.1);
+    color: var(--v-gold, #D4AF6E);
+    height: 70px;
+    width: 70px;
+    border-radius: 50%; /* Deixa o ícone redondinho */
+    margin: 0 auto 15px auto;
+}
+
+/* Quando TEM imagem preenche a parte superior com elegância */
+.espaco-icon-box.has-image {
+    width: 100%;
+    height: 160px;
+    margin: 0 0 15px 0; /* Removemos as margens negativas que quebravam o card */
+    border-radius: 8px; /* Cantos arredondados contidos dentro do card */
+    overflow: hidden;
+}
+
+.espaco-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Ajustes da Imagem no Resumo da Reserva (lado direito) */
+.summary-image-preview {
+    width: 100%;
+    height: 140px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Leve contorno para não misturar com o fundo escuro */
+}
+
+.summary-image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

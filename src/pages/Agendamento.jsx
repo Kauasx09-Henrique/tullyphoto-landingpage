@@ -13,13 +13,11 @@ import api from '../services/api';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/agendamento.css';
 
-// --- CONFIGURAÇÃO DO PIX (CORRIGIDA) ---
-// Adicionei o +55 pois parece ser telefone (61). Se for CPF, remova o +55.
+// --- CONFIGURAÇÃO DO PIX  ---
 const PIX_KEY = "+5561985443250";
-const MERCHANT_NAME = "Vetra Studio"; // Sem acentos, max 25 chars
-const MERCHANT_CITY = "BRASILIA"; // Sem acentos, max 15 chars
+const MERCHANT_NAME = "Vetra Studio"; 
+const MERCHANT_CITY = "BRASILIA"; 
 
-// Função CRC16 Padrão do Banco Central
 const crc16ccitt = (payload) => {
   let crc = 0xFFFF;
   for (let i = 0; i < payload.length; i++) {
@@ -32,8 +30,6 @@ const crc16ccitt = (payload) => {
 
 const generatePixPayload = (key, name, city, amount, txId = '***') => {
   const amountStr = amount.toFixed(2);
-
-  // Normaliza os campos (remove acentos e ajusta tamanho)
   const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   const nameClean = normalize(name).substring(0, 25);
   const cityClean = normalize(city).substring(0, 15);
@@ -44,21 +40,21 @@ const generatePixPayload = (key, name, city, amount, txId = '***') => {
   };
 
   let payload =
-    formatField('00', '01') +                          // Payload Format Indicator
-    formatField('26',                                  // Merchant Account Information
+    formatField('00', '01') + 
+    formatField('26', 
       formatField('00', 'BR.GOV.BCB.PIX') +
       formatField('01', key)
     ) +
-    formatField('52', '0000') +                        // Merchant Category Code
-    formatField('53', '986') +                         // Transaction Currency (BRL)
-    formatField('54', amountStr) +                     // Transaction Amount
-    formatField('58', 'BR') +                          // Country Code
-    formatField('59', nameClean) +                     // Merchant Name
-    formatField('60', cityClean) +                     // Merchant City
-    formatField('62', formatField('05', txId));        // Additional Data Field Template
+    formatField('52', '0000') + 
+    formatField('53', '986') + 
+    formatField('54', amountStr) + 
+    formatField('58', 'BR') + 
+    formatField('59', nameClean) + 
+    formatField('60', cityClean) + 
+    formatField('62', formatField('05', txId)); 
 
-  payload += '6304'; // CRC16 ID + Length
-  payload += crc16ccitt(payload); // Calcula o Checksum
+  payload += '6304'; 
+  payload += crc16ccitt(payload); 
 
   return payload;
 };
@@ -96,6 +92,13 @@ const Agendamento = () => {
     if (n.includes('jardim')) return <FaTree />;
     if (n.includes('industrial')) return <FaLightbulb />;
     return <FaCameraRetro />;
+  };
+
+  const getImageUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('http') || url.startsWith('blob')) return url;
+    const baseURL = api.defaults.baseURL || 'http://localhost:3000';
+    return `${baseURL.replace(/\/$/, '')}/${url.replace(/^\//, '')}`;
   };
 
   const espacoAtivo = espacos.find(e => String(e.id) === String(selectedEspaco));
@@ -224,7 +227,15 @@ const Agendamento = () => {
                         setSelectedTime(null);
                       }}
                     >
-                      <div className="espaco-icon">{espaco.icon}</div>
+                      {/* AQUI RENDERIZAMOS A IMAGEM OU O ÍCONE */}
+                      <div className={`espaco-icon-box ${espaco.imagem_url ? 'has-image' : ''}`}>
+                        {espaco.imagem_url ? (
+                          <img src={getImageUrl(espaco.imagem_url)} alt={espaco.nome} className="espaco-card-img" />
+                        ) : (
+                          <div className="espaco-icon">{espaco.icon}</div>
+                        )}
+                      </div>
+                      
                       <div className="espaco-info">
                         <span className="name">{espaco.nome}</span>
                         <span className="price notranslate" translate="no">
@@ -316,6 +327,13 @@ const Agendamento = () => {
           <div className="summary-card">
             <h3 className="summary-title">Resumo da Reserva</h3>
 
+            {/* FOTO DO ESPAÇO NO RESUMO */}
+            {espacoAtivo && espacoAtivo.imagem_url && (
+                <div className="summary-image-preview">
+                    <img src={getImageUrl(espacoAtivo.imagem_url)} alt={espacoAtivo.nome} />
+                </div>
+            )}
+
             <div className="summary-content">
               <div className="summary-item">
                 <span className="label"><FaCameraRetro /> Cenário</span>
@@ -359,7 +377,6 @@ const Agendamento = () => {
         </div>
       </div>
 
-      {/* MODAL APENAS PARA PIX */}
       {showPixModal && (
         <div className="modal-overlay fade-in">
           <div className="modal-content pix-modal">
@@ -375,7 +392,6 @@ const Agendamento = () => {
                 <span className="step-tag">1. Escanear</span>
                 <p>Valor: <strong>R$ {totalCalculado.toFixed(2).replace('.', ',')}</strong></p>
                 <div className="qr-container-infinite">
-                  {/* Usa a API para transformar a string técnica do Pix em Imagem */}
                   <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=10&data=${encodeURIComponent(pixCopiaCola)}`} alt="QR Pix" />
                 </div>
               </div>
