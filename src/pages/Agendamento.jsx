@@ -13,7 +13,7 @@ import api from '../services/api';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/agendamento.css';
 
-const PIX_KEY = "+5561985443250";
+const PIX_KEY = "bf591bd9-c630-4b77-b4b2-5c7e685121cb";
 const MERCHANT_NAME = "Vetra Studio"; 
 const MERCHANT_CITY = "BRASILIA"; 
 
