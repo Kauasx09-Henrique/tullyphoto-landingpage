@@ -13,7 +13,6 @@ import api from '../services/api';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/agendamento.css';
 
-// --- CONFIGURAÇÃO DO PIX  ---
 const PIX_KEY = "+5561985443250";
 const MERCHANT_NAME = "Vetra Studio"; 
 const MERCHANT_CITY = "BRASILIA"; 
@@ -82,7 +81,6 @@ const Agendamento = () => {
         setLoading(false);
       })
       .catch(err => {
-        console.error(err);
         setLoading(false);
       });
   }, []);
@@ -193,7 +191,6 @@ const Agendamento = () => {
       Store.addNotification({ title: "Sucesso!", message: msgSucesso, type: "success", container: "top-right", dismiss: { duration: 5000 } });
       navigate('/meus-agendamentos');
     } catch (err) {
-      console.error(err);
       Store.addNotification({ title: "Erro", message: "Erro ao reservar. Tente novamente.", type: "danger", container: "top-right", dismiss: { duration: 4000 } });
     }
   };
@@ -227,12 +224,11 @@ const Agendamento = () => {
                         setSelectedTime(null);
                       }}
                     >
-                      {/* AQUI RENDERIZAMOS A IMAGEM OU O ÍCONE */}
                       <div className={`espaco-icon-box ${espaco.imagem_url ? 'has-image' : ''}`}>
                         {espaco.imagem_url ? (
-                          <img src={getImageUrl(espaco.imagem_url)} alt={espaco.nome} className="espaco-card-img" />
+                          <img key={`img-${espaco.id}`} src={getImageUrl(espaco.imagem_url)} alt={espaco.nome} className="espaco-card-img" />
                         ) : (
-                          <div className="espaco-icon">{espaco.icon}</div>
+                          <div key={`icon-${espaco.id}`} className="espaco-icon">{espaco.icon}</div>
                         )}
                       </div>
                       
@@ -327,7 +323,6 @@ const Agendamento = () => {
           <div className="summary-card">
             <h3 className="summary-title">Resumo da Reserva</h3>
 
-            {/* FOTO DO ESPAÇO NO RESUMO */}
             {espacoAtivo && espacoAtivo.imagem_url && (
                 <div className="summary-image-preview">
                     <img src={getImageUrl(espacoAtivo.imagem_url)} alt={espacoAtivo.nome} />
