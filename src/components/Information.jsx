@@ -143,8 +143,7 @@ const Information = () => {
         <>
             <Header />
 
-            {/* 1. SEÇÃO: EXPERIÊNCIA VETRA (Movida para o topo) */}
-            {/* Adicionado paddingTop para não ficar escondido atrás do Header */}
+            {/* 1. SEÇÃO: EXPERIÊNCIA VETRA */}
             <div className="info-details-section" style={{ paddingTop: '140px' }}>
                 <div className="details-content">
                     <div className="details-header">
@@ -174,10 +173,7 @@ const Information = () => {
             </div>
 
             {/* 2. SEÇÃO: FUNDOS E CORES (Visualizador) */}
-            {/* Adicionado padding para respirar bem com a seção de cima */}
             <div className="info-page" style={{ backgroundColor: currentBackdrop.bgHex, padding: '80px 5%' }}>
-                <div className="bg-watermark">{currentBackdrop.name}</div>
-
                 <div className="visualizer-container">
                     <div className="image-stage">
                         {currentBackdrop.images.map((imgSrc, index) => (

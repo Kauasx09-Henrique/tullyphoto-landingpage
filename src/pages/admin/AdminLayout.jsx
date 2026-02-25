@@ -3,7 +3,7 @@ import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
 import { Store } from 'react-notifications-component';
 import { 
     FaChartPie, FaBuilding, FaUsers, FaCalendarAlt, 
-    FaSignOutAlt, FaSearch, FaUserCircle, FaCamera 
+    FaSignOutAlt, FaSearch, FaUserCircle, FaCamera , FaLock
 } from 'react-icons/fa';
 import api from '../../services/api';
 import './styles/adminlayout.css';
@@ -106,7 +106,7 @@ const AdminLayout = () => {
 
                     <Link to="/admin/agenda" className={`nav-item ${location.pathname.includes('agenda') ? 'active' : ''}`}>
                         <FaCalendarAlt className="nav-icon" />
-                        <span>Agenda Global</span>
+                        <span>Ver agendamentos</span>
                     </Link>
 
                     <p className="nav-label">GERENCIAMENTO</p>
@@ -119,6 +119,10 @@ const AdminLayout = () => {
                     <Link to="/admin/usuarios" className={`nav-item ${location.pathname.includes('usuarios') ? 'active' : ''}`}>
                         <FaUsers className="nav-icon" />
                         <span>Usuários</span>
+                    </Link>
+                    <Link to="/admin/Bloqueios" className={`nav-item ${location.pathname.includes('bloqueios') ? 'active' : ''}`}>
+                        <FaLock className="nav-icon" />
+                        <span>Bloqueios</span>
                     </Link>
                 </nav>
 

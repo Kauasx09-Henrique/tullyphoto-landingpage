@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import { 
     FaWallet, FaCalendarCheck, FaChartLine, FaTrophy, 
-    FaCheck, FaTimes, FaClock 
+    FaCheck, FaTimes, FaClock, FaExclamationCircle 
 } from 'react-icons/fa';
 import '../../styles/dashboard.css';
 
@@ -85,7 +85,7 @@ const AdminDashboard = () => {
 
           Store.addNotification({
               title: acao === 'APROVAR' ? "Reserva Aprovada!" : "Reserva Cancelada",
-              message: `O agendamento #${id} foi atualizado com sucesso. O cliente foi notificado.`,
+              message: `O agendamento #${id} foi atualizado com sucesso.`,
               type: acao === 'APROVAR' ? "success" : "warning",
               insert: "top",
               container: "top-right",
@@ -120,73 +120,38 @@ const AdminDashboard = () => {
     return null;
   };
 
-  if (loading) return <div className="loading-state">Buscando informações do servidor...</div>;
+  if (loading) return (
+    <div className="loading-state fade-in">
+        <div className="loader-ring"></div>
+        <p>Analisando dados do estúdio...</p>
+    </div>
+  );
 
   return (
-    <div className="dashboard-container fade-in">
+    <div className="dashboard-container fade-in" translate="no">
       <div className="admin-header-row">
-        <div>
+        <div className="header-text-block">
            <h2 className="admin-title">Painel Geral</h2>
            <p className="admin-subtitle">Bem-vindo(a) ao gerenciamento do Estúdio Vetra.</p>
         </div>
         <div className="date-badge">
-           {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
+           <FaCalendarCheck /> {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
         </div>
-      </div>
-
-      <div className="pending-section">
-          <div className="section-header">
-              <h3><FaClock className="icon-pulse" /> Solicitações Aguardando Aprovação</h3>
-              {pendentes.length > 0 && <span className="badge-count">{pendentes.length}</span>}
-          </div>
-          
-          <div className="pending-list">
-              {pendentes.length === 0 ? (
-                  <div className="empty-pending">Nenhum agendamento pendente no momento. Tudo limpo!</div>
-              ) : (
-                  pendentes.map(p => (
-                      <div className="pending-card" key={p.id}>
-                          <div className="p-avatar">
-                              {p.usuario_nome ? p.usuario_nome.substring(0,2).toUpperCase() : 'CL'}
-                          </div>
-                          
-                          <div className="p-info">
-                              <h4>{p.usuario_nome || 'Cliente'} <span className="p-id">#{p.id}</span></h4>
-                              <p>{p.espaco_nome} • <strong>{formatDate(p.data_inicio)}</strong></p>
-                              {p.metodo_pagamento && <span className="p-pay-method">Pago via {p.metodo_pagamento}</span>}
-                          </div>
-
-                          <div className="p-price">
-                              {formatCurrency(p.preco_total)}
-                          </div>
-
-                          <div className="p-actions">
-                              <button className="btn-reject" onClick={() => handleAcaoPendente(p.id, 'REJEITAR')} title="Cancelar e Excluir">
-                                  <FaTimes /> Recusar
-                              </button>
-                              <button className="btn-approve" onClick={() => handleAcaoPendente(p.id, 'APROVAR')} title="Aprovar Agendamento">
-                                  <FaCheck /> Aprovar
-                              </button>
-                          </div>
-                      </div>
-                  ))
-              )}
-          </div>
       </div>
 
       <div className="dashboard-grid">
         <div className="kpi-card">
           <div className="kpi-icon-box gold"><FaWallet /></div>
           <div className="kpi-info">
-            <span className="kpi-title">Faturamento Total</span>
-            <span className="kpi-value">{formatCurrency(kpis.faturamento)}</span>
+            <span className="kpi-title">Faturamento</span>
+            <span className="kpi-value notranslate">{formatCurrency(kpis.faturamento)}</span>
           </div>
         </div>
         
         <div className="kpi-card">
           <div className="kpi-icon-box dark"><FaCalendarCheck /></div>
           <div className="kpi-info">
-            <span className="kpi-title">Reservas Fechadas</span>
+            <span className="kpi-title">Concluídos</span>
             <span className="kpi-value">{kpis.total}</span>
           </div>
         </div>
@@ -195,26 +160,75 @@ const AdminDashboard = () => {
           <div className="kpi-icon-box gray"><FaChartLine /></div>
           <div className="kpi-info">
             <span className="kpi-title">Ticket Médio</span>
-            <span className="kpi-value">{formatCurrency(kpis.ticketMedio)}</span>
+            <span className="kpi-value notranslate">{formatCurrency(kpis.ticketMedio)}</span>
           </div>
         </div>
+      </div>
+
+      <div className="pending-section">
+          <div className="section-header">
+              <h3><FaClock className="icon-pulse" /> Solicitações Pendentes</h3>
+              {pendentes.length > 0 && <span className="badge-count">{pendentes.length}</span>}
+          </div>
+          
+          <div className="pending-list">
+              {pendentes.length === 0 ? (
+                  <div className="empty-pending">
+                      <FaCheck className="empty-icon" />
+                      <p>Sua agenda está limpa! Nenhuma aprovação pendente.</p>
+                  </div>
+              ) : (
+                  pendentes.map(p => (
+                      <div className="pending-card" key={p.id}>
+                          <div className="pending-main-content">
+                              <div className="p-avatar">
+                                  {p.usuario_nome ? p.usuario_nome.substring(0,2).toUpperCase() : 'CL'}
+                              </div>
+                              
+                              <div className="p-info">
+                                  <h4>{p.usuario_nome || 'Cliente'} <span className="p-id">#{String(p.id).padStart(4, '0')}</span></h4>
+                                  <p className="p-space">{p.espaco_nome}</p>
+                                  <p className="p-date"><FaCalendarCheck /> {formatDate(p.data_inicio)}</p>
+                                  <span className={`p-pay-badge ${p.metodo_pagamento?.toLowerCase()}`}>
+                                      {p.metodo_pagamento === 'PIX' && <FaExclamationCircle className="pix-alert"/>} {p.metodo_pagamento}
+                                  </span>
+                              </div>
+                          </div>
+
+                          <div className="pending-side-actions">
+                              <div className="p-price notranslate">
+                                  {formatCurrency(p.preco_total)}
+                              </div>
+                              <div className="p-actions">
+                                  <button className="btn-reject" onClick={() => handleAcaoPendente(p.id, 'REJEITAR')} title="Recusar">
+                                      <FaTimes />
+                                  </button>
+                                  <button className="btn-approve" onClick={() => handleAcaoPendente(p.id, 'APROVAR')} title="Aprovar">
+                                      <FaCheck /> Aprovar
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                  ))
+              )}
+          </div>
       </div>
 
       <div className="charts-section">
         <div className="chart-container">
           <div className="chart-header">
-            <h3 className="chart-title">Volume Mensal (Agendamentos)</h3>
+            <h3 className="chart-title">Volume Mensal de Agendamentos</h3>
           </div>
-          <div style={{ width: '100%', height: 320 }}>
-            <ResponsiveContainer>
+          <div className="chart-wrapper">
+            <ResponsiveContainer width="100%" height="100%">
               <BarChart data={dadosGrafico} onMouseMove={(_, i) => setActiveIndex(i)} onMouseLeave={() => setActiveIndex(null)}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                 <XAxis dataKey="name" tick={{fill: '#888', fontSize: 12}} tickLine={false} axisLine={false} dy={10} />
-                <YAxis allowDecimals={false} tick={{fill: '#888', fontSize: 12}} tickLine={false} axisLine={false} />
-                <Tooltip content={<CustomTooltip />} cursor={{fill: 'transparent'}} />
-                <Bar dataKey="agendamentos" radius={[6, 6, 0, 0]} barSize={45}>
+                <YAxis allowDecimals={false} tick={{fill: '#888', fontSize: 12}} tickLine={false} axisLine={false} dx={-10}/>
+                <Tooltip content={<CustomTooltip />} cursor={{fill: 'rgba(212, 175, 110, 0.05)'}} />
+                <Bar dataKey="agendamentos" radius={[6, 6, 0, 0]} barSize={40}>
                   {dadosGrafico.map((entry, index) => (
-                    <Cell cursor="pointer" fill={index === activeIndex ? '#2C2420' : '#D4AF6E'} key={`cell-${index}`} style={{ transition: 'all 0.3s' }} />
+                    <Cell cursor="pointer" fill={index === activeIndex ? '#1A1614' : '#D4AF6E'} key={`cell-${index}`} style={{ transition: 'all 0.3s' }} />
                   ))}
                 </Bar>
               </BarChart>
@@ -226,7 +240,7 @@ const AdminDashboard = () => {
           <h3 className="chart-title">Top Clientes</h3>
           <div className="top-users-list">
             {topClientes.length === 0 ? (
-                <p className="no-data">Nenhum dado registrado.</p>
+                <div className="empty-pending" style={{marginTop: '20px', padding: '20px'}}>Nenhum dado registrado.</div>
             ) : (
                 topClientes.map((cliente, index) => (
                 <div key={index} className="user-rank-item">
@@ -239,7 +253,7 @@ const AdminDashboard = () => {
                         </div>
                         <div className="rank-info">
                             <strong>{cliente.nome}</strong>
-                            <small>{cliente.total} reservas concluídas</small>
+                            <small>{cliente.total} sessões</small>
                         </div>
                     </div>
                     {index === 0 && <FaTrophy className="trophy-icon" />}

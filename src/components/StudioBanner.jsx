@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { TbAirConditioning, TbWifi, TbInfinity } from 'react-icons/tb';
 import { IoMdSunny } from 'react-icons/io';
-import { FaCameraRetro, FaParking } from 'react-icons/fa';
-import '../styles/studiobanner.css';
+import { FaChair } from 'react-icons/fa'; // <-- Ícone de Cadeira adicionado aqui
 import { BsLightbulb } from 'react-icons/bs';
+import '../styles/studiobanner.css';
 
 const StudioBanner = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -92,9 +92,10 @@ const StudioBanner = () => {
                         <span>Wi-Fi</span>
                     </div>
 
-                    <div className="feature-icon-item" title="Segurança e comodidade">
-                        <div className="icon-wrapper"><FaParking /></div>
-                        <span>Estacionamento</span>
+                    {/* --- AQUI ESTÁ O NOVO ÍCONE DE MOBILIÁRIO --- */}
+                    <div className="feature-icon-item" title="Acervo de móveis e props">
+                        <div className="icon-wrapper"><FaChair /></div>
+                        <span>Mobiliário</span>
                     </div>
                 </div>
 
@@ -103,13 +104,13 @@ const StudioBanner = () => {
                     <button onClick={handleLocacao} className="cta-button primary">
                         Fazer locação
                     </button>
-                    
+
                     <Link to="/informacoes" className="cta-button secondary" onClick={() => window.scrollTo(0, 0)}>
                         Ver informações
                     </Link>
                 </div>
             </div>
-            
+
 
             {/* LADO DIREITO: INSTAGRAM EMBED */}
             <div className="instagram-side">

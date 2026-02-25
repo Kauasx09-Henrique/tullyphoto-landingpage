@@ -36,7 +36,6 @@ export default function Login() {
 
     const loginComGoogle = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
-            // ... (Seu código do Google existente permanece igual)
             try {
                 setLoading(true);
                 const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
@@ -54,13 +53,27 @@ export default function Login() {
 
             } catch (error) {
                 console.error(error);
-                // ... notificacao de erro
+                Store.addNotification({
+                    title: "Erro",
+                    message: "Falha ao autenticar com o Google.",
+                    type: "danger",
+                    insert: "top",
+                    container: "top-right",
+                    dismiss: { duration: 4000 }
+                });
             } finally {
                 setLoading(false);
             }
         },
         onError: () => {
-            // ... notificacao de erro
+            Store.addNotification({
+                title: "Atenção",
+                message: "O login com Google foi cancelado ou falhou.",
+                type: "warning",
+                insert: "top",
+                container: "top-right",
+                dismiss: { duration: 4000 }
+            });
         }
     });
 
@@ -85,10 +98,16 @@ export default function Login() {
     }
 
     return (
-        <div className="auth-page">
+        <div className="auth-page" translate="no">
             <div className="auth-container">
                 <div className="auth-header">
-                    <h2 className="auth-title">Vetra</h2>
+                    {/* AQUI ESTÁ A LOGO NO LUGAR DO TEXTO */}
+                    <img 
+                        src="/logo.png" 
+                        alt="Vetra Studio" 
+                        className="auth-logo" 
+                        onError={(e) => { e.target.src = 'https://via.placeholder.com/200x80?text=Sua+Logo+Aqui'; }}
+                    />
                     <p className="auth-subtitle">Acesse sua área exclusiva</p>
                 </div>
 
@@ -117,7 +136,6 @@ export default function Login() {
                         />
                     </div>
 
-                    {/* --- NOVO LINK ADICIONADO AQUI --- */}
                     <div className="forgot-password-wrapper">
                         <Link to="/esqueceu-senha" className="forgot-link">
                             Esqueceu a senha?

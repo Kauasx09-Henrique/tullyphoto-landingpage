@@ -20,22 +20,6 @@
     align-items: center;
 }
 
-.bg-watermark {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Cinzel', serif;
-    font-size: 15vw;
-    font-weight: 700;
-    color: rgba(0, 0, 0, 0.05);
-    white-space: nowrap;
-    pointer-events: none;
-    z-index: 0;
-    text-transform: uppercase;
-    transition: all 0.5s ease;
-}
-
 .visualizer-container {
     display: flex;
     width: 95%;
@@ -169,7 +153,7 @@
 }
 
 .action-btn-pill {
-    margin-top: auto;
+    margin-top: 20px;
     align-self: flex-start;
     padding: 0 24px;
     height: 44px;
@@ -217,13 +201,6 @@
 .action-btn-pill:hover::after {
     left: 100%;
 }
-
-@media (max-width: 600px) {
-    .action-btn-pill {
-        width: 100%;
-    }
-}
-
 
 
 /* --- SEÇÃO 2: DETALHES --- */
@@ -304,7 +281,6 @@
 .blueprint-section {
     width: 100%;
     background-color: var(--vetra-cream);
-    /* Grid de Engenharia sutil */
     background-image: radial-gradient(var(--vetra-grid) 1px, transparent 1px);
     background-size: 20px 20px;
     padding: 100px 5%;
@@ -381,7 +357,6 @@
     font-size: 1.1rem;
 }
 
-/* Visual da Imagem da Planta */
 .blueprint-visual {
     flex: 1;
     display: flex;
@@ -394,7 +369,6 @@
     background: #fff;
     border: 1px solid #ddd;
     box-shadow: 20px 20px 0px rgba(192, 160, 98, 0.2);
-    /* Sombra Sólida Dourada */
 }
 
 .blueprint-image {
@@ -402,14 +376,12 @@
     height: auto;
     display: block;
     border: 2px solid var(--vetra-brown);
-    /* Moldura interna */
 }
 
 /* --- SEÇÃO 4: INFRAESTRUTURA (AMENITIES) --- */
 .amenities-section {
     width: 100%;
     background-color: var(--vetra-dark);
-    /* Dark */
     padding: 100px 5%;
     position: relative;
     z-index: 2;
@@ -484,6 +456,9 @@
     line-height: 1.5;
 }
 
+/* =========================================
+   RESPONSIVIDADE (TABLETS E MENORES)
+   ========================================= */
 @media (max-width: 1024px) {
     .visualizer-container {
         flex-direction: column;
@@ -505,11 +480,6 @@
         min-height: auto;
     }
 
-    .bg-watermark {
-        font-size: 20vw;
-        top: 10%;
-    }
-
     .color-title {
         font-size: 2.5rem;
     }
@@ -529,5 +499,81 @@
     .floor-plan-wrapper {
         width: 100%;
         max-width: 500px;
+    }
+}
+
+/* =========================================
+   AJUSTE FINO DE ESPAÇOS PARA CELULAR 
+   ========================================= */
+@media (max-width: 768px) {
+    /* Força os paddings do JSX a reduzirem no celular */
+    .info-details-section {
+        padding: 80px 5% 50px !important;
+    }
+    
+    .info-page {
+        padding: 40px 5% !important;
+    }
+
+    .blueprint-section, 
+    .amenities-section {
+        padding: 50px 5%;
+    }
+
+    .details-header h2, 
+    .blueprint-text h2, 
+    .amenities-header h2 {
+        font-size: 2rem;
+    }
+
+    .details-text {
+        margin-bottom: 30px;
+        font-size: 1rem;
+    }
+
+    .spec-item {
+        padding: 25px 20px;
+    }
+
+    .visualizer-container {
+        gap: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .glass-panel {
+        padding: 20px;
+    }
+
+    .color-title {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+    }
+
+    .colors-row {
+        margin-bottom: 20px;
+    }
+
+    .color-desc {
+        font-size: 1rem;
+        margin-bottom: 25px;
+    }
+
+    .amenities-header p {
+        margin-bottom: 30px;
+    }
+
+    .tech-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-btn-pill {
+        width: 100%;
+        height: 50px;
+    }
+    
+    .specs-grid {
+        margin-top: 30px;
     }
 }

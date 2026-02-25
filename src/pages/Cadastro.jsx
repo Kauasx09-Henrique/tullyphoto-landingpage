@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Store } from 'react-notifications-component';
-import { FaUser, FaEnvelope, FaLock, FaSpinner, FaArrowLeft } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaLock, FaSpinner } from 'react-icons/fa';
 import api from '../services/api';
 import '../styles/auth.css';
 
@@ -50,10 +50,16 @@ export default function Cadastro() {
     }
 
     return (
-        <div className="auth-page">
+        <div className="auth-page" translate="no">
             <div className="auth-container">
                 <div className="auth-header">
-                    <h2 className="auth-title">Vetra</h2>
+                    {/* AQUI ESTÁ A LOGO NO LUGAR DO TEXTO */}
+                    <img 
+                        src="/logo.png" 
+                        alt="Vetra Studio" 
+                        className="auth-logo" 
+                        onError={(e) => { e.target.src = 'https://via.placeholder.com/200x80?text=Sua+Logo+Aqui'; }}
+                    />
                     <p className="auth-subtitle">Crie sua conta exclusiva</p>
                 </div>
 

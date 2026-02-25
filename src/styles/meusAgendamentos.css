@@ -160,7 +160,7 @@
     background: var(--card-bg);
     border-radius: 12px;
     display: flex;
-    overflow: hidden; /* Mantém tudo dentro do card */
+    overflow: hidden;
     box-shadow: 0 6px 15px rgba(0,0,0,0.04);
     border: 1px solid var(--border-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;

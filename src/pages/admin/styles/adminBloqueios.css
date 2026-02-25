@@ -1,0 +1,75 @@
+.bloqueio-card {
+    background-color: var(--v-white, #ffffff);
+    border-radius: 12px;
+    padding: 35px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    max-width: 800px;
+}
+
+.bloqueio-icon-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.icon-circle {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(26, 22, 20, 0.05);
+    color: var(--v-dark, #1A1614);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.bloqueio-icon-header h3 {
+    margin: 0;
+    color: var(--v-dark, #1A1614);
+    font-size: 1.4rem;
+}
+
+.bloqueio-form .form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.bloqueio-form .form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.bloqueio-form .flex-2 {
+    flex: 2;
+}
+
+.label-icon {
+    color: var(--v-gold, #D4AF6E);
+    margin-right: 6px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.btn-bloquear {
+    background-color: var(--v-dark, #1A1614);
+    color: var(--v-gold, #D4AF6E);
+    padding: 14px 28px;
+    font-size: 1.05rem;
+}
+
+.btn-bloquear:hover {
+    background-color: var(--v-gold, #D4AF6E);
+    color: var(--v-dark, #1A1614);
+}

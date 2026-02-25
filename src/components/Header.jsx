@@ -109,7 +109,8 @@ const Header = () => {
                         <ul className="nav-links">
                             <li><Link to="/" className={`link-item ${isActive('/')}`} onClick={() => setMobileOpen(false)}>Home</Link></li>
                             <li><Link to="/portfolio" className={`link-item ${isActive('/portfolio')}`} onClick={() => setMobileOpen(false)}>Portfólio</Link></li>
-
+                            <li><Link to="/equipe" className={`link-item ${isActive('/equipe')}`} onClick={() => setMobileOpen(false)}>Equipe</Link></li>
+                            <li><Link to="/servicos" className={`link-item ${isActive('/servicos')}`} onClick={() => setMobileOpen(false)}>Serviços</Link></li>
                             {user && (
                                 isAdmin ? (
                                     <li><Link to="/admin/dashboard" className={`link-item ${isActive('/admin/dashboard')}`} onClick={() => setMobileOpen(false)}>Painel</Link></li>

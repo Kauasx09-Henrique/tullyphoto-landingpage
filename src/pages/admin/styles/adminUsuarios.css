@@ -1,0 +1,35 @@
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.role-badge.admin {
+    background-color: rgba(212, 175, 110, 0.15);
+    color: var(--v-gold, #D4AF6E);
+}
+
+.role-badge.cliente {
+    background-color: #f4f6f8;
+    color: var(--v-gray, #888888);
+}
+
+.row-inativo {
+    opacity: 0.6;
+    background-color: #fafafa;
+}
+
+.action-btn.edit {
+    background-color: #f4f6f8;
+    color: #555;
+}
+
+.action-btn.edit:hover {
+    background-color: #555;
+    color: #fff;
+}

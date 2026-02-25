@@ -20,6 +20,7 @@ import AdminEspacos from './pages/admin/AdminEspacos';
 import AdminAgenda from './pages/admin/AdminAgenda';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminUsers from './pages/admin/AdminUsers';
+import AdminBloqueios from './pages/admin/AdminBloqueios';
 
 
 // Components
@@ -49,6 +50,7 @@ function App() {
           <Route path="espacos" element={<AdminEspacos />} />
           <Route path="agenda" element={<AdminAgenda />} />
           <Route path="usuarios" element={<AdminUsers />} />
+          <Route path="/admin/bloqueios" element={<AdminBloqueios />} />
 
         </Route>
       </Routes>
