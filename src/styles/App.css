@@ -3,6 +3,8 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  width: 100%; /* Garante que o container ocupe a largura disponível */
+  box-sizing: border-box; /* Evita que o padding "estoure" o tamanho do elemento */
 }
 
 .logo {
@@ -11,20 +13,18 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
 @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -39,4 +39,45 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* =========================================
+   REGRAS DE RESPONSIVIDADE (MOBILE FIRST)
+   ========================================= */
+
+/* Ajustes para Tablets e Celulares deitados */
+@media (max-width: 768px) {
+  #root {
+    padding: 1.5rem; /* Reduz margens externas */
+  }
+
+  .logo {
+    height: 4.5em; /* Diminui o tamanho das logos */
+    padding: 1em;
+  }
+
+  .card {
+    padding: 1.5em; /* Melhora o aproveitamento de espaço nos cards */
+  }
+}
+
+/* Ajustes para Celulares (iPhone, Android, etc) */
+@media (max-width: 480px) {
+  #root {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.8rem; /* Reduz títulos para não quebrarem a tela */
+  }
+
+  .logo {
+    height: 3.5em;
+    padding: 0.5em;
+  }
+
+  .card {
+    padding: 1rem;
+    border-radius: 8px; /* Ajuste sutil para telas menores */
+  }
 }

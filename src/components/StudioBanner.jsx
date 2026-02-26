@@ -102,7 +102,7 @@ const StudioBanner = () => {
                 {/* BOTÕES DE AÇÃO */}
                 <div className="banner-actions">
                     <button onClick={handleLocacao} className="cta-button primary">
-                        Fazer locação
+                    Reservar
                     </button>
 
                     <Link to="/informacoes" className="cta-button secondary" onClick={() => window.scrollTo(0, 0)}>

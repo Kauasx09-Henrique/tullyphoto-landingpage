@@ -7,7 +7,7 @@ import { ptBR } from 'date-fns/locale';
 import {
   FaCreditCard, FaBarcode, FaQrcode, FaTimes, FaCloudUploadAlt,
   FaCheckCircle, FaClock, FaCalendarAlt, FaCameraRetro, FaMinus, FaPlus,
-  FaArrowRight, FaTree, FaLightbulb, FaLock, FaCopy
+  FaArrowRight, FaTree, FaLightbulb, FaLock, FaCopy, FaTags
 } from 'react-icons/fa';
 import api from '../services/api';
 import 'react-calendar/dist/Calendar.css';
@@ -32,29 +32,15 @@ const generatePixPayload = (key, name, city, amount, txId) => {
   const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   const nameClean = normalize(name).substring(0, 25);
   const cityClean = normalize(city).substring(0, 15);
-
   const formatField = (id, value) => {
     const len = value.length.toString().padStart(2, '0');
     return `${id}${len}${value}`;
   };
-
-  let payload =
-    formatField('00', '01') +
-    formatField('26',
-      formatField('00', 'BR.GOV.BCB.PIX') +
-      formatField('01', key)
-    ) +
-    formatField('52', '0000') +
-    formatField('53', '986') +
-    formatField('54', amountStr) +
-    formatField('58', 'BR') +
-    formatField('59', nameClean) +
-    formatField('60', cityClean) +
-    formatField('62', formatField('05', txId));
-
+  let payload = formatField('00', '01') + formatField('26', formatField('00', 'BR.GOV.BCB.PIX') + formatField('01', key)) +
+    formatField('52', '0000') + formatField('53', '986') + formatField('54', amountStr) + formatField('58', 'BR') +
+    formatField('59', nameClean) + formatField('60', cityClean) + formatField('62', formatField('05', txId));
   payload += '6304';
   payload += crc16ccitt(payload);
-
   return payload;
 };
 
@@ -65,7 +51,7 @@ const Agendamento = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [duracao, setDuracao] = useState(2);
   const [horariosOcupados, setHorariosOcupados] = useState([]);
-  const [metodoPagamento, setMetodoPagamento] = useState('');
+  const [metodoPagamento, setMetodoPagamento] = useState('PIX');
   const [comprovante, setComprovante] = useState(null);
   const [showPixModal, setShowPixModal] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -77,57 +63,48 @@ const Agendamento = () => {
   useEffect(() => {
     api.get('/espacos')
       .then(res => {
-        const dados = res.data.map(e => ({ ...e, icon: getIconForSpace(e.nome) }));
-        setEspacos(dados);
+        setEspacos(res.data.map(e => ({ ...e, icon: e.nome.toLowerCase().includes('jardim') ? <FaTree /> : e.nome.toLowerCase().includes('industrial') ? <FaLightbulb /> : <FaCameraRetro /> })));
         setLoading(false);
       })
-      .catch(err => {
-        setLoading(false);
-      });
+      .catch(() => setLoading(false));
   }, []);
-
-  const getIconForSpace = (nome) => {
-    const n = nome ? nome.toLowerCase() : '';
-    if (n.includes('jardim')) return <FaTree />;
-    if (n.includes('industrial')) return <FaLightbulb />;
-    return <FaCameraRetro />;
-  };
 
   const checkFeriadoOuFDS = (data) => {
     if (!data || !(data instanceof Date) || isNaN(data)) return false;
     const diaSemana = data.getDay();
     if (diaSemana === 0 || diaSemana === 6) return true;
-
-    const dia = String(data.getDate()).padStart(2, '0');
-    const mes = String(data.getMonth() + 1).padStart(2, '0');
-    const dataFormatada = `${mes}-${dia}`;
-
-    const feriadosFixos = ['01-01', '04-21', '05-01', '09-07', '10-12', '11-02', '11-15', '12-25'];
-    return feriadosFixos.includes(dataFormatada);
+    const df = `${String(data.getMonth() + 1).padStart(2, '0')}-${String(data.getDate()).padStart(2, '0')}`;
+    const feriados = ['01-01', '04-21', '05-01', '09-07', '10-12', '11-02', '11-15', '12-25'];
+    return feriados.includes(df);
   };
 
-  const espacoAtivo = espacos.find(e => String(e.id) === String(selectedEspaco));
+  const isFimDeSemana = checkFeriadoOuFDS(date);
 
-  const getPrecoNumerico = (preco) => {
-    if (!preco) return 0;
-    const limpo = String(preco).replace('R$', '').replace(/\s/g, '').replace(',', '.');
-    const numero = parseFloat(limpo);
-    return isNaN(numero) ? 0 : numero;
-  };
+  // Lógica de precificação rigorosa conforme tarifário
+  const precoBasePix = useMemo(() => {
+    if (isFimDeSemana) {
+      if (duracao === 1) return 200;
+      if (duracao === 2) return 320;
+      if (duracao === 3) return 460;
+      if (duracao === 4) return 600;
+      return 1000; // Valor da Diária
+    } else {
+      if (duracao === 1) return 150;
+      if (duracao === 2) return 240;
+      if (duracao === 3) return 360;
+      if (duracao === 4) return 480;
+      return 800; // Valor da Diária
+    }
+  }, [duracao, isFimDeSemana]);
 
-  // Cálculo Base
-  const isTaxaExtra = checkFeriadoOuFDS(date);
-  const precoBase = espacoAtivo ? getPrecoNumerico(espacoAtivo.preco_por_hora) : 0;
-  const precoHora = precoBase > 0 ? (isTaxaExtra ? precoBase + 50 : precoBase) : 0;
-  const totalCalculado = precoHora * duracao;
-
-  // Lógica da Taxa do Cartão de Crédito
-  const totalFinal = metodoPagamento === 'CREDITO' ? totalCalculado * 1.10 : totalCalculado;
+  const precoCredito = precoBasePix * 1.15; // 15% acréscimo
+  const totalExibido = metodoPagamento === 'CREDITO' ? precoCredito : precoBasePix;
+  const valorEconomia = precoCredito - precoBasePix;
 
   const pixCopiaCola = useMemo(() => {
-    if (!totalFinal || isNaN(totalFinal) || totalFinal <= 0) return '';
-    return generatePixPayload(PIX_KEY, MERCHANT_NAME, MERCHANT_CITY, totalFinal, txIdUnico);
-  }, [totalFinal, txIdUnico]);
+    if (!totalExibido || totalExibido <= 0) return '';
+    return generatePixPayload(PIX_KEY, MERCHANT_NAME, MERCHANT_CITY, totalExibido, txIdUnico);
+  }, [totalExibido, txIdUnico]);
 
   useEffect(() => {
     if (selectedEspaco && date) {
@@ -141,15 +118,11 @@ const Agendamento = () => {
             for (let h = inicio; h < fim; h++) ocupados.push(h);
           });
           setHorariosOcupados(ocupados);
-        })
-        .catch(() => { });
+        }).catch(() => { });
     }
   }, [selectedEspaco, date]);
 
-  const isTimeBlocked = (time) => {
-    const hora = parseInt(time.split(':')[0]);
-    return horariosOcupados.includes(hora);
-  };
+  const isTimeBlocked = (time) => horariosOcupados.includes(parseInt(time.split(':')[0]));
 
   const handleDurationChange = (op) => {
     if (op === 'inc' && duracao < 12) setDuracao(duracao + 1);
@@ -162,10 +135,8 @@ const Agendamento = () => {
       Store.addNotification({ title: "Atenção", message: "Preencha todos os campos.", type: "warning", container: "top-right", dismiss: { duration: 3000 } });
       return;
     }
-
     if (metodoPagamento === 'PIX') {
-      const novoTxId = `VT${Date.now()}`.substring(0, 25);
-      setTxIdUnico(novoTxId);
+      setTxIdUnico(`VT${Date.now()}`.substring(0, 25));
       setShowPixModal(true);
     } else {
       enviarReserva();
@@ -173,11 +144,7 @@ const Agendamento = () => {
   };
 
   const enviarReserva = async () => {
-    if (metodoPagamento === 'PIX' && !comprovante) {
-      alert("Por favor, anexe o comprovante do Pix.");
-      return;
-    }
-
+    if (metodoPagamento === 'PIX' && !comprovante) { alert("Anexe o comprovante do Pix."); return; }
     const [hora, minuto] = selectedTime.split(':');
     const dataInicio = new Date(date);
     dataInicio.setHours(parseInt(hora), parseInt(minuto), 0);
@@ -188,18 +155,15 @@ const Agendamento = () => {
     formData.append('data_inicio', dataInicio.toISOString());
     formData.append('data_fim', dataFim.toISOString());
     formData.append('metodo_pagamento', metodoPagamento);
-
     if (comprovante) formData.append('comprovante', comprovante);
 
     try {
       await api.post('/agendamentos', formData);
       setShowPixModal(false);
-
-      const msgSucesso = metodoPagamento === 'PIX' ? "Solicitação enviada! Aguarde a confirmação." : "Agendamento realizado! Pagamento será feito no local.";
-      Store.addNotification({ title: "Sucesso!", message: msgSucesso, type: "success", container: "top-right", dismiss: { duration: 5000 } });
+      Store.addNotification({ title: "Sucesso!", message: "Sessão agendada com sucesso!", type: "success", container: "top-right", dismiss: { duration: 5000 } });
       navigate('/meus-agendamentos');
     } catch (err) {
-      Store.addNotification({ title: "Erro", message: "Erro ao reservar. Tente novamente.", type: "danger", container: "top-right", dismiss: { duration: 4000 } });
+      Store.addNotification({ title: "Erro", message: "Erro ao reservar.", type: "danger", container: "top-right", dismiss: { duration: 4000 } });
     }
   };
 
@@ -208,43 +172,21 @@ const Agendamento = () => {
       <div className="booking-header">
         <h1>Reservar Estúdio</h1>
         <div className="header-divider"></div>
-        <p>Experiência Vetra Exclusiva</p>
+        <p>Tarifário Oficial Vetra Studio</p>
       </div>
 
       <div className="booking-layout">
         <div className="booking-form-col">
           <form onSubmit={handlePreSubmit}>
-
             <section className="form-section">
-              <div className="section-header">
-                <span className="step-number">01</span>
-                <h3>Escolha o Cenário</h3>
-              </div>
-
-              {loading ? (
-                <div className="loading-spinner">
-                  <FaClock className="spin" /> <span>Carregando...</span>
-                </div>
-              ) : (
+              <div className="section-header"><span className="step-number">01</span><h3>Cenário</h3></div>
+              {loading ? <div className="loading-spinner"><FaClock className="spin" /> <span>Carregando...</span></div> : (
                 <div className="espacos-grid">
                   {espacos.map((espaco) => (
-                    <div
-                      key={espaco.id}
-                      className={`espaco-card ${String(selectedEspaco) === String(espaco.id) ? 'selected' : ''}`}
-                      onClick={() => { setSelectedEspaco(espaco.id); setSelectedTime(null); }}
-                    >
-                      <div className="espaco-icon-box">
-                        <div className="espaco-icon" style={{ fontSize: '3rem', margin: '15px 0', color: String(selectedEspaco) === String(espaco.id) ? '#D4AF6E' : '#888' }}>
-                          {espaco.icon}
-                        </div>
-                      </div>
-                      <div className="espaco-info">
-                        <span className="name">{espaco.nome}</span>
-                        <span className="price notranslate" translate="no">
-                          R$ {getPrecoNumerico(espaco.preco_por_hora).toFixed(2).replace('.', ',')} <small>/h (base)</small>
-                        </span>
-                      </div>
-                      {String(selectedEspaco) === String(espaco.id) && <div className="check-badge"><FaCheckCircle /></div>}
+                    <div key={espaco.id} className={`espaco-card ${String(selectedEspaco) === String(espaco.id) ? 'selected' : ''}`} onClick={() => { setSelectedEspaco(espaco.id); setSelectedTime(null); }}>
+                      <div className="espaco-icon-box"><div className="espaco-icon" style={{ fontSize: '3rem', margin: '15px 0', color: String(selectedEspaco) === String(espaco.id) ? '#D4AF6E' : '#888' }}>{espaco.icon}</div></div>
+                      <div className="espaco-info"><span className="name">{espaco.nome}</span></div>
+                      {String(selectedEspaco) === String(espaco.id) && <FaCheckCircle className="check-corner" />}
                     </div>
                   ))}
                 </div>
@@ -253,28 +195,15 @@ const Agendamento = () => {
 
             <section className="form-section">
               <div className="section-header"><span className="step-number">02</span><h3>Data e Horário</h3></div>
-
-              {isTaxaExtra && (
-                <div style={{ background: '#fff3cd', color: '#856404', padding: '10px 15px', borderRadius: '6px', marginBottom: '20px', fontSize: '0.9rem', fontWeight: 'bold' }}>
-                  <span>Aviso: Valores ajustados (+ R$50/h) para finais de semana e feriados.</span>
-                </div>
-              )}
-
+              {isFimDeSemana && <div className="weekend-alert"><span><FaTags /> Tarifário de Finais de Semana e Feriados ativo.</span></div>}
               <div className="datetime-container">
-                <div className="calendar-wrapper">
-                  <Calendar onChange={(d) => { setDate(d); setSelectedTime(null); }} value={date} minDate={new Date()} locale="pt-BR" className="vetra-calendar" />
-                </div>
+                <div className="calendar-wrapper"><Calendar onChange={(d) => { setDate(d); setSelectedTime(null); }} value={date} minDate={new Date()} locale="pt-BR" className="vetra-calendar" /></div>
                 <div className="time-wrapper">
                   <h4>Horários Disponíveis</h4>
                   <div className="time-grid">
-                    {timeSlots.map(time => {
-                      const blocked = isTimeBlocked(time);
-                      return (
-                        <button type="button" key={time} disabled={blocked} className={`time-btn ${selectedTime === time ? 'active' : ''} ${blocked ? 'blocked' : ''}`} onClick={() => !blocked && setSelectedTime(time)}>
-                          <span>{time}</span>
-                        </button>
-                      );
-                    })}
+                    {timeSlots.map(time => (
+                      <button type="button" key={time} disabled={isTimeBlocked(time)} className={`time-btn ${selectedTime === time ? 'active' : ''} ${isTimeBlocked(time) ? 'blocked' : ''}`} onClick={() => setSelectedTime(time)}><span>{time}</span></button>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -288,33 +217,27 @@ const Agendamento = () => {
                   <span className="value notranslate" translate="no">{duracao}h</span>
                   <button type="button" onClick={() => handleDurationChange('inc')} disabled={duracao >= 12}><FaPlus /></button>
                 </div>
-                <p className="duration-hint">
-                  {precoHora > 0 ? (
-                    <span className="notranslate" translate="no">R$ {precoHora}/h x {duracao}h</span>
-                  ) : <span>Selecione um cenário</span>}
-                </p>
+                <p className="duration-hint"><span>{duracao > 4 ? 'Pacote de Diária selecionado' : `Pacote de ${duracao} horas`}</span></p>
               </div>
             </section>
 
             <section className="form-section">
-              <div className="section-header"><span className="step-number">04</span><h3>Forma de Pagamento</h3></div>
-              <p className="payment-intro"><span>Selecione o método de pagamento preferido.</span></p>
-
+              <div className="section-header"><span className="step-number">04</span><h3>Pagamento</h3></div>
               <div className="payment-grid">
                 <div className={`payment-option ${metodoPagamento === 'PIX' ? 'active' : ''}`} onClick={() => setMetodoPagamento('PIX')}>
                   <FaQrcode className="pay-icon" />
-                  <div className="pay-text"><strong>PIX</strong></div>
-                  <small><span>Aprovação Imediata</span></small>
+                  <div className="pay-text"><strong>PIX / DINHEIRO</strong></div>
+                  <small className="discount-badge">Economize R$ {valorEconomia.toFixed(0)}</small>
                 </div>
                 <div className={`payment-option ${metodoPagamento === 'CREDITO' ? 'active' : ''}`} onClick={() => setMetodoPagamento('CREDITO')}>
                   <FaCreditCard className="pay-icon" />
-                  <div className="pay-text"><strong>Crédito</strong></div>
-                  <small><span>Pagar no Local (+10%)</span></small>
+                  <div className="pay-text"><strong>CRÉDITO</strong></div>
+                  <small><span>Acréscimo de 15%</span></small>
                 </div>
                 <div className={`payment-option ${metodoPagamento === 'DEBITO' ? 'active' : ''}`} onClick={() => setMetodoPagamento('DEBITO')}>
                   <FaBarcode className="pay-icon" />
-                  <div className="pay-text"><strong>Débito</strong></div>
-                  <small><span>Pagar no Local</span></small>
+                  <div className="pay-text"><strong>DÉBITO</strong></div>
+                  <small><span>Preço de Tabela</span></small>
                 </div>
               </div>
             </section>
@@ -324,55 +247,31 @@ const Agendamento = () => {
         <div className="booking-summary-col">
           <div className="summary-card">
             <h3 className="summary-title">Resumo da Reserva</h3>
-
-            <div style={{ fontSize: '4rem', textAlign: 'center', margin: '20px 0', color: '#D4AF6E' }}>
-              {espacoAtivo ? espacoAtivo.icon : <FaCameraRetro />}
-            </div>
-
             <div className="summary-content">
-              <div className="summary-item">
-                <span className="label"><FaCameraRetro /> <span>Cenário</span></span>
-                <span className="value highlight">{espacoAtivo ? espacoAtivo.nome : <span>Selecione...</span>}</span>
-              </div>
-              <div className="summary-item">
-                <span className="label"><FaCalendarAlt /> <span>Data</span></span>
-                <span className="value">{format(date, "dd 'de' MMMM", { locale: ptBR })}</span>
-              </div>
-              <div className="summary-item">
-                <span className="label"><FaClock /> <span>Horário</span></span>
-                <span className="value">{selectedTime || '--:--'}</span>
-              </div>
-              <div className="summary-item">
-                <span className="label"><FaClock /> <span>Duração</span></span>
-                <span className="value notranslate" translate="no">{duracao}h</span>
-              </div>
-              <div className="summary-item">
-                <span className="label"><FaCreditCard /> <span>Pagamento</span></span>
-                <span className="value">{metodoPagamento || '...'}</span>
-              </div>
+              <div className="summary-item"><span className="label"><FaCameraRetro /> <span>Cenário</span></span><span className="value highlight">{espacos.find(e => String(e.id) === String(selectedEspaco))?.nome || '...'}</span></div>
+              <div className="summary-item"><span className="label"><FaCalendarAlt /> <span>Data</span></span><span className="value">{format(date, "dd 'de' MMMM", { locale: ptBR })}</span></div>
+              <div className="summary-item"><span className="label"><FaClock /> <span>Horário</span></span><span className="value">{selectedTime || '--:--'}</span></div>
+              <div className="summary-item"><span className="label"><FaClock /> <span>Duração</span></span><span className="value">{duracao}h</span></div>
             </div>
-
             <div className="summary-divider"></div>
 
-            <div className="total-box" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span>Total Estimado</span>
-                {metodoPagamento === 'CREDITO' && (
-                  <span style={{ fontSize: '0.75rem', color: '#e74c3c', fontWeight: 'bold' }}>+10% Taxa de Cartão</span>
+            <div className="total-box">
+              <div className="price-details">
+                <span className="old-price">Preço Crédito: R$ {precoCredito.toFixed(2).replace('.', ',')}</span>
+                <div className="final-price-row">
+                  <span className="total-label">Total:</span>
+                  <span className="total-price">R$ {totalExibido.toFixed(2).replace('.', ',')}</span>
+                </div>
+                {metodoPagamento === 'PIX' && (
+                  <div className="savings-tag"><FaTags /> <span>Você economizou R$ {valorEconomia.toFixed(2).replace('.', ',')}</span></div>
                 )}
               </div>
-              <span className="total-price notranslate" translate="no">
-                R$ {totalFinal ? totalFinal.toFixed(2).replace('.', ',') : '0,00'}
-              </span>
             </div>
 
             <button type="button" onClick={handlePreSubmit} className="btn-confirm-booking" disabled={loading}>
-              <span>{metodoPagamento === 'PIX' ? 'Pagar com Pix' : 'Confirmar Reserva'}</span> <FaArrowRight />
+              <span>{metodoPagamento === 'PIX' ? 'Gerar PIX' : 'Confirmar Reserva'}</span> <FaArrowRight />
             </button>
-
-            <div className="security-badge">
-              <FaLock /> <span>Ambiente Seguro</span>
-            </div>
+            <div className="security-badge"><FaLock /> <span>Ambiente Seguro</span></div>
           </div>
         </div>
       </div>
@@ -381,47 +280,26 @@ const Agendamento = () => {
         <div className="modal-overlay fade-in">
           <div className="modal-content pix-modal">
             <button className="close-btn" onClick={() => setShowPixModal(false)}><FaTimes /></button>
-
-            <div className="modal-header-payment">
-              <h3>Pagamento Pix</h3>
-              <p className="subtitle"><span>Escaneie o QR Code ou use o Copia e Cola</span></p>
-            </div>
-
+            <div className="modal-header-payment"><h3>Finalizar Pagamento</h3><p className="subtitle"><span>Use o QR Code ou o Copia e Cola</span></p></div>
             <div className="payment-steps">
               <div className="pay-step-box center-box">
                 <span className="step-tag">1. Escanear</span>
-                <p>Valor: <strong>R$ {totalFinal ? totalFinal.toFixed(2).replace('.', ',') : '0,00'}</strong></p>
-                <div className="qr-container-infinite">
-                  {pixCopiaCola && <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=10&data=${encodeURIComponent(pixCopiaCola)}`} alt="QR Pix" />}
-                </div>
+                <p>Valor com Desconto: <strong>R$ {totalExibido.toFixed(2).replace('.', ',')}</strong></p>
+                <div className="qr-container-infinite">{pixCopiaCola && <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=10&data=${encodeURIComponent(pixCopiaCola)}`} alt="QR Pix" />}</div>
               </div>
-
               <div className="pay-step-box">
                 <span className="step-tag">2. Copia e Cola</span>
                 <div className="copy-paste-box">
                   <input type="text" readOnly value={pixCopiaCola} />
-                  <button type="button" onClick={() => {
-                    navigator.clipboard.writeText(pixCopiaCola);
-                    Store.addNotification({ title: "Copiado!", message: "Código Pix copiado.", type: "default", container: "top-right", dismiss: { duration: 2000 } });
-                  }}><FaCopy /></button>
+                  <button type="button" onClick={() => { navigator.clipboard.writeText(pixCopiaCola); Store.addNotification({ title: "Copiado!", message: "Link PIX copiado.", type: "default", container: "top-right", dismiss: { duration: 2000 } }); }}><FaCopy /></button>
                 </div>
               </div>
-
               <div className="pay-step-box">
                 <span className="step-tag">3. Comprovante</span>
-                <label className={`upload-zone ${comprovante ? 'has-file' : ''}`}>
-                  <FaCloudUploadAlt size={28} />
-                  <div className="upload-text">
-                    <strong><span>{comprovante ? comprovante.name : 'Anexar Comprovante'}</span></strong>
-                  </div>
-                  <input type="file" onChange={(e) => setComprovante(e.target.files[0])} hidden accept="image/*,application/pdf" />
-                </label>
+                <label className={`upload-zone ${comprovante ? 'has-file' : ''}`}><FaCloudUploadAlt size={28} /><div className="upload-text"><strong>{comprovante ? comprovante.name : 'Anexar Comprovante'}</strong></div><input type="file" onChange={(e) => setComprovante(e.target.files[0])} hidden accept="image/*,application/pdf" /></label>
               </div>
             </div>
-
-            <button type="button" className="btn-finalize-total" onClick={enviarReserva}>
-              <FaCheckCircle /> <span>Finalizar Pix</span>
-            </button>
+            <button type="button" className="btn-finalize-total" onClick={enviarReserva}><FaCheckCircle /> <span>Enviar Comprovante</span></button>
           </div>
         </div>
       )}

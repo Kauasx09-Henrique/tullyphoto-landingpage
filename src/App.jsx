@@ -12,6 +12,8 @@ import Cadastro from './pages/Cadastro';
 import MeusAgendamentos from './pages/meusAgendamentos.jsx';
 import EsqueceuSenha from './pages/EsqueceuSenha.jsx';
 import RedefinirSenha from './pages/RedefinirSenha.jsx';
+import Equipe from './components/Equipe.jsx';
+import ServiceCards from './components/ServiceCards.jsx';
 
 
 // Pages Admin
@@ -44,6 +46,8 @@ function App() {
         <Route path="/informacoes" element={<Information />} />
         <Route path="/esqueceu-senha" element={<EsqueceuSenha />} />
         <Route path="/redefinir-senha" element={<RedefinirSenha />} />
+        <Route path="/Equipe" element={<><Header /><Equipe /><Footer /></>} />
+        <Route path='/ServiceCards' element={<><Header /><ServiceCards /><Footer /></>} />
 
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<AdminDashboard />} />
