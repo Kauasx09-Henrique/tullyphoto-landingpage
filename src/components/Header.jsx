@@ -3,10 +3,10 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
     FaUserCircle, FaSignOutAlt, FaSignInAlt,
     FaBars, FaTimes, FaArrowRight,
-    FaBell, FaCheck, FaPercentage
+    FaBell, FaCheck
 } from 'react-icons/fa';
 import api from '../services/api';
-import '../styles/Header.css';
+import '../styles/header.css';
 import logoImg from "./logo.png";
 
 const Header = () => {
@@ -22,12 +22,19 @@ const Header = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const isAdmin = user && user.tipo === 'ADMIN';
 
+    // --- CORREÇÃO DO SCROLL: Reseta para o topo ao trocar de página ---
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location.pathname]);
+
+    // Efeito de Vidro no Scroll
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Polling de Notificações
     useEffect(() => {
         if (user) {
             fetchNotificacoes();
@@ -93,6 +100,12 @@ const Header = () => {
                             <li><Link to="/portfolio" className={`link-item ${isActive('/portfolio')}`} onClick={() => setMobileOpen(false)}>Portfólio</Link></li>
                             <li><Link to="/Equipe" className={`link-item ${isActive('/Equipe')}`} onClick={() => setMobileOpen(false)}>Equipe</Link></li>
                             <li><Link to="/ServiceCards" className={`link-item ${isActive('/ServiceCards')}`} onClick={() => setMobileOpen(false)}>Serviços</Link></li>
+                            {user && !isAdmin && (
+                                <li><Link to="/meus-agendamentos" className={`link-item ${isActive('/meus-agendamentos')}`} onClick={() => setMobileOpen(false)}>Reservas</Link></li>
+                            )}
+                            {isAdmin && (
+                                <li><Link to="/admin/dashboard" className={`link-item ${isActive('/admin/dashboard')}`} onClick={() => setMobileOpen(false)}>Painel</Link></li>
+                            )}
                         </ul>
                     </nav>
 
@@ -105,7 +118,7 @@ const Header = () => {
                                         {unreadCount > 0 && <span className="notif-badge">{unreadCount}</span>}
                                     </div>
                                     {showNotif && (
-                                        <div className="notif-dropdown">
+                                        <div className="notif-dropdown" translate="no">
                                             <div className="notif-header">
                                                 <h4>Avisos</h4>
                                                 <button onClick={() => setShowNotif(false)}><FaTimes /></button>
@@ -125,12 +138,11 @@ const Header = () => {
                                         </div>
                                     )}
                                 </div>
-
                                 <div className="user-profile-menu">
-                                    <Link to={isAdmin ? "/admin/dashboard" : "/meus-agendamentos"} className="user-badge-link" onClick={() => setMobileOpen(false)}>
+                                    <div className="user-badge-link">
                                         <FaUserCircle className="user-icon" />
                                         <span className="user-name-text"><strong>{user.nome?.split(' ')[0]}</strong></span>
-                                    </Link>
+                                    </div>
                                     <button onClick={handleLogout} className="btn-logout" title="Sair"><FaSignOutAlt /></button>
                                 </div>
                             </>

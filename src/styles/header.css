@@ -41,12 +41,10 @@
     align-items: center;
 }
 
-/* --- LOGO --- */
 .brand-logo {
     height: 45px;
     width: auto;
-    transition: transform 0.3s ease;
-    display: block;
+    transition: 0.3s;
 }
 
 .brand-logo:hover {
@@ -89,7 +87,7 @@
     font-weight: 700;
 }
 
-/* --- USER ACTIONS AREA --- */
+/* --- USER ACTIONS --- */
 .user-actions {
     display: flex;
     align-items: center;
@@ -105,7 +103,6 @@
     font-size: 1.25rem;
     color: #fff;
     cursor: pointer;
-    position: relative;
     padding: 8px;
     transition: 0.3s;
 }
@@ -115,9 +112,22 @@
 }
 
 @keyframes ringBell {
-    0%, 10%, 100% { transform: rotate(0); }
-    2%, 6% { transform: rotate(15deg); }
-    4%, 8% { transform: rotate(-15deg); }
+
+    0%,
+    10%,
+    100% {
+        transform: rotate(0);
+    }
+
+    2%,
+    6% {
+        transform: rotate(15deg);
+    }
+
+    4%,
+    8% {
+        transform: rotate(-15deg);
+    }
 }
 
 .notif-badge {
@@ -137,7 +147,6 @@
     font-weight: bold;
 }
 
-/* Notif Dropdown */
 .notif-dropdown {
     position: absolute;
     top: 55px;
@@ -145,7 +154,7 @@
     width: 320px;
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
     overflow: hidden;
     animation: slideDown 0.3s ease;
 }
@@ -159,10 +168,25 @@
     border-bottom: 1px solid #eee;
 }
 
-.notif-header h4 { margin: 0; font-size: 0.9rem; color: #333; font-weight: 700; }
-.notif-header button { background: none; border: none; cursor: pointer; color: #999; font-size: 1.1rem; }
+.notif-header h4 {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 700;
+}
 
-.notif-list { max-height: 300px; overflow-y: auto; }
+.notif-header button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #999;
+}
+
+.notif-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
 .notif-item {
     padding: 15px;
     border-bottom: 1px solid #f8f8f8;
@@ -170,15 +194,32 @@
     justify-content: space-between;
     align-items: center;
     font-size: 0.85rem;
-    transition: background 0.2s;
 }
 
-.notif-item.unread { background: #f4f8fb; border-left: 4px solid var(--h-gold); }
-.notif-item p { margin: 0; color: #444; line-height: 1.4; flex: 1; padding-right: 10px; }
-.btn-read { background: #e8f5e9; color: var(--h-success); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; transition: 0.2s; }
-.btn-read:hover { background: var(--h-success); color: #fff; }
+.notif-item.unread {
+    background: #f4f8fb;
+    border-left: 4px solid var(--h-gold);
+}
 
-/* Perfil & Menu */
+.notif-item p {
+    margin: 0;
+    color: #444;
+    line-height: 1.4;
+    flex: 1;
+    padding-right: 10px;
+}
+
+.btn-read {
+    background: #e8f5e9;
+    color: var(--h-success);
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Perfil */
 .user-profile-menu {
     display: flex;
     align-items: center;
@@ -191,14 +232,14 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    text-decoration: none;
     color: #fff;
     font-size: 0.9rem;
-    transition: color 0.3s;
 }
 
-.user-badge-link:hover { color: var(--h-gold); }
-.user-icon { font-size: 1.4rem; color: var(--h-gold); }
+.user-icon {
+    font-size: 1.4rem;
+    color: var(--h-gold);
+}
 
 .btn-logout {
     background: none;
@@ -206,13 +247,12 @@
     color: rgba(255, 255, 255, 0.4);
     cursor: pointer;
     font-size: 1.1rem;
-    transition: 0.3s;
-    display: flex;
 }
 
-.btn-logout:hover { color: var(--h-red); }
+.btn-logout:hover {
+    color: var(--h-red);
+}
 
-/* Login */
 .btn-login-link {
     text-decoration: none;
     color: #fff;
@@ -223,10 +263,6 @@
 }
 
 /* --- BOTÃO AGENDAR PREMIUM --- */
-.agendar-container {
-    margin-left: 10px;
-}
-
 .btn-agendar-premium {
     background: var(--h-gold);
     color: var(--h-dark);
@@ -240,10 +276,9 @@
     align-items: center;
     gap: 12px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: 0.3s;
     position: relative;
     overflow: visible;
-    letter-spacing: 1px;
 }
 
 .btn-agendar-premium:hover {
@@ -267,12 +302,20 @@
 }
 
 @keyframes pulseBadge {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
-/* --- MOBILE TOGGLE --- */
+/* --- MOBILE --- */
 .mobile-toggle {
     display: none;
     font-size: 1.5rem;
@@ -280,10 +323,14 @@
     cursor: pointer;
 }
 
-/* --- RESPONSIVIDADE --- */
 @media (max-width: 1024px) {
-    .header { padding: 15px 0; }
-    .mobile-toggle { display: block; }
+    .header {
+        padding: 15px 0;
+    }
+
+    .mobile-toggle {
+        display: block;
+    }
 
     .nav-wrapper {
         position: fixed;
@@ -336,15 +383,9 @@
     }
 
     .user-profile-menu {
-        border-left: none;
-        padding-left: 0;
         width: 100%;
         justify-content: space-between;
-    }
-
-    .agendar-container {
-        width: 100%;
-        margin: 0;
+        padding: 0;
     }
 
     .btn-agendar-premium {
@@ -364,6 +405,13 @@
 }
 
 @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
