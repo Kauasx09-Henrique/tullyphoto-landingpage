@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Store } from 'react-notifications-component';
-import { FaUserShield, FaUser, FaLock, FaLockOpen, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaUserShield, FaUser, FaLock, FaLockOpen, FaEdit, FaTrash, FaWhatsapp } from 'react-icons/fa';
 import api from '../../services/api';
 import './styles/adminUsuarios.css';
 
@@ -59,6 +59,14 @@ const AdminUsuarios = () => {
     }
   };
 
+  const formatarTelefone = (tel) => {
+    if (!tel) return '';
+    const t = tel.replace(/\D/g, '');
+    if (t.length === 11) return `(${t.slice(0,2)}) ${t.slice(2,7)}-${t.slice(7)}`;
+    if (t.length === 10) return `(${t.slice(0,2)}) ${t.slice(2,6)}-${t.slice(6)}`;
+    return tel;
+  };
+
   return (
     <div className="admin-page-container fade-in">
       <div className="admin-header-row">
@@ -75,6 +83,7 @@ const AdminUsuarios = () => {
               <th width="60">ID</th>
               <th>Nome do Usuário</th>
               <th>E-mail</th>
+              <th>WhatsApp</th>
               <th>Permissão</th>
               <th>Status</th>
               <th align="right">Ações</th>
@@ -82,9 +91,9 @@ const AdminUsuarios = () => {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan="6" className="text-center">Carregando usuários...</td></tr>
+              <tr><td colSpan="7" className="text-center">Carregando usuários...</td></tr>
             ) : usuarios.length === 0 ? (
-              <tr><td colSpan="6" className="text-center empty-state">Nenhum usuário encontrado.</td></tr>
+              <tr><td colSpan="7" className="text-center empty-state">Nenhum usuário encontrado.</td></tr>
             ) : (
               usuarios.map(user => (
                 <tr key={user.id} className={!user.ativo ? 'row-inativo' : ''}>
@@ -93,6 +102,20 @@ const AdminUsuarios = () => {
                     <strong>{user.nome}</strong>
                   </td>
                   <td>{user.email}</td>
+                  <td>
+                    {user.telefone ? (
+                      <a 
+                        href={`https://wa.me/55${user.telefone}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="whatsapp-link"
+                      >
+                        <FaWhatsapp /> {formatarTelefone(user.telefone)}
+                      </a>
+                    ) : (
+                      <span className="no-phone">Não informado</span>
+                    )}
+                  </td>
                   <td>
                     <span className={`role-badge ${user.tipo.toLowerCase()}`}>
                       {user.tipo === 'ADMIN' ? <><FaUserShield /> ADMIN</> : <><FaUser /> CLIENTE</>}

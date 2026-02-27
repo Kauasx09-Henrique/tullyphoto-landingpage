@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Calendar from 'react-calendar';
-import { Store } from 'react-notifications-component';
-import { format } from 'date-fns';
+import { DayPicker } from 'react-day-picker';
 import { ptBR } from 'date-fns/locale';
+import { format, isSameDay } from 'date-fns';
+import { Store } from 'react-notifications-component';
 import {
   FaCreditCard, FaBarcode, FaQrcode, FaTimes, FaCloudUploadAlt,
   FaCheckCircle, FaClock, FaCalendarAlt, FaCameraRetro, FaMinus, FaPlus,
-  FaArrowRight, FaTree, FaLightbulb, FaLock, FaCopy, FaTags
+  FaArrowRight, FaTree, FaLightbulb, FaLock, FaCopy, FaTags, FaUniversity
 } from 'react-icons/fa';
 import api from '../services/api';
-import 'react-calendar/dist/Calendar.css';
+import 'react-day-picker/dist/style.css';
 import '../styles/agendamento.css';
 
 const PIX_KEY = "bf591bd9-c630-4b77-b4b2-5c7e685121cb";
@@ -63,14 +63,17 @@ const Agendamento = () => {
   useEffect(() => {
     api.get('/espacos')
       .then(res => {
-        setEspacos(res.data.map(e => ({ ...e, icon: e.nome.toLowerCase().includes('jardim') ? <FaTree /> : e.nome.toLowerCase().includes('industrial') ? <FaLightbulb /> : <FaCameraRetro /> })));
+        setEspacos(res.data.map(e => ({
+          ...e,
+          icon: e.nome.toLowerCase().includes('jardim') ? <FaTree /> : e.nome.toLowerCase().includes('industrial') ? <FaLightbulb /> : <FaCameraRetro />
+        })));
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, []);
 
   const checkFeriadoOuFDS = (data) => {
-    if (!data || !(data instanceof Date) || isNaN(data)) return false;
+    if (!data) return false;
     const diaSemana = data.getDay();
     if (diaSemana === 0 || diaSemana === 6) return true;
     const df = `${String(data.getMonth() + 1).padStart(2, '0')}-${String(data.getDate()).padStart(2, '0')}`;
@@ -80,24 +83,24 @@ const Agendamento = () => {
 
   const isFimDeSemana = checkFeriadoOuFDS(date);
 
-  // Lógica de precificação rigorosa conforme tarifário
+  // Lógica de Preços (Tabela Oficial)
   const precoBasePix = useMemo(() => {
     if (isFimDeSemana) {
-      if (duracao === 1) return 200;
-      if (duracao === 2) return 320;
-      if (duracao === 3) return 460;
-      if (duracao === 4) return 600;
-      return 1000; // Valor da Diária
+      if (duracao === 1) return 200; //
+      if (duracao === 2) return 320; //
+      if (duracao === 3) return 460; //
+      if (duracao === 4) return 600; //
+      return 1000; // Diária FDS
     } else {
-      if (duracao === 1) return 150;
-      if (duracao === 2) return 240;
-      if (duracao === 3) return 360;
-      if (duracao === 4) return 480;
-      return 800; // Valor da Diária
+      if (duracao === 1) return 150; //
+      if (duracao === 2) return 240; //
+      if (duracao === 3) return 360; //
+      if (duracao === 4) return 480; //
+      return 800; // Diária Semana
     }
   }, [duracao, isFimDeSemana]);
 
-  const precoCredito = precoBasePix * 1.15; // 15% acréscimo
+  const precoCredito = precoBasePix * 1.15; // 15% Acréscimo
   const totalExibido = metodoPagamento === 'CREDITO' ? precoCredito : precoBasePix;
   const valorEconomia = precoCredito - precoBasePix;
 
@@ -160,10 +163,10 @@ const Agendamento = () => {
     try {
       await api.post('/agendamentos', formData);
       setShowPixModal(false);
-      Store.addNotification({ title: "Sucesso!", message: "Sessão agendada com sucesso!", type: "success", container: "top-right", dismiss: { duration: 5000 } });
+      Store.addNotification({ title: "Sucesso!", message: "Sessão agendada!", type: "success", container: "top-right", dismiss: { duration: 5000 } });
       navigate('/meus-agendamentos');
     } catch (err) {
-      Store.addNotification({ title: "Erro", message: "Erro ao reservar.", type: "danger", container: "top-right", dismiss: { duration: 4000 } });
+      Store.addNotification({ title: "Erro", message: "Falha ao reservar.", type: "danger", container: "top-right", dismiss: { duration: 4000 } });
     }
   };
 
@@ -172,72 +175,88 @@ const Agendamento = () => {
       <div className="booking-header">
         <h1>Reservar Estúdio</h1>
         <div className="header-divider"></div>
-        <p>Tarifário Oficial Vetra Studio</p>
+        <p>Agendamento Exclusivo Vetra</p>
       </div>
 
       <div className="booking-layout">
         <div className="booking-form-col">
           <form onSubmit={handlePreSubmit}>
-            <section className="form-section">
-              <div className="section-header"><span className="step-number">01</span><h3>Cenário</h3></div>
-              {loading ? <div className="loading-spinner"><FaClock className="spin" /> <span>Carregando...</span></div> : (
-                <div className="espacos-grid">
+
+            {/* ETAPA 1: CENÁRIOS CENTRALIZADOS */}
+            <section className="form-section central-section-v">
+              <div className="section-header-v"><span className="step-tag-v">01</span><h3>Cenário</h3></div>
+              {loading ? <div className="loading-v">Buscando ambientes...</div> : (
+                <div className="espacos-centered-v">
                   {espacos.map((espaco) => (
-                    <div key={espaco.id} className={`espaco-card ${String(selectedEspaco) === String(espaco.id) ? 'selected' : ''}`} onClick={() => { setSelectedEspaco(espaco.id); setSelectedTime(null); }}>
-                      <div className="espaco-icon-box"><div className="espaco-icon" style={{ fontSize: '3rem', margin: '15px 0', color: String(selectedEspaco) === String(espaco.id) ? '#D4AF6E' : '#888' }}>{espaco.icon}</div></div>
-                      <div className="espaco-info"><span className="name">{espaco.nome}</span></div>
-                      {String(selectedEspaco) === String(espaco.id) && <FaCheckCircle className="check-corner" />}
+                    <div key={espaco.id} className={`espaco-card-v ${String(selectedEspaco) === String(espaco.id) ? 'selected' : ''}`} onClick={() => { setSelectedEspaco(espaco.id); setSelectedTime(null); }}>
+                      <div className="icon-v-circle">
+                        {espaco.icon}
+                      </div>
+                      <span className="name-v">{espaco.nome}</span>
+                      {String(selectedEspaco) === String(espaco.id) && <FaCheckCircle className="check-gold-v" />}
                     </div>
                   ))}
                 </div>
               )}
             </section>
 
+            {/* ETAPA 2: CALENDÁRIO REACT-DAY-PICKER */}
             <section className="form-section">
-              <div className="section-header"><span className="step-number">02</span><h3>Data e Horário</h3></div>
-              {isFimDeSemana && <div className="weekend-alert"><span><FaTags /> Tarifário de Finais de Semana e Feriados ativo.</span></div>}
-              <div className="datetime-container">
-                <div className="calendar-wrapper"><Calendar onChange={(d) => { setDate(d); setSelectedTime(null); }} value={date} minDate={new Date()} locale="pt-BR" className="vetra-calendar" /></div>
-                <div className="time-wrapper">
-                  <h4>Horários Disponíveis</h4>
-                  <div className="time-grid">
+              <div className="section-header-v"><span className="step-tag-v">02</span><h3>Data e Horário</h3></div>
+              {isFimDeSemana && <div className="weekend-alert-v"><span><FaTags /> Tarifário de Fim de Semana Ativo</span></div>}
+              <div className="datetime-grid-v">
+                <div className="calendar-container-v">
+                  <DayPicker
+                    mode="single"
+                    selected={date}
+                    onSelect={(d) => { if (d) setDate(d); setSelectedTime(null); }}
+                    locale={ptBR}
+                    disabled={{ before: new Date() }}
+                    className="luxury-daypicker"
+                  />
+                </div>
+                <div className="times-container-v">
+                  <h4>Horários</h4>
+                  <div className="time-grid-v">
                     {timeSlots.map(time => (
-                      <button type="button" key={time} disabled={isTimeBlocked(time)} className={`time-btn ${selectedTime === time ? 'active' : ''} ${isTimeBlocked(time) ? 'blocked' : ''}`} onClick={() => setSelectedTime(time)}><span>{time}</span></button>
+                      <button type="button" key={time} disabled={isTimeBlocked(time)} className={`time-btn-v ${selectedTime === time ? 'active' : ''} ${isTimeBlocked(time) ? 'blocked' : ''}`} onClick={() => setSelectedTime(time)}><span>{time}</span></button>
                     ))}
                   </div>
                 </div>
               </div>
             </section>
 
+            {/* ETAPA 3: DURAÇÃO */}
             <section className="form-section">
-              <div className="section-header"><span className="step-number">03</span><h3>Duração</h3></div>
-              <div className="duration-control">
-                <div className="stepper-box">
+              <div className="section-header-v"><span className="step-tag-v">03</span><h3>Duração da Sessão</h3></div>
+              <div className="duration-layout-v">
+                <div className="stepper-luxury-v">
                   <button type="button" onClick={() => handleDurationChange('dec')} disabled={duracao <= 1}><FaMinus /></button>
-                  <span className="value notranslate" translate="no">{duracao}h</span>
+                  <div className="dur-display-v"><span>{duracao}</span><small>horas</small></div>
                   <button type="button" onClick={() => handleDurationChange('inc')} disabled={duracao >= 12}><FaPlus /></button>
                 </div>
-                <p className="duration-hint"><span>{duracao > 4 ? 'Pacote de Diária selecionado' : `Pacote de ${duracao} horas`}</span></p>
+                <span className="package-info-v">{duracao > 4 ? '✨ Diária Automática' : `Pacote de ${duracao}h`}</span>
               </div>
             </section>
 
+            {/* ETAPA 4: PAGAMENTO COM DÉBITO */}
             <section className="form-section">
-              <div className="section-header"><span className="step-number">04</span><h3>Pagamento</h3></div>
-              <div className="payment-grid">
-                <div className={`payment-option ${metodoPagamento === 'PIX' ? 'active' : ''}`} onClick={() => setMetodoPagamento('PIX')}>
-                  <FaQrcode className="pay-icon" />
-                  <div className="pay-text"><strong>PIX / DINHEIRO</strong></div>
-                  <small className="discount-badge">Economize R$ {valorEconomia.toFixed(0)}</small>
+              <div className="section-header-v"><span className="step-tag-v">04</span><h3>Pagamento</h3></div>
+              <div className="payment-grid-v">
+                <div className={`pay-card-v ${metodoPagamento === 'PIX' ? 'active' : ''}`} onClick={() => setMetodoPagamento('PIX')}>
+                  <FaQrcode />
+                  <strong>PIX / Dinheiro</strong>
+                  <div className="discount-tag-v">15% OFF</div>
                 </div>
-                <div className={`payment-option ${metodoPagamento === 'CREDITO' ? 'active' : ''}`} onClick={() => setMetodoPagamento('CREDITO')}>
-                  <FaCreditCard className="pay-icon" />
-                  <div className="pay-text"><strong>CRÉDITO</strong></div>
-                  <small><span>Acréscimo de 15%</span></small>
+                <div className={`pay-card-v ${metodoPagamento === 'CREDITO' ? 'active' : ''}`} onClick={() => setMetodoPagamento('CREDITO')}>
+                  <FaCreditCard />
+                  <strong>Crédito</strong>
+                  <small>+15% Taxa</small>
                 </div>
-                <div className={`payment-option ${metodoPagamento === 'DEBITO' ? 'active' : ''}`} onClick={() => setMetodoPagamento('DEBITO')}>
-                  <FaBarcode className="pay-icon" />
-                  <div className="pay-text"><strong>DÉBITO</strong></div>
-                  <small><span>Preço de Tabela</span></small>
+                <div className={`pay-card-v ${metodoPagamento === 'DEBITO' ? 'active' : ''}`} onClick={() => setMetodoPagamento('DEBITO')}>
+                  <FaBarcode />
+                  <strong>Débito</strong>
+                  <small>Pagar no Local</small>
                 </div>
               </div>
             </section>
@@ -245,61 +264,40 @@ const Agendamento = () => {
         </div>
 
         <div className="booking-summary-col">
-          <div className="summary-card">
-            <h3 className="summary-title">Resumo da Reserva</h3>
-            <div className="summary-content">
-              <div className="summary-item"><span className="label"><FaCameraRetro /> <span>Cenário</span></span><span className="value highlight">{espacos.find(e => String(e.id) === String(selectedEspaco))?.nome || '...'}</span></div>
-              <div className="summary-item"><span className="label"><FaCalendarAlt /> <span>Data</span></span><span className="value">{format(date, "dd 'de' MMMM", { locale: ptBR })}</span></div>
-              <div className="summary-item"><span className="label"><FaClock /> <span>Horário</span></span><span className="value">{selectedTime || '--:--'}</span></div>
-              <div className="summary-item"><span className="label"><FaClock /> <span>Duração</span></span><span className="value">{duracao}h</span></div>
+          <div className="ticket-summary-v">
+            <h3 className="ticket-title-v">Resumo da Reserva</h3>
+            <div className="ticket-body-v">
+              <div className="ticket-row-v"><span>Cenário</span><strong>{espacos.find(e => String(e.id) === String(selectedEspaco))?.nome || '-'}</strong></div>
+              <div className="ticket-row-v"><span>Data</span><strong>{format(date, "dd/MM/yyyy")}</strong></div>
+              <div className="ticket-row-v"><span>Horário</span><strong>{selectedTime || '--:--'}</strong></div>
+              <div className="ticket-row-v"><span>Duração</span><strong>{duracao}h</strong></div>
             </div>
-            <div className="summary-divider"></div>
-
-            <div className="total-box">
-              <div className="price-details">
-                <span className="old-price">Preço Crédito: R$ {precoCredito.toFixed(2).replace('.', ',')}</span>
-                <div className="final-price-row">
-                  <span className="total-label">Total:</span>
-                  <span className="total-price">R$ {totalExibido.toFixed(2).replace('.', ',')}</span>
-                </div>
-                {metodoPagamento === 'PIX' && (
-                  <div className="savings-tag"><FaTags /> <span>Você economizou R$ {valorEconomia.toFixed(2).replace('.', ',')}</span></div>
-                )}
-              </div>
+            <div className="ticket-divider-v"></div>
+            <div className="price-v-container">
+              <span className="p-label-v">Total Estimado:</span>
+              <span className="p-value-v">R$ {totalExibido.toFixed(2).replace('.', ',')}</span>
+              {metodoPagamento === 'PIX' && <small className="p-savings-v">Você economiza R$ {valorEconomia.toFixed(2).replace('.', ',')}</small>}
             </div>
-
-            <button type="button" onClick={handlePreSubmit} className="btn-confirm-booking" disabled={loading}>
-              <span>{metodoPagamento === 'PIX' ? 'Gerar PIX' : 'Confirmar Reserva'}</span> <FaArrowRight />
-            </button>
-            <div className="security-badge"><FaLock /> <span>Ambiente Seguro</span></div>
+            <button type="button" onClick={handlePreSubmit} className="btn-confirm-v">Confirmar Reserva <FaArrowRight /></button>
+            <div className="secure-footer-v"><FaLock /> Ambiente Seguro</div>
           </div>
         </div>
       </div>
 
       {showPixModal && (
-        <div className="modal-overlay fade-in">
-          <div className="modal-content pix-modal">
-            <button className="close-btn" onClick={() => setShowPixModal(false)}><FaTimes /></button>
-            <div className="modal-header-payment"><h3>Finalizar Pagamento</h3><p className="subtitle"><span>Use o QR Code ou o Copia e Cola</span></p></div>
-            <div className="payment-steps">
-              <div className="pay-step-box center-box">
-                <span className="step-tag">1. Escanear</span>
-                <p>Valor com Desconto: <strong>R$ {totalExibido.toFixed(2).replace('.', ',')}</strong></p>
-                <div className="qr-container-infinite">{pixCopiaCola && <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=10&data=${encodeURIComponent(pixCopiaCola)}`} alt="QR Pix" />}</div>
-              </div>
-              <div className="pay-step-box">
-                <span className="step-tag">2. Copia e Cola</span>
-                <div className="copy-paste-box">
-                  <input type="text" readOnly value={pixCopiaCola} />
-                  <button type="button" onClick={() => { navigator.clipboard.writeText(pixCopiaCola); Store.addNotification({ title: "Copiado!", message: "Link PIX copiado.", type: "default", container: "top-right", dismiss: { duration: 2000 } }); }}><FaCopy /></button>
-                </div>
-              </div>
-              <div className="pay-step-box">
-                <span className="step-tag">3. Comprovante</span>
-                <label className={`upload-zone ${comprovante ? 'has-file' : ''}`}><FaCloudUploadAlt size={28} /><div className="upload-text"><strong>{comprovante ? comprovante.name : 'Anexar Comprovante'}</strong></div><input type="file" onChange={(e) => setComprovante(e.target.files[0])} hidden accept="image/*,application/pdf" /></label>
-              </div>
+        <div className="modal-overlay-v">
+          <div className="pix-modal-v">
+            <button className="close-v" onClick={() => setShowPixModal(false)}><FaTimes /></button>
+            <div className="pix-header-v"><h3>Finalizar com PIX</h3><p>Escaneie o código ou use o link de pagamento</p></div>
+            <div className="pix-content-v">
+              <div className="qr-v-box">{pixCopiaCola && <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pixCopiaCola)}`} alt="QR" />}</div>
+              <div className="pix-copy-v"><code>{pixCopiaCola.substring(0, 25)}...</code><button onClick={() => navigator.clipboard.writeText(pixCopiaCola)}><FaCopy /></button></div>
+              <label className={`pix-upload-v ${comprovante ? 'has-file' : ''}`}>
+                <FaCloudUploadAlt /> <span>{comprovante ? comprovante.name : 'Anexar Comprovante'}</span>
+                <input type="file" onChange={(e) => setComprovante(e.target.files[0])} hidden accept="image/*" />
+              </label>
             </div>
-            <button type="button" className="btn-finalize-total" onClick={enviarReserva}><FaCheckCircle /> <span>Enviar Comprovante</span></button>
+            <button className="btn-send-pix-v" onClick={enviarReserva}><FaCheckCircle /> Enviar Comprovante</button>
           </div>
         </div>
       )}

@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@300;400;700;900&display=swap');
+
+:root {
+    --v-gold: #C0A062;
+    --v-dark: #1A1614;
+    --v-bg: #fafafa;
+    --v-white: #ffffff;
+    --v-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+}
+
+/* --- CONTAINER GERAL --- */
+.home-container {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* --- MODAL OVERLAY --- */
+.modal-overlay-lux {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85); /* Fundo escuro dramático */
+    backdrop-filter: blur(12px); /* Desfoque intenso de luxo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+/* --- MODAL CARD --- */
+.modal-card-lux {
+    background: var(--v-white);
+    width: 100%;
+    max-width: 420px;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--v-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Botão Fechar */
+.close-lux {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #bbb;
+    transition: 0.3s;
+}
+
+.close-lux:hover {
+    color: var(--v-dark);
+}
+
+/* --- HEADER DO MODAL --- */
+.modal-header-lux {
+    padding: 50px 40px 25px;
+    text-align: center;
+}
+
+.icon-gold-circle {
+    width: 70px;
+    height: 70px;
+    border: 2px solid var(--v-gold);
+    color: var(--v-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 1.6rem;
+    background: #fdfbf7;
+}
+
+.modal-header-lux h2 {
+    font-family: 'Cinzel', serif; /* Estética de luxo */
+    color: var(--v-dark);
+    font-size: 1.6rem;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.gold-divider {
+    width: 50px;
+    height: 2.5px;
+    background: var(--v-gold);
+    margin: 15px auto;
+}
+
+.modal-header-lux p {
+    color: #777;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* --- CORPO DO MODAL --- */
+.modal-body-lux {
+    padding: 0 40px 45px;
+}
+
+.label-lux {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #bbb;
+    margin-bottom: 10px;
+    letter-spacing: 1.5px;
+    font-family: 'Lato', sans-serif;
+}
+
+/* Grupo de Input com Ícone */
+.input-group-lux {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.input-group-lux svg {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--v-gold);
+    font-size: 1.1rem;
+}
+
+.input-group-lux input {
+    width: 100%;
+    padding: 18px 18px 18px 50px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    background: #fdfdfd;
+    font-size: 1.1rem;
+    font-family: 'Lato', sans-serif;
+    outline: none;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--v-dark);
+}
+
+.input-group-lux input:focus {
+    border-color: var(--v-gold);
+    background: #fff;
+    box-shadow: 0 10px 20px rgba(192, 160, 98, 0.1);
+}
+
+/* Botão de Ação */
+.btn-action-lux {
+    width: 100%;
+    padding: 20px;
+    background: var(--v-dark);
+    color: var(--v-gold);
+    border: none;
+    border-radius: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: 0.3s;
+}
+
+.btn-action-lux:hover:not(:disabled) {
+    background: var(--v-gold);
+    color: var(--v-dark);
+    transform: translateY(-2px);
+}
+
+.btn-action-lux:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* --- FOOTER DO MODAL --- */
+.modal-footer-lux {
+    background: #fdfbf7;
+    padding: 20px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.modal-footer-lux svg {
+    color: var(--v-gold);
+}
+
+/* --- ANIMAÇÕES --- */
+.fade-in {
+    animation: fadeInLux 0.5s ease forwards;
+}
+
+.slide-up {
+    animation: slideUpLux 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+@keyframes fadeInLux {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUpLux {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 480px) {
+    .modal-card-lux {
+        max-width: 100%;
+        border-radius: 30px 30px 0 0;
+        align-self: flex-end;
+    }
+
+    .modal-overlay-lux {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .slide-up {
+        animation: slideUpMobile 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+
+    @keyframes slideUpMobile {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+}

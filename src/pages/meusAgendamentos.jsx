@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { Store } from 'react-notifications-component';
 import { 
   FaCalendarAlt, FaClock, FaMapMarkerAlt, FaQrcode, 
-  FaCreditCard, FaBarcode, FaCheckCircle, FaTimesCircle, FaArrowLeft
+  FaCreditCard, FaBarcode, FaCheckCircle, FaTimesCircle, 
+  FaArrowLeft, FaTicketAlt, FaInfoCircle
 } from 'react-icons/fa';
 import api from '../services/api';
 import '../styles/meusAgendamentos.css';
@@ -22,7 +23,7 @@ const MeusAgendamentos = () => {
       setAgendamentos(res.data);
     } catch (err) {
       Store.addNotification({ 
-        title: "Erro", message: "Falha ao carregar suas reservas.", 
+        title: "Erro", message: "Falha ao carregar suas sessões.", 
         type: "danger", container: "top-right", dismiss: { duration: 3000 } 
       });
     } finally {
@@ -31,134 +32,132 @@ const MeusAgendamentos = () => {
   };
 
   const cancelarAgendamento = async (id, metodoPagamento) => {
-    if (!window.confirm('Tem certeza que deseja cancelar esta reserva?')) return;
+    if (!window.confirm('Deseja realmente solicitar o cancelamento/reagendamento desta sessão?')) return;
 
     try {
       const acao = metodoPagamento === 'PIX' ? 'REAGENDAR' : 'CANCELAR';
       await api.put(`/agendamentos/${id}/cancelar`, { acao });
       
       Store.addNotification({ 
-        title: "Sucesso", message: "Solicitação enviada.", 
+        title: "Sucesso", message: "Solicitação processada com sucesso.", 
         type: "success", container: "top-right", dismiss: { duration: 4000 } 
       });
       carregarMeusAgendamentos();
     } catch (err) {
       Store.addNotification({ 
-        title: "Atenção", message: err.response?.data?.msg || "Erro ao cancelar.", 
+        title: "Atenção", message: err.response?.data?.msg || "Erro ao processar solicitação.", 
         type: "warning", container: "top-right", dismiss: { duration: 4000 } 
       });
     }
   };
 
   const getMetodoIcon = (metodo) => {
-    if (metodo === 'PIX') return <FaQrcode />;
-    if (metodo === 'CREDITO') return <FaCreditCard />;
-    if (metodo === 'DEBITO') return <FaBarcode />;
-    return <FaCreditCard />;
-  };
-
-  const formatarData = (dataStr) => {
-    return new Date(dataStr).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-  };
-
-  const formatarHora = (dataInicio, dataFim) => {
-    const inicio = new Date(dataInicio).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-    const fim = new Date(dataFim).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-    return `${inicio} - ${fim}`;
+    switch (metodo) {
+      case 'PIX': return <FaQrcode />;
+      case 'CREDITO': return <FaCreditCard />;
+      case 'DEBITO': return <FaBarcode />;
+      default: return <FaCreditCard />;
+    }
   };
 
   const formatarPreco = (valor) => {
     let num = parseFloat(valor);
     if (isNaN(num)) return 'R$ 0,00';
+    // Correção de segurança para valores inflados
     if (num > 10000) num = num / 100;
     return num.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
 
   return (
     <div className="my-bookings-page fade-in" translate="no">
-      <div className="top-nav-bar">
-        <Link to="/" className="btn-back-home"><FaArrowLeft /> Voltar ao Início</Link>
+      <div className="top-navigation">
+        <Link to="/" className="back-link"><FaArrowLeft /> <span>Painel Principal</span></Link>
       </div>
 
-      <div className="page-header">
-        <span className="overline">Suas Reservas</span>
-        <h1 className="page-title">Minhas Sessões</h1>
-        <div className="header-line"></div>
-        <p className="page-subtitle">Acompanhe e gerencie suas sessões no Estúdio Vetra</p>
-      </div>
+      <header className="bookings-header">
+        <span className="premium-label">Vetra Studio Exclusive</span>
+        <h1 className="bookings-title">Meus Ingressos</h1>
+        <div className="title-underline"></div>
+        <p className="bookings-subtitle">Gerencie suas sessões fotográficas e detalhes de reserva</p>
+      </header>
 
       {loading ? (
-        <div className="loading-center">
-            <div className="loader"></div>
-            <p>Carregando ingressos...</p>
+        <div className="loading-state">
+            <div className="luxury-loader"></div>
+            <p>Sincronizando sua agenda...</p>
         </div>
       ) : agendamentos.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-icon-circle"><FaCalendarAlt /></div>
-          <h3>Você ainda não tem reservas</h3>
-          <p>Que tal agendar sua primeira sessão fotográfica conosco?</p>
-          <Link to="/agendamento" className="btn-gold-pill">Fazer um Agendamento</Link>
+        <div className="empty-bookings">
+          <div className="empty-art"><FaTicketAlt /></div>
+          <h3>Nenhum ingresso ativo</h3>
+          <p>Você ainda não possui sessões agendadas no momento.</p>
+          <Link to="/agendamento" className="book-now-btn">Agendar Sessão</Link>
         </div>
       ) : (
-        <div className="bookings-grid">
+        <div className="tickets-container">
           {agendamentos.map(ag => (
-            <div key={ag.id} className={`vetra-ticket ${ag.status.toLowerCase()}`}>
+            <div key={ag.id} className={`vetra-ticket-card ${ag.status.toLowerCase()}`}>
+              <div className="ticket-edge-status"></div>
               
-              <div className="ticket-status-border"></div>
-              
-              <div className="ticket-inner">
-                <div className="ticket-top">
-                  <span className={`badge-status ${ag.status}`}>{ag.status}</span>
-                  <span className="ticket-number"># {String(ag.id).padStart(4, '0')}</span>
+              <div className="ticket-body">
+                <div className="ticket-head">
+                  <span className={`status-pill ${ag.status}`}>
+                    {ag.status === 'REAGENDAMENTO_SOLICITADO' ? 'Reagendamento' : ag.status}
+                  </span>
+                  <span className="id-tag">REF: {String(ag.id).padStart(4, '0')}</span>
                 </div>
 
-                <div className="ticket-main">
-                  <h3 className="studio-name">{ag.espaco_nome.toUpperCase()}</h3>
-                  <div className="studio-location"><FaMapMarkerAlt /> Unidade Principal</div>
+                <div className="ticket-info-main">
+                  <h3 className="studio-brand">{ag.espaco_nome?.toUpperCase() || 'ESTÚDIO VETRA'}</h3>
+                  <p className="location-info"><FaMapMarkerAlt /> Brasília, DF - Unidade Premium</p>
 
-                  <div className="ticket-details">
-                    <div className="detail-col">
-                      <span className="detail-label"><FaCalendarAlt /> Data</span>
-                      <span className="detail-value">{formatarData(ag.data_inicio)}</span>
+                  <div className="info-grid">
+                    <div className="info-item">
+                      <span className="info-label"><FaCalendarAlt /> Data</span>
+                      <span className="info-data">{new Date(ag.data_inicio).toLocaleDateString('pt-BR')}</span>
                     </div>
-                    <div className="detail-col">
-                      <span className="detail-label"><FaClock /> Horário</span>
-                      <span className="detail-value">{formatarHora(ag.data_inicio, ag.data_fim)}</span>
+                    <div className="info-item">
+                      <span className="info-label"><FaClock /> Período</span>
+                      <span className="info-data">
+                        {new Date(ag.data_inicio).toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})} 
+                        { " — " }
+                        {new Date(ag.data_fim).toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="ticket-price-box">
-                    <span className="price-label">Valor Total</span>
-                    <span className="price-amount notranslate" translate="no">{formatarPreco(ag.preco_total)}</span>
+                  <div className="ticket-price">
+                    <div className="price-text-group">
+                      <span className="total-label">Total da Reserva</span>
+                      <span className="total-value notranslate" translate="no">{formatarPreco(ag.preco_total)}</span>
+                    </div>
+                    <div className="pay-tag">
+                        {getMetodoIcon(ag.metodo_pagamento)}
+                        <span>{ag.metodo_pagamento}</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="ticket-bottom">
-                  <div className="payment-method">
-                    <span className="pay-icon">{getMetodoIcon(ag.metodo_pagamento)}</span>
-                    Pago via {ag.metodo_pagamento}
-                  </div>
-                  
-                  <div className="ticket-actions">
-                    {ag.status === 'PENDENTE' && (
-                        <button className="action-link red" onClick={() => cancelarAgendamento(ag.id, ag.metodo_pagamento)}>
+                <footer className="ticket-footer">
+                   <div className="footer-notice">
+                      <FaInfoCircle /> <span>Informar Tuly Mighoto na Recepção</span>
+                   </div>
+                   
+                   <div className="footer-actions">
+                      {ag.status === 'PENDENTE' && (
+                        <button className="btn-cancel" onClick={() => cancelarAgendamento(ag.id, ag.metodo_pagamento)}>
                             Cancelar
                         </button>
-                    )}
-                    {ag.status === 'CONFIRMADO' && (
-                        <span className="action-link gold" style={{cursor: 'default'}}>
-                            <FaCheckCircle /> Confirmado
-                        </span>
-                    )}
-                    {ag.status === 'CANCELADO' && (
-                        <span className="action-link red" style={{cursor: 'default'}}>
-                            <FaTimesCircle /> Cancelado
-                        </span>
-                    )}
-                  </div>
-                </div>
+                      )}
+                      {ag.status === 'CONFIRMADO' && (
+                        <div className="confirmed-mark"><FaCheckCircle /> Garantido</div>
+                      )}
+                      {ag.status === 'CANCELADO' && (
+                        <div className="canceled-mark"><FaTimesCircle /> Encerrado</div>
+                      )}
+                   </div>
+                </footer>
               </div>
-
             </div>
           ))}
         </div>
