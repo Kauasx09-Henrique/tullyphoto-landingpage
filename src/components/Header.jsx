@@ -5,7 +5,7 @@ import {
     FaArrowRight, FaBell, FaCheck
 } from 'react-icons/fa';
 import api from '../services/api';
-import '../styles/Header.css';
+import '../styles/header.css';
 import logoImg from "./logo.png";
 
 const Header = () => {
