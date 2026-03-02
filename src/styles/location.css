@@ -4,10 +4,11 @@
   --vetra-brown: #4A3B32;
   --vetra-gold: #C0A062;
   --vetra-cream: #F5F5F0;
+  --vetra-white: #ffffff;
 }
 
 .location-section {
-  padding: 100px 5%;
+  padding: 120px 5%;
   background-color: var(--vetra-cream);
   width: 100%;
 }
@@ -15,43 +16,56 @@
 .location-container {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start; 
-  max-width: 1200px;
+  align-items: center; 
+  max-width: 1300px;
   margin: 0 auto;
-  gap: 60px;
+  gap: 100px; /* Isso garante que o texto NUNCA cole no mapa */
 }
 
+/* --- INFORMAÇÕES DA ESQUERDA --- */
 .location-info {
   flex: 1;
   max-width: 450px;
-  padding-top: 20px; 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .location-title {
   font-family: 'Cinzel', serif;
-  font-size: 3rem;
+  font-size: 3.5rem;
   color: var(--vetra-brown);
-  font-weight: 400;
-  margin-bottom: 40px;
-  letter-spacing: 3px;
+  font-weight: 500;
+  margin-bottom: 50px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  line-height: 1;
-  border-bottom: 2px solid var(--vetra-gold); 
+  line-height: 1.0;
+  position: relative;
   display: inline-block;
-  padding-bottom: 10px;
+}
+
+/* Linha dourada embaixo do título */
+.location-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -15px;
+  width: 80px;
+  height: 3px;
+  background-color: var(--vetra-gold);
 }
 
 .info-item {
-  margin-bottom: 40px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px; /* Espaço entre o ícone e o texto */
+  margin-bottom: 45px;
 }
 
-.info-item h3 {
-  font-family: 'Cinzel', serif;
-  font-size: 1.2rem;
+.icon-wrapper {
   color: var(--vetra-gold);
-  margin-bottom: 15px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-size: 1.8rem;
+  margin-top: 5px;
 }
 
 .info-item p {
@@ -60,59 +74,102 @@
   color: #444;
   line-height: 1.8;
   text-transform: uppercase; 
-  font-weight: 400;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 0;
 }
 
-
+/* --- BOTÃO DE ROTA --- */
 .directions-btn {
-  display: inline-block;
-  padding: 15px 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 40px;
   background-color: var(--vetra-brown);
-  color: #fff;
+  color: var(--vetra-gold);
   text-decoration: none;
   font-family: 'Lato', sans-serif;
-  font-weight: 700;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 2px;
-  transition: all 0.3s ease;
+  font-size: 0.85rem;
   border: 1px solid var(--vetra-brown);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .directions-btn:hover {
   background-color: transparent;
   color: var(--vetra-brown);
-  border-color: var(--vetra-brown);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* --- MAPA DA DIREITA --- */
 .location-map {
-  flex: 1;
+  flex: 1.2; /* Deixa o mapa levemente mais largo que o texto */
   width: 100%;
   height: 500px; 
-  border: 1px solid rgba(74, 59, 50, 0.1);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+  background-color: #ddd;
+  overflow: hidden;
 }
 
 .location-map iframe {
   width: 100%;
   height: 100%;
   display: block;
-
-  filter: grayscale(20%); 
+  filter: grayscale(80%) contrast(1.1) opacity(0.9); 
+  transition: filter 0.5s ease;
 }
 
-@media (max-width: 900px) {
+.location-map:hover iframe {
+  filter: grayscale(10%) contrast(1.1) opacity(1);
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- RESPONSIVIDADE (CELULARES E TABLETS) --- */
+@media (max-width: 1024px) {
   .location-container {
     flex-direction: column;
-    gap: 40px;
+    gap: 60px;
   }
 
   .location-info {
     max-width: 100%;
+    align-items: center;
     text-align: center;
-    padding-top: 0;
+  }
+
+  .location-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .info-item {
+    flex-direction: column;
+    align-items: center;
   }
 
   .location-map {
-    height: 350px;
+    width: 100%;
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .location-section {
+    padding: 80px 5%;
+  }
+
+  .location-title {
+    font-size: 2.8rem;
   }
 }
