@@ -40,6 +40,25 @@ const ServiceCards = () => {
 
   return (
     <section className="services-section">
+      <div className="services-intro-container fade-in">
+        <h2 className="intro-title">
+          No Estúdio Vetra, você conta com o nosso time para construir suas imagens.
+        </h2>
+        <div className="intro-gold-divider"></div>
+        
+        <div className="intro-text-body">
+          <p>
+            Os ensaios fotográficos são conduzidos com direção cuidadosa e olhar atento, para criar imagens elegantes, consistentes e alinhadas ao momento que você está vivendo.
+          </p>
+          <p>
+            Pensamos junto, organizamos ideias e construímos imagens que representem você de forma verdadeira e consciente. Seja para sua marca ou para um novo momento da sua trajetória, o ensaio é um espaço de presença e construção.
+          </p>
+          <p className="intro-highlight">
+            Agende seu ensaio e comece a construir a imagem que representa quem você é hoje.
+          </p>
+        </div>
+      </div>
+
       <div className="services-grid">
         {services.map((service) => (
           <div key={service.id} className="service-card">
@@ -52,16 +71,16 @@ const ServiceCards = () => {
             <div className="card-overlay"></div>
             
             <div className="card-content">
-              <h3 className="card-title">{service.title}</h3>
-              <span className="card-subtitle">{service.subtitle}</span>
+              <div className="card-header-group">
+                <h3 className="card-title">{service.title}</h3>
+                <span className="card-subtitle">{service.subtitle}</span>
+              </div>
               
               <div className="static-info">
                 <span className="card-price">{service.price}</span>
                 
-                <div className="text-block">
-                    <span className="card-details">{service.details}</span>
-                    <p className="card-description">{service.description}</p>
-                </div>
+                <span className="card-details">{service.details}</span>
+                <p className="card-description">{service.description}</p>
                 
                 <a 
                   href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(service.message)}`}
@@ -69,7 +88,7 @@ const ServiceCards = () => {
                   rel="noopener noreferrer"
                   className="card-button"
                 >
-                  Agendar <FaWhatsapp style={{ marginLeft: 5, fontSize: '1.1em' }} /> <span>&rarr;</span>
+                  Agendar <FaWhatsapp style={{ marginLeft: 8, fontSize: '1.2em' }} />
                 </a>
               </div>
 

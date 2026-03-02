@@ -8,30 +8,77 @@
 }
 
 .services-section {
-  padding: 80px 5%;
+  padding: 100px 5%;
   background-color: var(--vetra-white);
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.services-intro-container {
+  max-width: 900px;
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.intro-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2.4rem;
+  font-weight: 500;
+  color: var(--vetra-black);
+  line-height: 1.3;
+  margin-bottom: 25px;
+}
+
+.intro-gold-divider {
+  width: 60px;
+  height: 3px;
+  background-color: var(--vetra-gold);
+  margin: 0 auto 30px;
+}
+
+.intro-text-body p {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.intro-text-body p.intro-highlight {
+  font-weight: 700;
+  color: var(--vetra-black);
+  font-size: 1.2rem;
+  margin-top: 40px;
+  letter-spacing: 0.5px;
 }
 
 .services-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  gap: 35px;
   max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
 }
 
 .service-card {
   position: relative;
   height: 650px;
-  /* Aumentei um pouco para dar respiro */
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   background-color: var(--vetra-black);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
 }
 
 .card-bg-image {
@@ -42,13 +89,12 @@
   height: 100%;
   background-size: cover;
   background-position: center top;
-  /* Foca no rosto */
   transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   z-index: 1;
 }
 
 .service-card:hover .card-bg-image {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 .card-overlay {
@@ -57,11 +103,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  /* Gradiente ajustado: Transparente no topo para ver o rosto, escuro embaixo para o texto */
   background: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.1) 40%,
-      rgba(26, 26, 26, 0.9) 80%,
+      rgba(26, 26, 26, 0) 0%,
+      rgba(26, 26, 26, 0.2) 40%,
+      rgba(26, 26, 26, 0.95) 80%,
       rgba(26, 26, 26, 1) 100%);
   z-index: 2;
 }
@@ -71,41 +116,39 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 40px 30px;
+  padding: 45px 35px;
   z-index: 3;
   color: var(--vetra-white);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  /* Força tudo para baixo */
   height: 100%;
 }
 
 .card-header-group {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .card-title {
   font-family: 'Cinzel', serif;
   font-size: 2.2rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--vetra-white);
   margin-bottom: 5px;
   letter-spacing: 2px;
   text-transform: uppercase;
   line-height: 1;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
 }
 
 .card-subtitle {
   font-family: 'Lato', sans-serif;
   color: var(--vetra-gold);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 3px;
   display: block;
   font-weight: 700;
-  margin-bottom: 15px;
 }
 
 .static-info {
@@ -118,56 +161,71 @@
   font-family: 'Cinzel', serif;
   color: var(--vetra-white);
   font-size: 1.8rem;
-  margin-bottom: 15px;
-  font-weight: 600;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  padding-top: 15px;
+  margin-bottom: 20px;
+  font-weight: 700;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 20px;
 }
 
 .card-details {
   display: block;
   font-family: 'Lato', sans-serif;
   color: var(--vetra-gold);
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 900;
   text-transform: uppercase;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   letter-spacing: 1px;
 }
 
 .card-description {
   font-family: 'Lato', sans-serif;
   font-size: 0.95rem;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 25px;
-  max-width: 100%;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 30px;
 }
 
 .card-button {
   background: transparent;
   border: 1px solid var(--vetra-gold);
   color: var(--vetra-gold);
-  padding: 12px 25px;
+  padding: 14px 28px;
   font-family: 'Lato', sans-serif;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 900;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   width: fit-content;
   text-decoration: none;
-  /* Remove sublinhado do link */
+  border-radius: 4px;
 }
 
 .card-button:hover {
   background: var(--vetra-gold);
   color: var(--vetra-black);
-  padding-left: 35px;
+  padding: 14px 35px 14px 25px;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 1024px) {
@@ -177,16 +235,24 @@
 }
 
 @media (max-width: 768px) {
+  .services-section {
+    padding: 80px 5%;
+  }
+
+  .intro-title {
+    font-size: 1.8rem;
+  }
+
   .services-grid {
     grid-template-columns: 1fr;
   }
 
   .service-card {
     height: auto;
-    min-height: 550px;
+    min-height: 600px;
   }
 
   .card-content {
-    padding: 30px;
+    padding: 35px 25px;
   }
 }

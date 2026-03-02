@@ -2,12 +2,12 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DayPicker } from 'react-day-picker';
 import { ptBR } from 'date-fns/locale';
-import { format, isSameDay } from 'date-fns';
+import { format } from 'date-fns';
 import { Store } from 'react-notifications-component';
 import {
-  FaCreditCard, FaBarcode, FaQrcode, FaTimes, FaCloudUploadAlt,
-  FaCheckCircle, FaClock, FaCalendarAlt, FaCameraRetro, FaMinus, FaPlus,
-  FaArrowRight, FaTree, FaLightbulb, FaLock, FaCopy, FaTags, FaUniversity
+  FaCreditCard, FaQrcode, FaTimes, FaCloudUploadAlt,
+  FaCheckCircle, FaMinus, FaPlus,
+  FaArrowRight, FaTree, FaLightbulb, FaCameraRetro, FaLock, FaCopy, FaTags
 } from 'react-icons/fa';
 import api from '../services/api';
 import 'react-day-picker/dist/style.css';
@@ -83,24 +83,23 @@ const Agendamento = () => {
 
   const isFimDeSemana = checkFeriadoOuFDS(date);
 
-  // Lógica de Preços (Tabela Oficial)
   const precoBasePix = useMemo(() => {
     if (isFimDeSemana) {
-      if (duracao === 1) return 200; //
-      if (duracao === 2) return 320; //
-      if (duracao === 3) return 460; //
-      if (duracao === 4) return 600; //
-      return 1000; // Diária FDS
+      if (duracao === 1) return 200;
+      if (duracao === 2) return 320;
+      if (duracao === 3) return 460;
+      if (duracao === 4) return 600;
+      return 1000;
     } else {
-      if (duracao === 1) return 150; //
-      if (duracao === 2) return 240; //
-      if (duracao === 3) return 360; //
-      if (duracao === 4) return 480; //
-      return 800; // Diária Semana
+      if (duracao === 1) return 150;
+      if (duracao === 2) return 240;
+      if (duracao === 3) return 360;
+      if (duracao === 4) return 480;
+      return 800;
     }
   }, [duracao, isFimDeSemana]);
 
-  const precoCredito = precoBasePix * 1.15; // 15% Acréscimo
+  const precoCredito = precoBasePix * 1.15;
   const totalExibido = metodoPagamento === 'CREDITO' ? precoCredito : precoBasePix;
   const valorEconomia = precoCredito - precoBasePix;
 
@@ -182,7 +181,6 @@ const Agendamento = () => {
         <div className="booking-form-col">
           <form onSubmit={handlePreSubmit}>
 
-            {/* ETAPA 1: CENÁRIOS CENTRALIZADOS */}
             <section className="form-section central-section-v">
               <div className="section-header-v"><span className="step-tag-v">01</span><h3>Cenário</h3></div>
               {loading ? <div className="loading-v">Buscando ambientes...</div> : (
@@ -200,7 +198,6 @@ const Agendamento = () => {
               )}
             </section>
 
-            {/* ETAPA 2: CALENDÁRIO REACT-DAY-PICKER */}
             <section className="form-section">
               <div className="section-header-v"><span className="step-tag-v">02</span><h3>Data e Horário</h3></div>
               {isFimDeSemana && <div className="weekend-alert-v"><span><FaTags /> Tarifário de Fim de Semana Ativo</span></div>}
@@ -226,7 +223,6 @@ const Agendamento = () => {
               </div>
             </section>
 
-            {/* ETAPA 3: DURAÇÃO */}
             <section className="form-section">
               <div className="section-header-v"><span className="step-tag-v">03</span><h3>Duração da Sessão</h3></div>
               <div className="duration-layout-v">
@@ -239,7 +235,6 @@ const Agendamento = () => {
               </div>
             </section>
 
-            {/* ETAPA 4: PAGAMENTO COM DÉBITO */}
             <section className="form-section">
               <div className="section-header-v"><span className="step-tag-v">04</span><h3>Pagamento</h3></div>
               <div className="payment-grid-v">
@@ -252,11 +247,6 @@ const Agendamento = () => {
                   <FaCreditCard />
                   <strong>Crédito</strong>
                   <small>+15% Taxa</small>
-                </div>
-                <div className={`pay-card-v ${metodoPagamento === 'DEBITO' ? 'active' : ''}`} onClick={() => setMetodoPagamento('DEBITO')}>
-                  <FaBarcode />
-                  <strong>Débito</strong>
-                  <small>Pagar no Local</small>
                 </div>
               </div>
             </section>
@@ -285,19 +275,26 @@ const Agendamento = () => {
       </div>
 
       {showPixModal && (
-        <div className="modal-overlay-v">
+        <div className="modal-overlay-v fade-in">
           <div className="pix-modal-v">
             <button className="close-v" onClick={() => setShowPixModal(false)}><FaTimes /></button>
-            <div className="pix-header-v"><h3>Finalizar com PIX</h3><p>Escaneie o código ou use o link de pagamento</p></div>
+            <div className="pix-header-v">
+                <h3>Finalizar com PIX</h3>
+                <p>Escaneie o código ou copie a chave de pagamento</p>
+            </div>
             <div className="pix-content-v">
               <div className="qr-v-box">{pixCopiaCola && <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pixCopiaCola)}`} alt="QR" />}</div>
-              <div className="pix-copy-v"><code>{pixCopiaCola.substring(0, 25)}...</code><button onClick={() => navigator.clipboard.writeText(pixCopiaCola)}><FaCopy /></button></div>
+              <div className="pix-copy-v">
+                  <code>{pixCopiaCola.substring(0, 25)}...</code>
+                  <button onClick={() => navigator.clipboard.writeText(pixCopiaCola)} title="Copiar código PIX"><FaCopy /></button>
+              </div>
               <label className={`pix-upload-v ${comprovante ? 'has-file' : ''}`}>
-                <FaCloudUploadAlt /> <span>{comprovante ? comprovante.name : 'Anexar Comprovante'}</span>
+                <FaCloudUploadAlt /> 
+                <span>{comprovante ? comprovante.name : 'Anexar Comprovante de Pagamento'}</span>
                 <input type="file" onChange={(e) => setComprovante(e.target.files[0])} hidden accept="image/*" />
               </label>
             </div>
-            <button className="btn-send-pix-v" onClick={enviarReserva}><FaCheckCircle /> Enviar Comprovante</button>
+            <button className="btn-send-pix-v" onClick={enviarReserva}><FaCheckCircle /> Confirmar e Enviar</button>
           </div>
         </div>
       )}

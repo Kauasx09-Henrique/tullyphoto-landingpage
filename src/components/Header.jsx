@@ -21,19 +21,16 @@ const Header = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const isAdmin = user && user.tipo === 'ADMIN';
 
-    // RESET DE SCROLL: Garante que a nova página sempre abra no topo
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [location.pathname]);
 
-    // HEADER VIDRO NO SCROLL
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // NOTIFICAÇÕES
     useEffect(() => {
         if (user) {
             fetchNotificacoes();
@@ -78,18 +75,14 @@ const Header = () => {
         <header className={`header ${scrolled ? 'header-scrolled' : ''}`}>
             <div className="header-container">
                 
-                {/* LOGO */}
                 <Link to="/" className="logo-area" onClick={() => setMobileOpen(false)}>
                     <img src={logoImg} alt="Vetra Studio" className="brand-logo" />
                 </Link>
 
-                {/* OVERLAY PARA O MENU MOBILE */}
                 <div className={`nav-overlay ${mobileOpen ? 'open' : ''}`} onClick={() => setMobileOpen(false)}></div>
 
-                {/* NAV WRAPPER (DRAWER) */}
                 <div className={`nav-wrapper ${mobileOpen ? 'mobile-open' : ''}`}>
                     
-                    {/* CABEÇALHO DO MENU MOBILE (SÓ APARECE NO CELULAR) */}
                     <div className="mobile-only-header">
                         <span className="menu-brand-name">Vetra Menu</span>
                         <FaTimes className="mobile-close-btn" onClick={() => setMobileOpen(false)} />
@@ -110,7 +103,6 @@ const Header = () => {
                     <div className="user-actions">
                         {user ? (
                             <div className="auth-group-wrapper">
-                                {/* NOTIFICAÇÕES */}
                                 <div className="notif-wrapper">
                                     <div className={`notif-icon-box ${unreadCount > 0 ? 'has-unread' : ''}`} onClick={() => setShowNotif(!showNotif)}>
                                         <FaBell />
@@ -149,7 +141,6 @@ const Header = () => {
                             <Link to="/login" className="btn-login-link" onClick={() => setMobileOpen(false)}>Entrar</Link>
                         )}
 
-                        {/* BOTÃO AGENDAR (Com selo de 15% OFF) */}
                         <div className="agendar-container">
                             <button onClick={handleAgendarClick} className="btn-agendar-premium">
                                 <span>Agendar</span>
