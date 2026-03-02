@@ -97,8 +97,9 @@ const Home = () => {
       )}
 
       <PhotoGrid />
-      <ServiceCards />
       <StudioBanner />
+      <ServiceCards />
+      
       <Equipe />
       <Location />
     </main>

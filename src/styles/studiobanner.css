@@ -60,7 +60,7 @@
   min-height: 900px;
   background: radial-gradient(circle at 30% 50%, var(--vetra-brown-light) 0%, var(--vetra-brown) 70%);
   padding: 80px 5%;
-  margin-top: 90px;
+  margin-top: 0px;
   overflow: hidden;
   gap: 80px;
 }
