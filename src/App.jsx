@@ -25,7 +25,6 @@ import AdminAgenda from './pages/admin/AdminAgenda';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminBloqueios from './pages/admin/AdminBloqueios';
-import AdminConfiguracoes from './pages/admin/AdminConfiguracoes';
 
 // Components
 import Header from './components/Header';
