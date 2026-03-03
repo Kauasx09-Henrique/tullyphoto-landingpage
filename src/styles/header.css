@@ -50,7 +50,6 @@
 .mobile-only-header,
 .nav-overlay {
     display: none;
-    /* */
 }
 
 /* --- NAVEGAÇÃO DESKTOP --- */
@@ -114,6 +113,7 @@
     gap: 20px;
     padding-right: 20px;
     border-right: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
 }
 
 /* Link Entrar Estilizado */
@@ -167,66 +167,248 @@
     color: var(--h-red);
 }
 
-/* Notificações */
-.notif-icon-box {
-    font-size: 1.3rem;
-    color: #fff;
-    cursor: pointer;
+/* ==========================================================================
+   SISTEMA DE NOTIFICAÇÕES (DROPDOWN)
+   ========================================================================== */
+
+.notif-wrapper {
     position: relative;
-    padding: 8px;
-}
-
-.notif-icon-box.has-unread {
-    animation: ringBell 5s infinite;
-}
-
-@keyframes ringBell {
-
-    0%,
-    90%,
-    100% {
-        transform: rotate(0)
-    }
-
-    92% {
-        transform: rotate(15deg)
-    }
-
-    94% {
-        transform: rotate(-15deg)
-    }
-
-    96% {
-        transform: rotate(10deg)
-    }
-}
-
-.notif-badge {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: var(--h-red);
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    border: 2px solid var(--h-dark);
-    font-size: 0.6rem;
-    font-weight: 900;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.notif-icon-box {
+    position: relative;
+    font-size: 1.4rem;
+    color: var(--h-white);
+    /* Sino agora é 100% branco */
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.notif-icon-box:hover {
+    color: var(--h-gold);
+    transform: scale(1.1);
+}
+
+.notif-icon-box.has-unread {
+    animation: gentle-shake 3s ease infinite;
+}
+
+.notif-badge {
+    position: absolute;
+    top: -2px;
+    right: -5px;
+    background-color: #e74c3c;
+    color: #fff;
+    font-size: 0.65rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid var(--h-dark);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal Suspenso (Dropdown) */
 .notif-dropdown {
     position: absolute;
-    top: 60px;
+    top: 50px;
     right: -10px;
-    width: 320px;
-    background: #fff;
+    width: 340px;
+    background-color: var(--h-white);
     border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid #f0f0f0;
+    z-index: 1000;
     overflow: hidden;
-    animation: slideDown 0.3s ease;
+    animation: dropdownFadeIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform-origin: top right;
+}
+
+/* Seta apontando para o ícone */
+.notif-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: 20px;
+    width: 12px;
+    height: 12px;
+    background-color: var(--h-white);
+    transform: rotate(45deg);
+    border-left: 1px solid #f0f0f0;
+    border-top: 1px solid #f0f0f0;
+    z-index: 1;
+}
+
+.notif-header {
+    background-color: var(--h-dark);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--h-gold);
+    border-bottom: 2px solid rgba(212, 175, 110, 0.2);
+    position: relative;
+    z-index: 2;
+}
+
+.notif-header span {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.close-notif {
+    color: #ccc;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-notif:hover {
+    color: var(--h-white);
+}
+
+.notif-list {
+    max-height: 380px;
+    overflow-y: auto;
+    background-color: #fafafa;
+}
+
+/* Scrollbar customizada para lista de notificações */
+.notif-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notif-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.notif-list::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.notif-list::-webkit-scrollbar-thumb:hover {
+    background: var(--h-gold);
+}
+
+.notif-empty {
+    padding: 30px;
+    text-align: center;
+    color: #888;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95rem;
+    font-style: italic;
+}
+
+.notif-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.notif-item:last-child {
+    border-bottom: none;
+}
+
+.notif-item:hover {
+    background-color: #fdfdfd;
+}
+
+.notif-item p {
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+    flex: 1;
+    padding-right: 15px;
+}
+
+/* Estilo para notificação NÃO LIDA */
+.notif-item.unread {
+    background-color: rgba(212, 175, 110, 0.05);
+    border-left: 4px solid var(--h-gold);
+}
+
+.notif-item.unread p {
+    color: var(--h-dark);
+    font-weight: 700;
+}
+
+/* Botão de marcar como lido */
+.notif-item button {
+    background: none;
+    border: none;
+    color: #bbb;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.notif-item button:hover {
+    color: var(--h-success);
+    background-color: rgba(46, 204, 113, 0.1);
+    transform: scale(1.1);
+}
+
+/* Animações */
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes gentle-shake {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    5% {
+        transform: rotate(10deg);
+    }
+
+    10% {
+        transform: rotate(-10deg);
+    }
+
+    15% {
+        transform: rotate(5deg);
+    }
+
+    20% {
+        transform: rotate(0deg);
+    }
 }
 
 /* --- BOTÃO AGENDAR PREMIUM --- */
@@ -275,16 +457,14 @@
 }
 
 @keyframes pulseBadge {
-    0% {
+
+    0%,
+    100% {
         transform: scale(1);
     }
 
     50% {
         transform: scale(1.1);
-    }
-
-    100% {
-        transform: scale(1);
     }
 }
 
@@ -292,7 +472,7 @@
 .mobile-toggle {
     display: none;
     font-size: 1.8rem;
-    color: #fff;
+    color: var(--h-white);
     cursor: pointer;
 }
 
@@ -331,7 +511,7 @@
         right: -100%;
         width: 280px;
         height: 100vh;
-        background: #080808;
+        background: var(--h-dark);
         flex-direction: column;
         padding: 30px;
         transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
@@ -362,7 +542,7 @@
 
     .mobile-close-btn {
         font-size: 1.8rem;
-        color: #fff;
+        color: var(--h-white);
         cursor: pointer;
     }
 
@@ -415,6 +595,10 @@
         left: 10px;
         right: 10px;
         width: auto;
+    }
+
+    .notif-dropdown::before {
+        display: none;
     }
 }
 
