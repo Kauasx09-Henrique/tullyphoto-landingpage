@@ -66,7 +66,6 @@ function App() {
           <Route path="agenda" element={<AdminAgenda />} />
           <Route path="usuarios" element={<AdminUsers />} />
           <Route path="/admin/bloqueios" element={<AdminBloqueios />} />
-          <Route path="configuracoes" element={<AdminConfiguracoes />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,156 +1,248 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@300;400;700&display=swap');
+/* ==========================================================================
+   TELA DE AGENDA - ADMIN VETRA
+   ========================================================================== */
 
-:root {
-    --gold: #D4AF6E;
-    --dark: #2C2420;
-    --green: #10B981;
-    --red: #EF4444;
-    --bg: #F9F9F7;
-    --white: #ffffff;
-    --gray: #6B7280;
-}
-
-/* CONTAINER */
-.admin-page-container {
-    padding: 40px;
-    max-width: 1400px;
-    margin: 0 auto;
-    font-family: 'Lato', sans-serif;
-    color: var(--dark);
-}
-
-.fade-in { animation: fadeIn 0.5s ease-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-/* HEADER & FILTROS */
-.admin-header-row {
+.agenda-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 40px;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    padding-bottom: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.admin-title { font-family: 'Cinzel', serif; font-size: 2.2rem; margin-bottom: 5px; }
-.admin-subtitle { color: var(--gray); font-size: 1rem; }
-
-.filter-group {
+.agenda-filter-box {
     display: flex;
+    align-items: center;
+    gap: 15px;
     background: #fff;
-    padding: 5px;
-    border-radius: 50px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     border: 1px solid #eee;
 }
 
-.filter-btn {
-    background: transparent;
+.agenda-filter-box label {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: #1A1614;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.date-filter {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Lato', sans-serif;
+    color: #555;
+    outline: none;
+}
+
+.btn-clear-filter {
+    background: none;
     border: none;
-    padding: 10px 20px;
-    border-radius: 40px;
+    color: #e74c3c;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
     cursor: pointer;
-    font-weight: 600;
-    color: var(--gray);
-    transition: all 0.3s;
+    text-decoration: underline;
 }
 
-.filter-btn.active {
-    background: var(--dark);
-    color: var(--gold);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-/* GRID LAYOUT */
+/* --- GRID DE AGENDAMENTOS --- */
 .agenda-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 30px;
+    gap: 25px;
+    margin-top: 30px;
+    padding-bottom: 50px;
 }
 
-/* CARD DESIGN */
 .agenda-card {
-    background: var(--white);
-    border-radius: 16px;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-    border: 1px solid rgba(0,0,0,0.03);
-    transition: transform 0.3s ease;
+}
+
+.agenda-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.card-bloqueado {
+    background: #fafafa;
+    border-style: dashed;
+    border-color: #ccc;
+}
+
+/* --- TOPO DO CARD --- */
+.card-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #fdfdfd;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.card-bloqueado .card-top-bar {
+    background: #f0f0f0;
+}
+
+.agenda-date {
     display: flex;
     flex-direction: column;
 }
 
-.agenda-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+.agenda-date strong {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.1rem;
+    color: #1A1614;
+}
 
-/* Card Header */
-.card-header {
-    background: #FAFAFA;
+.agenda-date span {
+    font-size: 0.85rem;
+    color: #777;
+    margin-top: 2px;
+}
+
+/* --- BADGES (STATUS) --- */
+.badge {
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge-success { background: rgba(46, 204, 113, 0.15); color: #27ae60; }
+.badge-warning { background: rgba(241, 196, 15, 0.15); color: #d35400; }
+.badge-danger { background: rgba(231, 76, 60, 0.15); color: #c0392b; }
+.badge-dark { background: rgba(0, 0, 0, 0.1); color: #333; }
+
+/* --- CORPO DO CARD --- */
+.card-body {
+    padding: 20px;
+    flex: 1;
+}
+
+.espaco-nome {
+    font-family: 'Cinzel', serif;
+    color: #C0A062;
+    font-size: 1.25rem;
+    margin: 0 0 15px 0;
+}
+
+.client-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.client-icon {
+    font-size: 1.8rem;
+    color: #ddd;
+}
+
+.client-info div {
+    display: flex;
+    flex-direction: column;
+}
+
+.client-info strong {
+    font-family: 'Lato', sans-serif;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.client-info span {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.block-info span {
+    font-family: 'Lato', sans-serif;
+    font-style: italic;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* --- RODAPÉ DO CARD --- */
+.card-footer {
     padding: 15px 20px;
-    border-bottom: 1px solid #EEE;
+    background: #fdfdfd;
+    border-top: 1px solid #f0f0f0;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.date-badge { display: flex; flex-direction: column; }
-.db-day { font-weight: 700; color: var(--dark); font-size: 0.95rem; text-transform: capitalize; }
-.db-time { font-size: 0.85rem; color: var(--gold); font-weight: 600; }
+.pgto-tipo {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    color: #777;
+}
 
-.status-pill {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: 800;
+.valor-total {
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    color: #1A1614;
+    font-size: 1.1rem;
+}
+
+.bloqueio-tag {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    color: #999;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
-.pill-PENDENTE { background: #FFF7ED; color: #C2410C; border: 1px solid #FFEDD5; }
-.pill-CONFIRMADO { background: #ECFDF5; color: #047857; border: 1px solid #D1FAE5; }
-.pill-CANCELADO { background: #FEF2F2; color: #B91C1C; border: 1px solid #FECACA; }
 
-/* Card Body */
-.card-body { padding: 20px; flex: 1; }
-
-.info-group { margin-bottom: 15px; }
-.info-group label { display: block; font-size: 0.7rem; text-transform: uppercase; color: #9CA3AF; margin-bottom: 4px; font-weight: 700; }
-.info-val { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--dark); font-size: 0.95rem; }
-.info-val svg { color: var(--gold); }
-.info-group small { display: block; font-size: 0.8rem; color: #9CA3AF; margin-top: 2px; margin-left: 24px; }
-
-.btn-download {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    margin-top: 20px; padding: 10px; width: 100%;
-    background: #F3F4F6; color: #4B5563; text-decoration: none;
-    border-radius: 8px; font-size: 0.85rem; font-weight: 600;
-    transition: all 0.2s; border: 1px solid #E5E7EB;
+/* --- ESTADO VAZIO --- */
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px dashed #ddd;
+    margin-top: 30px;
 }
-.btn-download:hover { background: #E5E7EB; color: #111; }
 
-/* Card Actions */
-.card-actions {
-    display: flex; border-top: 1px solid #EEE;
+.empty-icon {
+    font-size: 3rem;
+    color: #ddd;
+    margin-bottom: 15px;
 }
-.action-btn {
-    flex: 1; padding: 15px; border: none; cursor: pointer;
-    font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;
-    transition: background 0.3s;
+
+.empty-state h3 {
+    font-family: 'Cinzel', serif;
+    color: #555;
+    margin-bottom: 10px;
 }
-.action-btn.approve { background: var(--dark); color: var(--gold); }
-.action-btn.approve:hover { background: var(--gold); color: var(--dark); }
 
-.action-btn.reject { background: #FFF; color: var(--red); }
-.action-btn.reject:hover { background: #FEF2F2; }
-
-/* Estados Vazios e Loading */
-.loading-state { text-align: center; padding: 50px; color: #999; font-style: italic; }
-.empty-state-agenda {
-    grid-column: 1 / -1; text-align: center; padding: 60px;
-    background: #fff; border-radius: 12px; border: 2px dashed #eee; color: #aaa;
+.empty-state p {
+    font-family: 'Lato', sans-serif;
+    color: #888;
 }
-.empty-state-agenda svg { font-size: 3rem; margin-bottom: 15px; opacity: 0.5; }
 
-/* Mobile */
 @media (max-width: 768px) {
-    .admin-header-row { flex-direction: column; align-items: flex-start; gap: 20px; }
-    .filter-group { width: 100%; justify-content: space-between; overflow-x: auto; }
+    .agenda-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .agenda-filter-box {
+        width: 100%;
+        justify-content: space-between;
+    }
 }

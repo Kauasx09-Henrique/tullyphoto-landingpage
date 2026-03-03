@@ -1,201 +1,149 @@
 import React, { useState, useEffect } from 'react';
 import { Store } from 'react-notifications-component';
 import { 
-  FaCheck, FaTimes, FaLock, FaLockOpen, FaCalendarAlt, FaCameraRetro, FaEye, FaExclamationTriangle 
+    FaCalendarAlt, FaClock, FaUser, FaCheckCircle, 
+    FaTimesCircle, FaRegCalendarMinus, FaLock 
 } from 'react-icons/fa';
 import api from '../../services/api';
-import './styles/adminAgendamentos.css';
+import './styles/adminAgenda.css'; // Vamos criar esse CSS abaixo
 
-const AdminAgendamentos = () => {
-  const [agendamentos, setAgendamentos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [modalComprovante, setModalComprovante] = useState({ show: false, url: '' });
+const AdminAgenda = () => {
+    const [agendamentos, setAgendamentos] = useState([]);
+    const [loading, setLoading] = useState(false);
+    
+    // Estado para o filtro de data
+    const [dataFiltro, setDataFiltro] = useState(''); 
 
-  useEffect(() => {
-    carregarAgendamentos();
-  }, []);
+    // Busca os dados sempre que a tela carrega ou a data muda
+    useEffect(() => {
+        carregarAgendamentos();
+    }, [dataFiltro]);
 
-  const carregarAgendamentos = async () => {
-    try {
-      const res = await api.get('/agendamentos');
-      setAgendamentos(res.data);
-    } catch (err) {
-      Store.addNotification({ title: "Erro", message: "Falha ao buscar a agenda.", type: "danger", container: "top-right", dismiss: { duration: 3000 } });
-    } finally {
-      setLoading(false);
-    }
-  };
+    const carregarAgendamentos = async () => {
+        setLoading(true);
+        try {
+            // Passa a data como parâmetro (se estiver vazia, o backend traz tudo)
+            const res = await api.get('/agendamentos', {
+                params: { data: dataFiltro || undefined }
+            });
+            setAgendamentos(res.data);
+        // eslint-disable-next-line no-unused-vars
+        } catch (err) {
+            Store.addNotification({
+                title: "Erro", message: "Não foi possível carregar a agenda.",
+                type: "danger", container: "top-right", dismiss: { duration: 3000 }
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const getImageUrl = (url) => {
-    if (!url) return '';
-    if (url.startsWith('http') || url.startsWith('blob')) return url;
-    const baseURL = api.defaults.baseURL || 'http://localhost:3000';
-    return `${baseURL.replace(/\/$/, '')}/${url.replace(/^\//, '')}`;
-  };
+    const limparFiltro = () => {
+        setDataFiltro('');
+    };
 
-  const alterarStatus = async (id, novoStatus, acaoNome) => {
-    if (!window.confirm(`Tem certeza que deseja ${acaoNome} este horário?`)) return;
+    // Função para renderizar a cor do status
+    const getStatusBadge = (status) => {
+        switch (status) {
+            case 'CONFIRMADO': return <span className="badge badge-success"><FaCheckCircle/> Confirmado</span>;
+            case 'PENDENTE': return <span className="badge badge-warning"><FaClock/> Pendente</span>;
+            case 'CANCELADO': return <span className="badge badge-danger"><FaTimesCircle/> Cancelado</span>;
+            case 'BLOQUEADO': return <span className="badge badge-dark"><FaLock/> Bloqueado</span>;
+            default: return <span className="badge badge-default">{status}</span>;
+        }
+    };
 
-    try {
-      await api.put(`/agendamentos/${id}/status`, { status: novoStatus });
-      Store.addNotification({ 
-        title: "Sucesso!", 
-        message: `Status atualizado para ${novoStatus}.`, 
-        type: "success", container: "top-right", dismiss: { duration: 3000 } 
-      });
-      carregarAgendamentos();
-    } catch (err) {
-      Store.addNotification({ title: "Erro", message: "Não foi possível atualizar.", type: "danger", container: "top-right", dismiss: { duration: 3000 } });
-    }
-  };
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-  };
-
-  const abrirComprovante = (url) => {
-    Store.addNotification({
-        title: "Atenção Admin",
-        message: "Verifique o valor e a data do comprovante antes de aprovar.",
-        type: "warning",
-        container: "top-right",
-        dismiss: { duration: 5000 }
-    });
-    setModalComprovante({ show: true, url });
-  };
-
-  const fecharComprovante = () => {
-    setModalComprovante({ show: false, url: '' });
-  };
-
-  return (
-    <div className="admin-page-container fade-in" translate="no">
-      <div className="admin-header-row">
-        <div className="header-text">
-          <h2 className="admin-title">Gerenciar Agenda</h2>
-          <p className="admin-subtitle">Aprove, cancele ou desbloqueie horários do estúdio.</p>
-        </div>
-      </div>
-
-      <div className="table-card">
-        <div className="table-responsive-wrapper">
-          <table className="vetra-table">
-            <thead>
-              <tr>
-                <th width="60">ID</th>
-                <th>Cliente / Motivo</th>
-                <th>Cenário</th>
-                <th>Data e Hora</th>
-                <th>Status</th>
-                <th align="right">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan="6" className="text-center">Carregando agenda...</td></tr>
-              ) : agendamentos.length === 0 ? (
-                <tr><td colSpan="6" className="text-center empty-state">Nenhum registro encontrado.</td></tr>
-              ) : (
-                agendamentos.map(ag => {
-                  const isBloqueio = ag.status === 'BLOQUEADO';
-                  const urlDoComprovante = ag.comprovante_url || ag.comprovante;
-                  
-                  return (
-                  <tr key={ag.id} className={isBloqueio ? 'row-bloqueado' : ''}>
-                    <td className="id-cell">#{ag.id}</td>
-                    
-                    <td>
-                      <div className="client-info">
-                          {isBloqueio ? (
-                              <><FaLock className="lock-icon"/> <strong>Bloqueio Admin</strong></>
-                          ) : (
-                              <strong>
-                                {ag.usuario_nome}
-                                {urlDoComprovante && ag.status === 'PENDENTE' && (
-                                  <span className="alert-text"><FaExclamationTriangle /> Validar Pix</span>
-                                )}
-                              </strong>
-                          )}
-                          <small>{ag.metodo_pagamento === 'BLOQUEIO_ADMIN' ? 'Fechado para clientes' : `Pagamento: ${ag.metodo_pagamento}`}</small>
-                      </div>
-                    </td>
-
-                    <td>
-                      <div className="space-cell">
-                          {ag.espaco_imagem_url ? (
-                              <img src={getImageUrl(ag.espaco_imagem_url)} alt={ag.espaco_nome} className="space-tiny-thumb" />
-                          ) : (
-                              <div className="space-tiny-thumb placeholder"><FaCameraRetro /></div>
-                          )}
-                          <span className="space-badge">{ag.espaco_nome}</span>
-                      </div>
-                    </td>
-                    
-                    <td>
-                      <div className="date-cell">
-                          <FaCalendarAlt className="mini-icon"/> {formatDate(ag.data_inicio)}
-                      </div>
-                    </td>
-                    
-                    <td>
-                      <span className={`status-badge ${ag.status.toLowerCase()}`}>
-                          {ag.status}
-                      </span>
-                    </td>
-
-                    <td align="right">
-                      <div className="action-buttons">
-                          
-                          {urlDoComprovante && (
-                              <div className="btn-comprovante-wrapper">
-                                <button className="action-btn view-receipt" onClick={() => abrirComprovante(urlDoComprovante)} title="Ver Comprovante">
-                                    <FaEye />
-                                </button>
-                                {ag.status === 'PENDENTE' && <span className="alert-dot"></span>}
-                              </div>
-                          )}
-
-                          {ag.status === 'PENDENTE' && (
-                              <>
-                                  <button className="action-btn success" onClick={() => alterarStatus(ag.id, 'CONFIRMADO', 'APROVAR')} title="Aprovar"><FaCheck /></button>
-                                  <button className="action-btn danger" onClick={() => alterarStatus(ag.id, 'CANCELADO', 'REJEITAR')} title="Rejeitar"><FaTimes /></button>
-                              </>
-                          )}
-                          {ag.status === 'CONFIRMADO' && (
-                              <button className="action-btn danger" onClick={() => alterarStatus(ag.id, 'CANCELADO', 'CANCELAR')} title="Cancelar Reserva"><FaTimes /></button>
-                          )}
-                          {isBloqueio && (
-                              <button className="action-btn warning" onClick={() => alterarStatus(ag.id, 'CANCELADO', 'DESBLOQUEAR')} title="Desbloquear Horário"><FaLockOpen /></button>
-                          )}
-                      </div>
-                    </td>
-                  </tr>
-                )})
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {modalComprovante.show && (
-        <div className="modal-overlay fade-in" onClick={fecharComprovante}>
-          <div className="receipt-modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn-dark" onClick={fecharComprovante}><FaTimes /></button>
-            <h3>Comprovante de Pagamento</h3>
-            <p>Confira os dados antes de aprovar a reserva.</p>
-            <div className="receipt-img-container">
-              <img src={getImageUrl(modalComprovante.url)} alt="Comprovante Pix" onError={(e) => { e.target.src = 'https://via.placeholder.com/400x500?text=Erro+ao+carregar+imagem'; }} />
+    return (
+        <div className="admin-page-container fade-in">
+            <div className="admin-header-row agenda-header">
+                <div className="header-text">
+                    <h2 className="admin-title">Agenda do Estúdio</h2>
+                    <p className="admin-subtitle">Gerencie os agendamentos e bloqueios por data.</p>
+                </div>
+                
+                {/* FILTRO DE DATA */}
+                <div className="agenda-filter-box">
+                    <label><FaCalendarAlt /> Filtrar por Dia:</label>
+                    <input 
+                        type="date" 
+                        className="vetra-input date-filter"
+                        value={dataFiltro}
+                        onChange={(e) => setDataFiltro(e.target.value)}
+                    />
+                    {dataFiltro && (
+                        <button className="btn-clear-filter" onClick={limparFiltro}>
+                            Limpar Filtro
+                        </button>
+                    )}
+                </div>
             </div>
-            <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                <a href={getImageUrl(modalComprovante.url)} target="_blank" rel="noopener noreferrer" className="btn-download-receipt">
-                    Abrir em tela cheia
-                </a>
+
+            <div className="agenda-list-container">
+                {loading ? (
+                    <div className="loading-state">Carregando agenda...</div>
+                ) : agendamentos.length === 0 ? (
+                    <div className="empty-state">
+                        <FaRegCalendarMinus className="empty-icon" />
+                        <h3>Nenhum agendamento encontrado</h3>
+                        <p>{dataFiltro ? `Não há reservas marcadas para ${new Date(dataFiltro).toLocaleDateString('pt-BR')}.` : 'Sua agenda está vazia no momento.'}</p>
+                    </div>
+                ) : (
+                    <div className="agenda-grid">
+                        {agendamentos.map(agendamento => {
+                            const dataInicio = new Date(agendamento.data_inicio);
+                            const dataFim = new Date(agendamento.data_fim);
+                            const diaFormatado = dataInicio.toLocaleDateString('pt-BR');
+                            const horaInicio = dataInicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                            const horaFim = dataFim.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+                            return (
+                                <div key={agendamento.id} className={`agenda-card ${agendamento.status === 'BLOQUEADO' ? 'card-bloqueado' : ''}`}>
+                                    <div className="card-top-bar">
+                                        <div className="agenda-date">
+                                            <strong>{diaFormatado}</strong>
+                                            <span>{horaInicio} às {horaFim}</span>
+                                        </div>
+                                        {getStatusBadge(agendamento.status)}
+                                    </div>
+
+                                    <div className="card-body">
+                                        <h4 className="espaco-nome">{agendamento.espaco_nome}</h4>
+                                        
+                                        {agendamento.status !== 'BLOQUEADO' && (
+                                            <div className="client-info">
+                                                <FaUser className="client-icon" />
+                                                <div>
+                                                    <strong>{agendamento.usuario_nome}</strong>
+                                                    <span>{agendamento.usuario_email}</span>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {agendamento.status === 'BLOQUEADO' && (
+                                            <div className="block-info">
+                                                <span>Motivo: {agendamento.metodo_pagamento || 'Manutenção / Fechado'}</span>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="card-footer">
+                                        {agendamento.status !== 'BLOQUEADO' ? (
+                                            <>
+                                                <span className="pgto-tipo">Pagamento: <strong>{agendamento.metodo_pagamento}</strong></span>
+                                                <span className="valor-total">R$ {Number(agendamento.preco_total).toFixed(2)}</span>
+                                            </>
+                                        ) : (
+                                            <span className="bloqueio-tag">Bloqueio Administrativo</span>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
             </div>
-          </div>
         </div>
-      )}
-    </div>
-  );
+    );
 };
 
-export default AdminAgendamentos;
+export default AdminAgenda;

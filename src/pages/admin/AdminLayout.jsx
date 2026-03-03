@@ -129,11 +129,7 @@ const AdminLayout = () => {
 
                     <p className="nav-label">SISTEMA</p>
 
-                    {/* NOVA TELA AQUI */}
-                    <Link to="/admin/configuracoes" className={`nav-item ${location.pathname.includes('configuracoes') ? 'active' : ''}`}>
-                        <FaCog className="nav-icon" />
-                        <span>Configurações</span>
-                    </Link>
+            
                 </nav>
 
                 <div className="sidebar-footer">
