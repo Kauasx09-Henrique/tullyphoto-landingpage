@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
 import { Store } from 'react-notifications-component';
-import { 
-    FaChartPie, FaBuilding, FaUsers, FaCalendarAlt, 
-    FaSignOutAlt, FaSearch, FaUserCircle, FaCamera , FaLock
+import {
+    FaChartPie, FaBuilding, FaUsers, FaCalendarAlt,
+    FaSignOutAlt, FaSearch, FaUserCircle, FaCamera, FaLock, FaCog
 } from 'react-icons/fa';
 import api from '../../services/api';
 import './styles/adminlayout.css';
@@ -33,7 +33,7 @@ const AdminLayout = () => {
             const res = await api.put(`/usuarios/${user.id}/logo`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-            
+
             const updatedUser = { ...user, logo_url: res.data.logo_url };
             setUser(updatedUser);
             localStorage.setItem('user', JSON.stringify(updatedUser));
@@ -46,6 +46,7 @@ const AdminLayout = () => {
                 container: "top-right",
                 dismiss: { duration: 3000 }
             });
+        // eslint-disable-next-line no-unused-vars
         } catch (error) {
             Store.addNotification({
                 title: "Erro",
@@ -73,12 +74,12 @@ const AdminLayout = () => {
                             <span>Alterar Logo</span>
                         </div>
                     </div>
-                    <input 
-                        type="file" 
-                        id="logoInput" 
-                        hidden 
-                        accept="image/png, image/jpeg" 
-                        onChange={handleLogoUpload} 
+                    <input
+                        type="file"
+                        id="logoInput"
+                        hidden
+                        accept="image/png, image/jpeg"
+                        onChange={handleLogoUpload}
                     />
                 </div>
 
@@ -98,7 +99,7 @@ const AdminLayout = () => {
 
                 <nav className="sidebar-nav">
                     <p className="nav-label">ANALYTICS</p>
-                    
+
                     <Link to="/admin/dashboard" className={`nav-item ${location.pathname.includes('dashboard') ? 'active' : ''}`}>
                         <FaChartPie className="nav-icon" />
                         <span>Visão Geral</span>
@@ -120,9 +121,18 @@ const AdminLayout = () => {
                         <FaUsers className="nav-icon" />
                         <span>Usuários</span>
                     </Link>
-                    <Link to="/admin/Bloqueios" className={`nav-item ${location.pathname.includes('bloqueios') ? 'active' : ''}`}>
+
+                    <Link to="/admin/bloqueios" className={`nav-item ${location.pathname.includes('bloqueios') ? 'active' : ''}`}>
                         <FaLock className="nav-icon" />
                         <span>Bloqueios</span>
+                    </Link>
+
+                    <p className="nav-label">SISTEMA</p>
+
+                    {/* NOVA TELA AQUI */}
+                    <Link to="/admin/configuracoes" className={`nav-item ${location.pathname.includes('configuracoes') ? 'active' : ''}`}>
+                        <FaCog className="nav-icon" />
+                        <span>Configurações</span>
                     </Link>
                 </nav>
 
@@ -139,7 +149,7 @@ const AdminLayout = () => {
                         <FaSearch className="search-icon" />
                         <input type="text" placeholder="Pesquisar..." />
                     </div>
-                    
+
                     <div className="topbar-actions">
                         <span className="date-display">
                             {new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })}

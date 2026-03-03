@@ -25,6 +25,7 @@ import AdminAgenda from './pages/admin/AdminAgenda';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminBloqueios from './pages/admin/AdminBloqueios';
+import AdminConfiguracoes from './pages/admin/AdminConfiguracoes';
 
 // Components
 import Header from './components/Header';
@@ -65,6 +66,7 @@ function App() {
           <Route path="agenda" element={<AdminAgenda />} />
           <Route path="usuarios" element={<AdminUsers />} />
           <Route path="/admin/bloqueios" element={<AdminBloqueios />} />
+          <Route path="configuracoes" element={<AdminConfiguracoes />} />
         </Route>
       </Routes>
     </BrowserRouter>
