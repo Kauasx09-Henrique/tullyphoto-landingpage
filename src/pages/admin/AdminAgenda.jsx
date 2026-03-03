@@ -5,7 +5,7 @@ import {
     FaTimesCircle, FaRegCalendarMinus, FaLock 
 } from 'react-icons/fa';
 import api from '../../services/api';
-import './styles/adminAgenda.css'; // Vamos criar esse CSS abaixo
+import './styles/adminAgendamentos.css'; // Vamos criar esse CSS abaixo
 
 const AdminAgenda = () => {
     const [agendamentos, setAgendamentos] = useState([]);
