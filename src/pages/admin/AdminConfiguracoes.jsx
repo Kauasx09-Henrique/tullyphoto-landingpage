@@ -4,7 +4,7 @@ import {
     FaStore, FaClock, FaCreditCard, FaBell, 
     FaSave, FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaKey
 } from 'react-icons/fa';
-import '../../styles/adminConfig.css';
+import '../styles/AdminConfiguracoes.css';
 
 const AdminConfiguracoes = () => {
     const [loading, setLoading] = useState(false);
