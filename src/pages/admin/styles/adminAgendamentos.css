@@ -1,270 +1,264 @@
-/* Container Flexível para Responsividade no Celular */
-.table-responsive-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+/* ==========================================================================
+   TELA DE AGENDA - ADMIN VETRA
+   ========================================================================== */
+
+.agenda-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.agenda-filter-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    border: 1px solid #eee;
+}
+
+.agenda-filter-box label {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: #1A1614;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.date-filter {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Lato', sans-serif;
+    color: #555;
+    outline: none;
+}
+
+.btn-clear-filter {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* --- GRID DE AGENDAMENTOS --- */
+.agenda-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+    padding-bottom: 50px;
+}
+
+.agenda-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.agenda-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.card-bloqueado {
+    background: #fafafa;
+    border-style: dashed;
+    border-color: #ccc;
+}
+
+/* --- TOPO DO CARD --- */
+.card-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #fdfdfd;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.card-bloqueado .card-top-bar {
+    background: #f0f0f0;
+}
+
+.agenda-date {
+    display: flex;
+    flex-direction: column;
+}
+
+.agenda-date strong {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.1rem;
+    color: #1A1614;
+}
+
+.agenda-date span {
+    font-size: 0.85rem;
+    color: #777;
+    margin-top: 2px;
+}
+
+/* --- BADGES (STATUS) --- */
+.badge {
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge-success {
+    background: rgba(46, 204, 113, 0.15);
+    color: #27ae60;
+}
+
+.badge-warning {
+    background: rgba(241, 196, 15, 0.15);
+    color: #d35400;
+}
+
+.badge-danger {
+    background: rgba(231, 76, 60, 0.15);
+    color: #c0392b;
+}
+
+.badge-dark {
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+/* --- CORPO DO CARD --- */
+.card-body {
+    padding: 20px;
+    flex: 1;
+}
+
+.espaco-nome {
+    font-family: 'Cinzel', serif;
+    color: #C0A062;
+    font-size: 1.25rem;
+    margin: 0 0 15px 0;
 }
 
 .client-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.client-icon {
+    font-size: 1.8rem;
+    color: #ddd;
+}
+
+.client-info div {
     display: flex;
     flex-direction: column;
 }
 
 .client-info strong {
-    color: var(--v-dark, #1A1614);
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    white-space: nowrap; /* Evita quebra de linha no celular */
+    font-family: 'Lato', sans-serif;
+    color: #333;
+    font-size: 0.95rem;
 }
 
-.alert-text {
-    font-size: 0.7rem;
-    background-color: #ffeaa7;
-    color: #856404;
-    padding: 2px 6px;
-    border-radius: 4px;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    margin-left: 5px;
-    animation: pulseAlert 2s infinite;
-}
-
-@keyframes pulseAlert {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.lock-icon {
-    color: #e67e22;
-}
-
-.client-info small {
-    color: var(--v-gray, #888888);
-    font-size: 0.8rem;
-    margin-top: 4px;
-    white-space: nowrap;
-}
-
-/* Estilos para a Imagem do Espaço na Tabela */
-.space-cell {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    white-space: nowrap;
-}
-
-.space-tiny-thumb {
-    width: 45px;
-    height: 45px;
-    border-radius: 8px;
-    object-fit: cover;
-    border: 1px solid #eee;
-}
-
-.space-tiny-thumb.placeholder {
-    background-color: #f4f6f8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #ccc;
-    font-size: 1.2rem;
-    border: none;
-}
-
-.space-badge {
-    background-color: #f4f6f8;
-    padding: 6px 12px;
-    border-radius: 6px;
+.client-info span {
     font-size: 0.85rem;
-    font-weight: bold;
-    color: #555;
-    white-space: nowrap;
+    color: #888;
 }
 
-.date-cell {
+.block-info span {
+    font-family: 'Lato', sans-serif;
+    font-style: italic;
+    color: #666;
     font-size: 0.9rem;
-    color: var(--v-dark, #1A1614);
+}
+
+/* --- RODAPÉ DO CARD --- */
+.card-footer {
+    padding: 15px 20px;
+    background: #fdfdfd;
+    border-top: 1px solid #f0f0f0;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 8px;
-    white-space: nowrap;
 }
 
-.status-badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    white-space: nowrap;
+.pgto-tipo {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    color: #777;
 }
 
-.status-badge.confirmado, .status-badge.realizado { background-color: rgba(46, 204, 113, 0.1); color: #27ae60; }
-.status-badge.pendente { background-color: rgba(241, 196, 15, 0.1); color: #f39c12; }
-.status-badge.cancelado { background-color: rgba(231, 76, 60, 0.1); color: #e74c3c; }
-.status-badge.bloqueado { background-color: rgba(230, 126, 34, 0.1); color: #d35400; }
-
-.row-bloqueado {
-    background-color: #fffaf6;
-}
-
-.action-buttons {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 5px;
-}
-
-.action-btn {
-    width: 36px;
-    height: 36px;
-    border: none;
-    border-radius: 8px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
+.valor-total {
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    color: #1A1614;
     font-size: 1.1rem;
 }
 
-.action-btn.success { background-color: rgba(46, 204, 113, 0.1); color: #27ae60; }
-.action-btn.success:hover { background-color: #27ae60; color: #fff; }
-
-.action-btn.danger { background-color: rgba(231, 76, 60, 0.1); color: #e74c3c; }
-.action-btn.danger:hover { background-color: #e74c3c; color: #fff; }
-
-.action-btn.warning { background-color: rgba(230, 126, 34, 0.1); color: #e67e22; }
-.action-btn.warning:hover { background-color: #e67e22; color: #fff; }
-
-/* Botão Olho para Comprovante PIX */
-.btn-comprovante-wrapper {
-    position: relative;
-    display: inline-block;
+.bloqueio-tag {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    color: #999;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
-.action-btn.view-receipt { 
-    background-color: rgba(52, 152, 219, 0.1); 
-    color: #3498db; 
-}
-.action-btn.view-receipt:hover { 
-    background-color: #3498db; 
-    color: #fff; 
-}
-
-/* Bolinha vermelha piscante de Alerta */
-.alert-dot {
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    width: 10px;
-    height: 10px;
-    background-color: #e74c3c;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-@keyframes ping {
-    75%, 100% {
-        transform: scale(2);
-        opacity: 0;
-    }
-}
-
-/* --- MODAL DE COMPROVANTE --- */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(4px);
-    z-index: 2000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.receipt-modal-content {
-    background: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    max-width: 450px;
-    width: 90%;
-    position: relative;
+/* --- ESTADO VAZIO --- */
+.empty-state {
     text-align: center;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    animation: slideUp 0.3s ease;
+    padding: 80px 20px;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px dashed #ddd;
+    margin-top: 30px;
 }
 
-.receipt-modal-content h3 {
-    margin-top: 0;
-    margin-bottom: 5px;
-    color: var(--v-dark, #1A1614);
-    font-size: 1.4rem;
+.empty-icon {
+    font-size: 3rem;
+    color: #ddd;
+    margin-bottom: 15px;
 }
 
-.receipt-modal-content p {
+.empty-state h3 {
+    font-family: 'Cinzel', serif;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    font-family: 'Lato', sans-serif;
     color: #888;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
 }
 
-.receipt-img-container {
-    max-height: 55vh;
-    overflow-y: auto;
-    border-radius: 8px;
-    border: 2px dashed #eee;
-    padding: 5px;
-}
+@media (max-width: 768px) {
+    .agenda-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-.receipt-img-container img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 4px;
-}
-
-.close-btn-dark {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: transparent;
-    border: none;
-    font-size: 1.5rem;
-    color: #aaa;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-
-.close-btn-dark:hover {
-    color: #e74c3c;
-}
-
-.btn-download-receipt {
-    display: inline-block;
-    padding: 12px 24px;
-    background-color: var(--v-dark, #1A1614);
-    color: var(--v-gold, #D4AF6E);
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
-    transition: all 0.3s;
-}
-
-.btn-download-receipt:hover {
-    background-color: var(--v-gold, #D4AF6E);
-    color: var(--v-dark, #1A1614);
-}
-
-@keyframes slideUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    .agenda-filter-box {
+        width: 100%;
+        justify-content: space-between;
+    }
 }
