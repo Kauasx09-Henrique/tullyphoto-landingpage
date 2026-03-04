@@ -77,85 +77,105 @@ const AdminUsuarios = () => {
       </div>
 
       <div className="table-card">
-        <table className="vetra-table">
-          <thead>
-            <tr>
-              <th width="60">ID</th>
-              <th>Nome do Usuário</th>
-              <th>E-mail</th>
-              <th>WhatsApp</th>
-              <th>Permissão</th>
-              <th>Status</th>
-              <th align="right">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr><td colSpan="7" className="text-center">Carregando usuários...</td></tr>
-            ) : usuarios.length === 0 ? (
-              <tr><td colSpan="7" className="text-center empty-state">Nenhum usuário encontrado.</td></tr>
-            ) : (
-              usuarios.map(user => (
-                <tr key={user.id} className={!user.ativo ? 'row-inativo' : ''}>
-                  <td className="id-cell">#{user.id}</td>
-                  <td>
-                    <strong>{user.nome}</strong>
-                  </td>
-                  <td>{user.email}</td>
-                  <td>
-                    {user.telefone ? (
-                      <a 
-                        href={`https://wa.me/55${user.telefone}`} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="whatsapp-link"
-                      >
-                        <FaWhatsapp /> {formatarTelefone(user.telefone)}
-                      </a>
-                    ) : (
-                      <span className="no-phone">Não informado</span>
-                    )}
-                  </td>
-                  <td>
-                    <span className={`role-badge ${user.tipo.toLowerCase()}`}>
-                      {user.tipo === 'ADMIN' ? <><FaUserShield /> ADMIN</> : <><FaUser /> CLIENTE</>}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={`status-badge ${user.ativo ? 'confirmado' : 'cancelado'}`}>
-                      {user.ativo ? 'ATIVO' : 'BLOQUEADO'}
-                    </span>
-                  </td>
-                  <td align="right">
-                    <div className="action-buttons">
-                      <button
-                        className={`action-btn ${user.tipo === 'ADMIN' ? 'warning' : 'edit'}`}
-                        onClick={() => toggleTipo(user.id, user.tipo)}
-                        title="Alterar Permissão"
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className={`action-btn ${user.ativo ? 'danger' : 'success'}`}
-                        onClick={() => toggleStatus(user.id, user.ativo)}
-                        title={user.ativo ? "Bloquear Usuário" : "Desbloquear Usuário"}
-                      >
-                        {user.ativo ? <FaLock /> : <FaLockOpen />}
-                      </button>
-                      <button
-                        className="action-btn danger"
-                        onClick={() => deletarUsuario(user.id)}
-                        title="Excluir Usuário"
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+        <div className="table-responsive">
+          <table className="vetra-table">
+            <thead>
+              <tr>
+                <th width="60">ID</th>
+                <th>Usuário</th>
+                <th>E-mail</th>
+                <th>WhatsApp</th>
+                <th>Permissão</th>
+                <th>Status</th>
+                <th align="right">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr><td colSpan="7" className="text-center">Carregando usuários...</td></tr>
+              ) : usuarios.length === 0 ? (
+                <tr><td colSpan="7" className="text-center empty-state">Nenhum usuário encontrado.</td></tr>
+              ) : (
+                usuarios.map(user => (
+                  <tr key={user.id} className={!user.ativo ? 'row-inativo' : ''}>
+                    <td className="id-cell">#{user.id}</td>
+                    
+                    <td>
+                      <div className="user-profile-cell">
+                        {user.foto ? (
+                          <img 
+                            src={user.foto} 
+                            alt={user.nome} 
+                            className="user-avatar" 
+                            referrerPolicy="no-referrer" 
+                          />
+                        ) : (
+                          <div className="user-avatar-fallback"><FaUser /></div>
+                        )}
+                        <strong>{user.nome}</strong>
+                      </div>
+                    </td>
+
+                    <td>{user.email}</td>
+                    
+                    <td>
+                      {user.telefone ? (
+                        <a 
+                          href={`https://wa.me/55${user.telefone}`} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="whatsapp-link"
+                        >
+                          <FaWhatsapp /> {formatarTelefone(user.telefone)}
+                        </a>
+                      ) : (
+                        <span className="no-phone">Não informado</span>
+                      )}
+                    </td>
+                    
+                    <td>
+                      <span className={`role-badge ${user.tipo.toLowerCase()}`}>
+                        {user.tipo === 'ADMIN' ? <><FaUserShield /> ADMIN</> : <><FaUser /> CLIENTE</>}
+                      </span>
+                    </td>
+                    
+                    <td>
+                      <span className={`status-badge ${user.ativo ? 'confirmado' : 'cancelado'}`}>
+                        {user.ativo ? 'ATIVO' : 'BLOQUEADO'}
+                      </span>
+                    </td>
+                    
+                    <td align="right">
+                      <div className="action-buttons">
+                        <button
+                          className={`action-btn ${user.tipo === 'ADMIN' ? 'warning' : 'edit'}`}
+                          onClick={() => toggleTipo(user.id, user.tipo)}
+                          title="Alterar Permissão"
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          className={`action-btn ${user.ativo ? 'danger' : 'success'}`}
+                          onClick={() => toggleStatus(user.id, user.ativo)}
+                          title={user.ativo ? "Bloquear Usuário" : "Desbloquear Usuário"}
+                        >
+                          {user.ativo ? <FaLock /> : <FaLockOpen />}
+                        </button>
+                        <button
+                          className="action-btn danger"
+                          onClick={() => deletarUsuario(user.id)}
+                          title="Excluir Usuário"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
