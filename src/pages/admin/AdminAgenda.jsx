@@ -5,16 +5,13 @@ import {
     FaTimesCircle, FaRegCalendarMinus, FaLock 
 } from 'react-icons/fa';
 import api from '../../services/api';
-import './styles/adminAgendamentos.css'; // Vamos criar esse CSS abaixo
+import './styles/adminAgendamentos.css';
 
 const AdminAgenda = () => {
     const [agendamentos, setAgendamentos] = useState([]);
     const [loading, setLoading] = useState(false);
-    
-    // Estado para o filtro de data
     const [dataFiltro, setDataFiltro] = useState(''); 
 
-    // Busca os dados sempre que a tela carrega ou a data muda
     useEffect(() => {
         carregarAgendamentos();
     }, [dataFiltro]);
@@ -22,12 +19,10 @@ const AdminAgenda = () => {
     const carregarAgendamentos = async () => {
         setLoading(true);
         try {
-            // Passa a data como parâmetro (se estiver vazia, o backend traz tudo)
             const res = await api.get('/agendamentos', {
                 params: { data: dataFiltro || undefined }
             });
             setAgendamentos(res.data);
-        // eslint-disable-next-line no-unused-vars
         } catch (err) {
             Store.addNotification({
                 title: "Erro", message: "Não foi possível carregar a agenda.",
@@ -42,7 +37,6 @@ const AdminAgenda = () => {
         setDataFiltro('');
     };
 
-    // Função para renderizar a cor do status
     const getStatusBadge = (status) => {
         switch (status) {
             case 'CONFIRMADO': return <span className="badge badge-success"><FaCheckCircle/> Confirmado</span>;
@@ -61,7 +55,6 @@ const AdminAgenda = () => {
                     <p className="admin-subtitle">Gerencie os agendamentos e bloqueios por data.</p>
                 </div>
                 
-                {/* FILTRO DE DATA */}
                 <div className="agenda-filter-box">
                     <label><FaCalendarAlt /> Filtrar por Dia:</label>
                     <input 
