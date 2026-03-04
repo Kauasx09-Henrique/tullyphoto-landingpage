@@ -49,12 +49,47 @@
     white-space: nowrap;
 }
 
+.agenda-sections-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin-top: 30px;
+    padding-bottom: 50px;
+}
+
+.section-title {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.title-warning {
+    color: #d35400;
+    border-bottom-color: rgba(241, 196, 15, 0.3);
+}
+
+.title-success {
+    color: #27ae60;
+    border-bottom-color: rgba(46, 204, 113, 0.3);
+}
+
+.title-danger {
+    color: #c0392b;
+    border-bottom-color: rgba(231, 76, 60, 0.3);
+}
+
 .agenda-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 25px;
-    margin-top: 30px;
-    padding-bottom: 50px;
 }
 
 .agenda-card {

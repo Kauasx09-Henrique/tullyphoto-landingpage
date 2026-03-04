@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Store } from 'react-notifications-component';
-import { 
-    FaCalendarAlt, FaClock, FaUser, FaCheckCircle, 
-    FaTimesCircle, FaRegCalendarMinus, FaLock 
+import {
+    FaCalendarAlt, FaClock, FaUser, FaCheckCircle,
+    FaTimesCircle, FaRegCalendarMinus, FaLock
 } from 'react-icons/fa';
 import api from '../../services/api';
 import './styles/adminAgendamentos.css';
@@ -10,7 +10,7 @@ import './styles/adminAgendamentos.css';
 const AdminAgenda = () => {
     const [agendamentos, setAgendamentos] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [dataFiltro, setDataFiltro] = useState(''); 
+    const [dataFiltro, setDataFiltro] = useState('');
 
     useEffect(() => {
         carregarAgendamentos();
@@ -39,13 +39,68 @@ const AdminAgenda = () => {
 
     const getStatusBadge = (status) => {
         switch (status) {
-            case 'CONFIRMADO': return <span className="badge badge-success"><FaCheckCircle/> Confirmado</span>;
-            case 'PENDENTE': return <span className="badge badge-warning"><FaClock/> Pendente</span>;
-            case 'CANCELADO': return <span className="badge badge-danger"><FaTimesCircle/> Cancelado</span>;
-            case 'BLOQUEADO': return <span className="badge badge-dark"><FaLock/> Bloqueado</span>;
+            case 'CONFIRMADO': return <span className="badge badge-success"><FaCheckCircle /> Confirmado</span>;
+            case 'PENDENTE': return <span className="badge badge-warning"><FaClock /> Pendente</span>;
+            case 'CANCELADO': return <span className="badge badge-danger"><FaTimesCircle /> Cancelado</span>;
+            case 'BLOQUEADO': return <span className="badge badge-dark"><FaLock /> Bloqueado</span>;
             default: return <span className="badge badge-default">{status}</span>;
         }
     };
+
+    const renderAgendamentoCard = (agendamento) => {
+        const dataInicio = new Date(agendamento.data_inicio);
+        const dataFim = new Date(agendamento.data_fim);
+        const diaFormatado = dataInicio.toLocaleDateString('pt-BR');
+        const horaInicio = dataInicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        const horaFim = dataFim.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+        return (
+            <div key={agendamento.id} className={`agenda-card ${agendamento.status === 'BLOQUEADO' ? 'card-bloqueado' : ''}`}>
+                <div className="card-top-bar">
+                    <div className="agenda-date">
+                        <strong>{diaFormatado}</strong>
+                        <span>{horaInicio} às {horaFim}</span>
+                    </div>
+                    {getStatusBadge(agendamento.status)}
+                </div>
+
+                <div className="card-body">
+                    <h4 className="espaco-nome">{agendamento.espaco_nome}</h4>
+
+                    {agendamento.status !== 'BLOQUEADO' && (
+                        <div className="client-info">
+                            <FaUser className="client-icon" />
+                            <div>
+                                <strong>{agendamento.usuario_nome}</strong>
+                                <span>{agendamento.usuario_email}</span>
+                            </div>
+                        </div>
+                    )}
+
+                    {agendamento.status === 'BLOQUEADO' && (
+                        <div className="block-info">
+                            <span>Motivo: {agendamento.metodo_pagamento || 'Manutenção / Fechado'}</span>
+                        </div>
+                    )}
+                </div>
+
+                <div className="card-footer">
+                    {agendamento.status !== 'BLOQUEADO' ? (
+                        <>
+                            <span className="pgto-tipo">Pagamento: <strong>{agendamento.metodo_pagamento}</strong></span>
+                            <span className="valor-total">R$ {Number(agendamento.preco_total).toFixed(2)}</span>
+                        </>
+                    ) : (
+                        <span className="bloqueio-tag">Bloqueio Administrativo</span>
+                    )}
+                </div>
+            </div>
+        );
+    };
+
+    const pendentes = agendamentos.filter(a => a.status === 'PENDENTE');
+    const confirmados = agendamentos.filter(a => a.status === 'CONFIRMADO' || a.status === 'BLOQUEADO');
+    const cancelados = agendamentos.filter(a => a.status === 'CANCELADO');
 
     return (
         <div className="admin-page-container fade-in">
@@ -54,11 +109,11 @@ const AdminAgenda = () => {
                     <h2 className="admin-title">Agenda do Estúdio</h2>
                     <p className="admin-subtitle">Gerencie os agendamentos e bloqueios por data.</p>
                 </div>
-                
+
                 <div className="agenda-filter-box">
                     <label><FaCalendarAlt /> Filtrar por Dia:</label>
-                    <input 
-                        type="date" 
+                    <input
+                        type="date"
                         className="vetra-input date-filter"
                         value={dataFiltro}
                         onChange={(e) => setDataFiltro(e.target.value)}
@@ -78,60 +133,44 @@ const AdminAgenda = () => {
                     <div className="empty-state">
                         <FaRegCalendarMinus className="empty-icon" />
                         <h3>Nenhum agendamento encontrado</h3>
-                        <p>{dataFiltro ? `Não há reservas marcadas para ${new Date(dataFiltro).toLocaleDateString('pt-BR')}.` : 'Sua agenda está vazia no momento.'}</p>
+                        <p>{dataFiltro ? `Não há reservas para ${new Date(dataFiltro).toLocaleDateString('pt-BR')}.` : 'Sua agenda está vazia.'}</p>
                     </div>
                 ) : (
-                    <div className="agenda-grid">
-                        {agendamentos.map(agendamento => {
-                            const dataInicio = new Date(agendamento.data_inicio);
-                            const dataFim = new Date(agendamento.data_fim);
-                            const diaFormatado = dataInicio.toLocaleDateString('pt-BR');
-                            const horaInicio = dataInicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-                            const horaFim = dataFim.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                    <div className="agenda-sections-wrapper">
 
-                            return (
-                                <div key={agendamento.id} className={`agenda-card ${agendamento.status === 'BLOQUEADO' ? 'card-bloqueado' : ''}`}>
-                                    <div className="card-top-bar">
-                                        <div className="agenda-date">
-                                            <strong>{diaFormatado}</strong>
-                                            <span>{horaInicio} às {horaFim}</span>
-                                        </div>
-                                        {getStatusBadge(agendamento.status)}
-                                    </div>
-
-                                    <div className="card-body">
-                                        <h4 className="espaco-nome">{agendamento.espaco_nome}</h4>
-                                        
-                                        {agendamento.status !== 'BLOQUEADO' && (
-                                            <div className="client-info">
-                                                <FaUser className="client-icon" />
-                                                <div>
-                                                    <strong>{agendamento.usuario_nome}</strong>
-                                                    <span>{agendamento.usuario_email}</span>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {agendamento.status === 'BLOQUEADO' && (
-                                            <div className="block-info">
-                                                <span>Motivo: {agendamento.metodo_pagamento || 'Manutenção / Fechado'}</span>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div className="card-footer">
-                                        {agendamento.status !== 'BLOQUEADO' ? (
-                                            <>
-                                                <span className="pgto-tipo">Pagamento: <strong>{agendamento.metodo_pagamento}</strong></span>
-                                                <span className="valor-total">R$ {Number(agendamento.preco_total).toFixed(2)}</span>
-                                            </>
-                                        ) : (
-                                            <span className="bloqueio-tag">Bloqueio Administrativo</span>
-                                        )}
-                                    </div>
+                        {pendentes.length > 0 && (
+                            <div className="agenda-section">
+                                <h3 className="section-title title-warning">
+                                    <FaClock /> Aguardando Confirmação ({pendentes.length})
+                                </h3>
+                                <div className="agenda-grid">
+                                    {pendentes.map(renderAgendamentoCard)}
                                 </div>
-                            );
-                        })}
+                            </div>
+                        )}
+
+                        {confirmados.length > 0 && (
+                            <div className="agenda-section">
+                                <h3 className="section-title title-success">
+                                    <FaCheckCircle /> Confirmados e Bloqueios ({confirmados.length})
+                                </h3>
+                                <div className="agenda-grid">
+                                    {confirmados.map(renderAgendamentoCard)}
+                                </div>
+                            </div>
+                        )}
+
+                        {cancelados.length > 0 && (
+                            <div className="agenda-section">
+                                <h3 className="section-title title-danger">
+                                    <FaTimesCircle /> Cancelados ({cancelados.length})
+                                </h3>
+                                <div className="agenda-grid">
+                                    {cancelados.map(renderAgendamentoCard)}
+                                </div>
+                            </div>
+                        )}
+
                     </div>
                 )}
             </div>
