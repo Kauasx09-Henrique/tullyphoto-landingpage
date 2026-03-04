@@ -144,7 +144,7 @@ em qualquer navegador.
 Caso o projeto seja hospedado, você pode acessar a versão online aqui:
 
 ```
-Adicione aqui o link da landing page
+https://estudiovetra.com/
 ```
 
 ---
