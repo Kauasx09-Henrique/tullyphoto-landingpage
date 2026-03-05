@@ -317,3 +317,25 @@
         gap: 8px;
     }
 }
+
+.btn-desbloquear {
+    background: rgba(46, 204, 113, 0.1);
+    color: #27ae60;
+    border: 1px solid rgba(46, 204, 113, 0.2);
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-desbloquear:hover {
+    background: #27ae60;
+    color: #fff;
+}

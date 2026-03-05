@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Store } from 'react-notifications-component';
 import {
     FaCalendarAlt, FaClock, FaUser, FaCheckCircle,
-    FaTimesCircle, FaRegCalendarMinus, FaLock
+    FaTimesCircle, FaRegCalendarMinus, FaLock, FaLockOpen
 } from 'react-icons/fa';
 import api from '../../services/api';
 import './styles/adminAgendamentos.css';
@@ -35,6 +35,24 @@ const AdminAgenda = () => {
 
     const limparFiltro = () => {
         setDataFiltro('');
+    };
+
+    const handleDesbloquear = async (id) => {
+        if (!window.confirm('Tem certeza que deseja liberar este horário na agenda?')) return;
+
+        try {
+            await api.delete(`/agendamentos/bloqueio/${id}`);
+            Store.addNotification({
+                title: "Sucesso", message: "O horário foi liberado para clientes.",
+                type: "success", container: "top-right", dismiss: { duration: 3000 }
+            });
+            carregarAgendamentos();
+        } catch (err) {
+            Store.addNotification({
+                title: "Erro", message: "Não foi possível desbloquear o horário.",
+                type: "danger", container: "top-right", dismiss: { duration: 3000 }
+            });
+        }
     };
 
     const getStatusBadge = (status) => {
@@ -91,7 +109,12 @@ const AdminAgenda = () => {
                             <span className="valor-total">R$ {Number(agendamento.preco_total).toFixed(2)}</span>
                         </>
                     ) : (
-                        <span className="bloqueio-tag">Bloqueio Administrativo</span>
+                        <>
+                            <span className="bloqueio-tag">Bloqueio Administrativo</span>
+                            <button className="btn-desbloquear" onClick={() => handleDesbloquear(agendamento.id)}>
+                                <FaLockOpen /> Desbloquear
+                            </button>
+                        </>
                     )}
                 </div>
             </div>
