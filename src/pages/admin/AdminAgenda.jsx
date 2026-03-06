@@ -105,12 +105,14 @@ const AdminAgenda = () => {
                 <div className="card-footer">
                     {agendamento.status !== 'BLOQUEADO' ? (
                         <>
-                            <span className="pgto-tipo">Pagamento: <strong>{agendamento.metodo_pagamento}</strong></span>
-                            <span className="valor-total">R$ {Number(agendamento.preco_total).toFixed(2)}</span>
+                            <div className="footer-info">
+                                <span className="pgto-tipo">Pagamento: <strong>{agendamento.metodo_pagamento}</strong></span>
+                            </div>
+                            <span className="valor-total">R$ {Number(agendamento.preco_total).toFixed(2).replace('.', ',')}</span>
                         </>
                     ) : (
                         <>
-                            <span className="bloqueio-tag">Bloqueio Administrativo</span>
+                            <span className="bloqueio-tag">Bloqueio Admin</span>
                             <button className="btn-desbloquear" onClick={() => handleDesbloquear(agendamento.id)}>
                                 <FaLockOpen /> Desbloquear
                             </button>
@@ -126,7 +128,7 @@ const AdminAgenda = () => {
     const cancelados = agendamentos.filter(a => a.status === 'CANCELADO');
 
     return (
-        <div className="admin-page-container fade-in">
+        <div className="admin-page-container animated-slide-up">
             <div className="admin-header-row agenda-header">
                 <div className="header-text">
                     <h2 className="admin-title">Agenda do Estúdio</h2>
@@ -134,29 +136,34 @@ const AdminAgenda = () => {
                 </div>
 
                 <div className="agenda-filter-box">
-                    <label><FaCalendarAlt /> Filtrar por Dia:</label>
-                    <input
-                        type="date"
-                        className="vetra-input date-filter"
-                        value={dataFiltro}
-                        onChange={(e) => setDataFiltro(e.target.value)}
-                    />
-                    {dataFiltro && (
-                        <button className="btn-clear-filter" onClick={limparFiltro}>
-                            Limpar Filtro
-                        </button>
-                    )}
+                    <label><FaCalendarAlt className="icon-gold" /> Filtrar por Dia</label>
+                    <div className="filter-input-group">
+                        <input
+                            type="date"
+                            className="vetra-date-input"
+                            value={dataFiltro}
+                            onChange={(e) => setDataFiltro(e.target.value)}
+                        />
+                        {dataFiltro && (
+                            <button className="btn-clear-filter" onClick={limparFiltro}>
+                                Limpar
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
 
             <div className="agenda-list-container">
                 {loading ? (
-                    <div className="loading-state">Carregando agenda...</div>
+                    <div className="loading-state">
+                        <div className="spinner"></div>
+                        <p>Carregando agenda...</p>
+                    </div>
                 ) : agendamentos.length === 0 ? (
-                    <div className="empty-state">
+                    <div className="empty-state-agenda">
                         <FaRegCalendarMinus className="empty-icon" />
                         <h3>Nenhum agendamento encontrado</h3>
-                        <p>{dataFiltro ? `Não há reservas para ${new Date(dataFiltro).toLocaleDateString('pt-BR')}.` : 'Sua agenda está vazia.'}</p>
+                        <p>{dataFiltro ? `Não há reservas para ${new Date(dataFiltro + 'T12:00:00').toLocaleDateString('pt-BR')}.` : 'Sua agenda está vazia no momento.'}</p>
                     </div>
                 ) : (
                     <div className="agenda-sections-wrapper">
@@ -164,7 +171,7 @@ const AdminAgenda = () => {
                         {pendentes.length > 0 && (
                             <div className="agenda-section">
                                 <h3 className="section-title title-warning">
-                                    <FaClock /> Aguardando Confirmação ({pendentes.length})
+                                    <div className="title-icon-box"><FaClock /></div> Aguardando Confirmação ({pendentes.length})
                                 </h3>
                                 <div className="agenda-grid">
                                     {pendentes.map(renderAgendamentoCard)}
@@ -175,7 +182,7 @@ const AdminAgenda = () => {
                         {confirmados.length > 0 && (
                             <div className="agenda-section">
                                 <h3 className="section-title title-success">
-                                    <FaCheckCircle /> Confirmados e Bloqueios ({confirmados.length})
+                                    <div className="title-icon-box"><FaCheckCircle /></div> Confirmados e Bloqueios ({confirmados.length})
                                 </h3>
                                 <div className="agenda-grid">
                                     {confirmados.map(renderAgendamentoCard)}
@@ -186,7 +193,7 @@ const AdminAgenda = () => {
                         {cancelados.length > 0 && (
                             <div className="agenda-section">
                                 <h3 className="section-title title-danger">
-                                    <FaTimesCircle /> Cancelados ({cancelados.length})
+                                    <div className="title-icon-box"><FaTimesCircle /></div> Cancelados ({cancelados.length})
                                 </h3>
                                 <div className="agenda-grid">
                                     {cancelados.map(renderAgendamentoCard)}

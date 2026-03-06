@@ -3,7 +3,7 @@ import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
 import { Store } from 'react-notifications-component';
 import {
     FaChartPie, FaBuilding, FaUsers, FaCalendarAlt,
-    FaSignOutAlt, FaSearch, FaUserCircle, FaCamera, FaLock, FaCog
+    FaSignOutAlt, FaSearch, FaUserCircle, FaCamera, FaLock
 } from 'react-icons/fa';
 import api from '../../services/api';
 import './styles/adminlayout.css';
@@ -46,7 +46,6 @@ const AdminLayout = () => {
                 container: "top-right",
                 dismiss: { duration: 3000 }
             });
-        // eslint-disable-next-line no-unused-vars
         } catch (error) {
             Store.addNotification({
                 title: "Erro",
@@ -61,9 +60,11 @@ const AdminLayout = () => {
 
     return (
         <div className="admin-wrapper fade-in">
-            <aside className="vetra-sidebar">
-                <div className="sidebar-brand-container">
-                    <div className="sidebar-brand-upload" onClick={() => document.getElementById('logoInput').click()}>
+            <div className="liquid-ambient-bg"></div>
+
+            <header className="liquid-topbar">
+                <div className="topbar-brand">
+                    <div className="brand-upload" onClick={() => document.getElementById('logoInput').click()}>
                         {user.logo_url ? (
                             <img src={user.logo_url} alt="Logo" className="custom-brand-logo" />
                         ) : (
@@ -71,7 +72,6 @@ const AdminLayout = () => {
                         )}
                         <div className="brand-upload-overlay">
                             <FaCamera />
-                            <span>Alterar Logo</span>
                         </div>
                     </div>
                     <input
@@ -83,80 +83,58 @@ const AdminLayout = () => {
                     />
                 </div>
 
-                <div className="sidebar-profile">
-                    <div className="profile-avatar">
+                <div className="topbar-search">
+                    <FaSearch className="search-icon" />
+                    <input type="text" placeholder="Pesquisar no sistema..." />
+                </div>
+
+                <div className="topbar-actions">
+                    <div className="profile-badge">
                         {user.foto ? (
                             <img src={user.foto} alt={user.nome} referrerPolicy="no-referrer" />
                         ) : (
-                            <FaUserCircle />
+                            <FaUserCircle className="fallback-avatar" />
                         )}
+                        <span className="profile-name">{user.nome.split(' ')[0]}</span>
                     </div>
-                    <div className="profile-info">
-                        <strong>{user.nome.split(' ')[0]} {user.nome.split(' ')[1] || ''}</strong>
-                        <span>{user.tipo === 'ADMIN' ? 'Administrador' : user.tipo}</span>
-                    </div>
-                </div>
-
-                <nav className="sidebar-nav">
-                    <p className="nav-label">ANALYTICS</p>
-
-                    <Link to="/admin/dashboard" className={`nav-item ${location.pathname.includes('dashboard') ? 'active' : ''}`}>
-                        <FaChartPie className="nav-icon" />
-                        <span>Visão Geral</span>
-                    </Link>
-
-                    <Link to="/admin/agenda" className={`nav-item ${location.pathname.includes('agenda') ? 'active' : ''}`}>
-                        <FaCalendarAlt className="nav-icon" />
-                        <span>Ver agendamentos</span>
-                    </Link>
-
-                    <p className="nav-label">GERENCIAMENTO</p>
-
-                    <Link to="/admin/espacos" className={`nav-item ${location.pathname.includes('espacos') ? 'active' : ''}`}>
-                        <FaBuilding className="nav-icon" />
-                        <span>Cenários</span>
-                    </Link>
-
-                    <Link to="/admin/usuarios" className={`nav-item ${location.pathname.includes('usuarios') ? 'active' : ''}`}>
-                        <FaUsers className="nav-icon" />
-                        <span>Usuários</span>
-                    </Link>
-
-                    <Link to="/admin/bloqueios" className={`nav-item ${location.pathname.includes('bloqueios') ? 'active' : ''}`}>
-                        <FaLock className="nav-icon" />
-                        <span>Bloqueios</span>
-                    </Link>
-
-                    <p className="nav-label">SISTEMA</p>
-
-            
-                </nav>
-
-                <div className="sidebar-footer">
-                    <button onClick={handleLogout} className="logout-btn">
-                        <FaSignOutAlt /> Sair
+                    <button onClick={handleLogout} className="liquid-logout-btn" title="Sair">
+                        <FaSignOutAlt />
                     </button>
                 </div>
-            </aside>
+            </header>
 
-            <main className="main-content">
-                <header className="topbar">
-                    <div className="search-bar">
-                        <FaSearch className="search-icon" />
-                        <input type="text" placeholder="Pesquisar..." />
-                    </div>
-
-                    <div className="topbar-actions">
-                        <span className="date-display">
-                            {new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })}
-                        </span>
-                    </div>
-                </header>
-
-                <div className="content-scroll">
+            <main className="liquid-main-content">
+                <div className="content-container">
                     <Outlet />
                 </div>
             </main>
+
+            <nav className="liquid-glass-dock">
+                <Link to="/admin/dashboard" className={`dock-item ${location.pathname.includes('dashboard') ? 'active' : ''}`} title="Overview">
+                    <div className="dock-icon-wrapper"><FaChartPie /></div>
+                    <span>Overview</span>
+                </Link>
+
+                <Link to="/admin/agenda" className={`dock-item ${location.pathname.includes('agenda') ? 'active' : ''}`} title="Agenda">
+                    <div className="dock-icon-wrapper"><FaCalendarAlt /></div>
+                    <span>Agenda</span>
+                </Link>
+
+                <Link to="/admin/espacos" className={`dock-item ${location.pathname.includes('espacos') ? 'active' : ''}`} title="Cenários">
+                    <div className="dock-icon-wrapper"><FaBuilding /></div>
+                    <span>Cenários</span>
+                </Link>
+
+                <Link to="/admin/usuarios" className={`dock-item ${location.pathname.includes('usuarios') ? 'active' : ''}`} title="Usuários">
+                    <div className="dock-icon-wrapper"><FaUsers /></div>
+                    <span>Usuários</span>
+                </Link>
+
+                <Link to="/admin/bloqueios" className={`dock-item ${location.pathname.includes('bloqueios') ? 'active' : ''}`} title="Bloqueios">
+                    <div className="dock-icon-wrapper"><FaLock /></div>
+                    <span>Bloqueios</span>
+                </Link>
+            </nav>
         </div>
     );
 };

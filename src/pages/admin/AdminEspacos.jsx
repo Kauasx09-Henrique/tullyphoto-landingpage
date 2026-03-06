@@ -80,7 +80,7 @@ const AdminEspacos = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     if (!formData.nome || !formData.preco_por_hora) {
-      Store.addNotification({ title: "Campos obrigatórios", message: "Preencha nome e valor.", type: "warning", container: "top-right", dismiss: { duration: 3000 } });
+      Store.addNotification({ title: "Aviso", message: "Preencha nome e valor.", type: "warning", container: "top-right", dismiss: { duration: 3000 } });
       return;
     }
 
@@ -89,7 +89,7 @@ const AdminEspacos = () => {
     data.append('descricao', formData.descricao);
     data.append('preco_por_hora', formData.preco_por_hora);
     data.append('ativo', true);
-    
+
     if (formData.imagem) {
       data.append('imagem', formData.imagem);
     }
@@ -121,78 +121,84 @@ const AdminEspacos = () => {
   };
 
   return (
-    <div className="admin-page-container fade-in">
+    <div className="admin-page-container animated-slide-up">
       <div className="admin-header-row">
         <div className="header-text">
           <h2 className="admin-title">Cenários & Espaços</h2>
           <p className="admin-subtitle">Gerencie os locais disponíveis para locação e ensaios.</p>
         </div>
         <button className="btn-primary-add" onClick={openCreateModal}>
-          <FaPlus /> <span>Novo Cenário</span>
+          <FaPlus className="add-icon" /> <span>Novo Cenário</span>
         </button>
       </div>
 
-      <div className="table-card">
-        <table className="vetra-table">
-          <thead>
-            <tr>
-              <th width="80" align="center">ID</th>
-              <th>Detalhes do Espaço</th>
-              <th width="180">Valor / Hora</th>
-              <th width="140" align="right">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr><td colSpan="4" className="text-center">Carregando dados...</td></tr>
-            ) : espacos.length === 0 ? (
-              <tr><td colSpan="4" className="text-center empty-state">Nenhum cenário cadastrado ainda.</td></tr>
-            ) : (
-              espacos.map(espaco => (
-                <tr key={espaco.id}>
-                  <td className="id-cell">#{espaco.id}</td>
-                  <td>
-                    <div className="space-info-cell">
-                      <div className="space-thumb">
-                        {espaco.imagem_url ? (
-                          <img src={getImageUrl(espaco.imagem_url)} alt={espaco.nome} />
-                        ) : (
-                          <FaImage />
-                        )}
-                      </div>
-                      <div className="space-details">
-                        <span className="space-name">{espaco.nome}</span>
-                        <span className="space-desc">
-                          <FaMapMarkerAlt className="mini-icon" /> {espaco.descricao || "Descrição pendente"}
-                        </span>
-                      </div>
+      <div className="vetra-list-container">
+        <div className="list-header-row">
+          <div className="col-id">ID</div>
+          <div className="col-details">Detalhes do Espaço</div>
+          <div className="col-price">Valor / Hora</div>
+          <div className="col-actions">Ações</div>
+        </div>
+
+        <div className="list-body">
+          {loading ? (
+            <div className="text-center">Carregando dados...</div>
+          ) : espacos.length === 0 ? (
+            <div className="text-center empty-state">Nenhum cenário cadastrado ainda.</div>
+          ) : (
+            espacos.map(espaco => (
+              <div key={espaco.id} className="list-item-row">
+
+                <div className="col-id cell-id">
+                  <span className="mobile-label">ID</span>
+                  <strong>#{espaco.id}</strong>
+                </div>
+
+                <div className="col-details">
+                  <div className="space-info-cell">
+                    <div className="space-thumb">
+                      {espaco.imagem_url ? (
+                        <img src={getImageUrl(espaco.imagem_url)} alt={espaco.nome} />
+                      ) : (
+                        <FaImage />
+                      )}
                     </div>
-                  </td>
-                  <td>
-                    <div className="price-tag">
-                      <small>R$</small> {parseFloat(espaco.preco_por_hora).toFixed(2).replace('.', ',')}
+                    <div className="space-details">
+                      <span className="space-name">{espaco.nome}</span>
+                      <span className="space-desc">
+                        <FaMapMarkerAlt className="mini-icon" /> {espaco.descricao || "Descrição pendente"}
+                      </span>
                     </div>
-                  </td>
-                  <td align="right">
-                    <div className="action-buttons">
-                      <button className="action-btn edit" onClick={() => openEditModal(espaco)} title="Editar">
-                        <FaEdit />
-                      </button>
-                      <button className="action-btn delete" onClick={() => openDeleteModal(espaco)} title="Excluir">
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+                  </div>
+                </div>
+
+                <div className="col-price">
+                  <span className="mobile-label">Valor / Hora</span>
+                  <div className="price-tag">
+                    <small>R$</small> {parseFloat(espaco.preco_por_hora).toFixed(2).replace('.', ',')}
+                  </div>
+                </div>
+
+                <div className="col-actions">
+                  <div className="action-buttons">
+                    <button className="action-btn edit" onClick={() => openEditModal(espaco)} title="Editar">
+                      <FaEdit />
+                    </button>
+                    <button className="action-btn delete" onClick={() => openDeleteModal(espaco)} title="Excluir">
+                      <FaTrash />
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            ))
+          )}
+        </div>
       </div>
 
       {modal.show && (
-        <div className="custom-modal-overlay fade-in">
-          <div className={`custom-modal-content ${modal.type === 'DELETE' ? 'modal-sm' : 'modal-md'}`}>
+        <div className="custom-modal-overlay liquid-blur">
+          <div className={`custom-modal-content modal-pop ${modal.type === 'DELETE' ? 'modal-sm' : 'modal-md'}`}>
             <button className="modal-close-icon" onClick={closeModal}><FaTimes /></button>
 
             {modal.type === 'DELETE' ? (
@@ -200,7 +206,7 @@ const AdminEspacos = () => {
                 <div className="warning-icon-box"><FaExclamationTriangle /></div>
                 <h3>Confirmar Exclusão</h3>
                 <p>Tem certeza que deseja apagar permanentemente o cenário <strong>{modal.data.nome}</strong>?</p>
-                <div className="modal-actions">
+                <div className="modal-actions-center">
                   <button className="btn-cancel" onClick={closeModal}>Cancelar</button>
                   <button className="btn-confirm-delete" onClick={handleDelete}>Sim, Excluir</button>
                 </div>
@@ -217,10 +223,15 @@ const AdminEspacos = () => {
                     <label>Foto do Espaço</label>
                     <div className="image-upload-box" onClick={() => document.getElementById('espacoImagem').click()}>
                       {formData.imagem_url ? (
-                        <img src={getImageUrl(formData.imagem_url)} alt="Preview" className="image-preview" />
+                        <div className="image-preview-wrapper">
+                          <img src={getImageUrl(formData.imagem_url)} alt="Preview" className="image-preview" />
+                          <div className="image-hover-overlay">
+                            <FaEdit /> <span>Trocar Imagem</span>
+                          </div>
+                        </div>
                       ) : (
                         <div className="upload-placeholder">
-                          <FaUpload className="upload-icon" />
+                          <div className="upload-icon-pulse"><FaUpload /></div>
                           <span>Clique para adicionar uma imagem</span>
                         </div>
                       )}
@@ -276,7 +287,7 @@ const AdminEspacos = () => {
                   <div className="modal-actions">
                     <button type="button" className="btn-cancel" onClick={closeModal}>Cancelar</button>
                     <button type="submit" className="btn-confirm-save">
-                      <FaSave /> Salvar Alterações
+                      <FaSave className="save-icon" /> Salvar Alterações
                     </button>
                   </div>
                 </form>
