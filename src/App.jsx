@@ -1,12 +1,10 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ReactNotifications } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css/animate.min.css';
 
-// Importe o hook que criamos
 import useIdleTimeout from './hooks/useIdleTimeout';
 
-// Pages Cliente
 import Home from './pages/Home';
 import Agendamento from './pages/Agendamento';
 import Portfolio from './pages/Portfolio';
@@ -18,7 +16,6 @@ import RedefinirSenha from './pages/RedefinirSenha.jsx';
 import Equipe from './components/Equipe.jsx';
 import ServiceCards from './components/ServiceCards.jsx';
 
-// Pages Admin
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminEspacos from './pages/admin/AdminEspacos';
 import AdminAgenda from './pages/admin/AdminAgenda';
@@ -26,16 +23,13 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminBloqueios from './pages/admin/AdminBloqueios';
 
-// Components
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Information from './components/Information';
 
-// Componente invisível para vigiar a inatividade
 const VigiaInatividade = () => {
-  // Ativa o timer de 10 minutos
   useIdleTimeout(10);
-  return null; // Não renderiza nada na tela
+  return null;
 };
 
 function App() {
@@ -43,7 +37,6 @@ function App() {
     <BrowserRouter>
       <ReactNotifications />
 
-      {/* INSERE O VIGIA AQUI (Sempre dentro do BrowserRouter) */}
       <VigiaInatividade />
 
       <Routes>
@@ -64,8 +57,10 @@ function App() {
           <Route path="espacos" element={<AdminEspacos />} />
           <Route path="agenda" element={<AdminAgenda />} />
           <Route path="usuarios" element={<AdminUsers />} />
-          <Route path="/admin/bloqueios" element={<AdminBloqueios />} />
+          <Route path="bloqueios" element={<AdminBloqueios />} />
         </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );

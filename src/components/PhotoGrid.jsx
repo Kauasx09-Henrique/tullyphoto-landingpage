@@ -12,13 +12,13 @@ import '../styles/carrosel.css';
 const photos = [
   {
     id: 1,
-    src: '/Foto_Inicio.jpg',
+    src: '/home/Foto_Inicio.jpg',
     title: 'Espaço Criativo',
     subtitle: 'Ambientes inspiradores para suas fotos'
   },
   {
     id: 2,
-    src: '/Mesa.jpg',
+    src: '/home/Mesa.jpg',
     title: 'Estúdio Profissional',
     subtitle: 'Alugue o estúdio'
   },
@@ -42,8 +42,8 @@ const PhotoGrid = () => {
     <section id="portfolio" className="carousel-section">
       <Swiper
         modules={[Navigation, Pagination, Autoplay, A11y, EffectFade]}
-        effect={'fade'} 
-        speed={1000} 
+        effect={'fade'}
+        speed={1000}
         spaceBetween={0}
         slidesPerView={1}
         navigation

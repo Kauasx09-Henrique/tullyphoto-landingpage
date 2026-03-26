@@ -23,9 +23,9 @@ import GentininGreen2 from './gentiam_green/green2.jpg';
 import GentininGreen3 from './gentiam_green/green3.jpg';
 import grey from './grey/grey1.jpg';
 import coco from './coco/coco1.jpg';
+import blue1 from './deep_blue/blue1.jpg'
 import blue2 from './deep_blue/blue2.jpg';
 import depgreen from './green/foto1.jpg';
-import depgreen2 from './green/foto2.jpg';
 import branco1 from './branco/foto1.jpg';
 import branco2 from './branco/foto2.jpg';
 
@@ -75,7 +75,7 @@ const Information = () => {
             hex: "#1A332A",
             bgHex: "#C8D1CE",
             desc: "Profundo, elegante e contemporâneo.",
-            images: [depgreen, depgreen2]
+            images: [depgreen]
         },
         {
             id: 5,
@@ -91,7 +91,7 @@ const Information = () => {
             hex: "#385566",
             bgHex: "#D6E4F0",
             desc: "Confiança e serenidade.",
-            images: [blue2]
+            images: [blue2, blue1]
         },
         {
             id: 7,

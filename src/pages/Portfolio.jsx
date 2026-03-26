@@ -20,9 +20,8 @@ const ProgressiveImage = ({ src, alt }) => {
 };
 
 const Portfolio = () => {
-  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(null)
 
-  // Seus dados (Mantive todos)
   const photos = [
     { id: 1, src: '/Tiago/Foto_Ana.jpg', alt: 'Ensaio Corporativo', category: 'Corporativo' },
     { id: 3, src: '/Tiago/Foto_Euler.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
@@ -105,7 +104,7 @@ const Portfolio = () => {
       <div className="photo-grid fading-in">
         {photos.map((photo, index) => (
           <div key={photo.id} className="photo-item" onClick={() => setSelectedIndex(index)}>
-            
+
             {/* Componente Otimizado de Imagem */}
             <ProgressiveImage src={photo.src} alt={photo.alt} />
 
