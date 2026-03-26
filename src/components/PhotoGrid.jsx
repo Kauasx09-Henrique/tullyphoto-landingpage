@@ -1,11 +1,10 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay, A11y, EffectFade } from 'swiper/modules';
+import { Navigation, Pagination, A11y } from 'swiper/modules';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import 'swiper/css/effect-fade';
 
 import '../styles/carrosel.css';
 
@@ -26,40 +25,31 @@ const photos = [
     id: 3,
     src: '/home/cadeira.webp',
     title: 'Conforto & Design',
-    subtitle: 'conheça nosso espaço',
-    isPortrait: true
-  },
-  {
-    id: 4,
-    src: '/home/cadeiraM.webp',
-    title: 'Mobiliário diversos para seus cenários',
-    subtitle: 'Alugue o estúdio',
-    isPortrait: true
+    subtitle: 'Conheça nosso espaço',
   },
 ];
+
 const PhotoGrid = () => {
   return (
-    <section id="portfolio" className="carousel-section">
+    <section className="carousel-section">
       <Swiper
-        modules={[Navigation, Pagination, Autoplay, A11y, EffectFade]}
-        effect={'fade'}
-        speed={1000}
-        spaceBetween={0}
+        modules={[Navigation, Pagination, A11y]}
+        speed={600}
         slidesPerView={1}
         navigation
         pagination={{ clickable: true }}
         loop={true}
-        autoplay={{
-          delay: 5000,
-          disableOnInteraction: false,
-        }}
         className="hero-swiper"
       >
-        {photos.map((photo) => (
+        {photos.map((photo, index) => (
           <SwiperSlide key={photo.id}>
-            <div className={`carousel-item ${photo.isPortrait ? 'vertical' : ''}`}>
+            <div className="carousel-item">
               <div className="image-wrapper">
-                <img src={photo.src} alt={photo.title} loading="lazy" />
+                <img
+                  src={photo.src}
+                  alt={photo.title}
+                  loading={index === 0 ? "eager" : "lazy"} // 🔥 CORREÇÃO
+                />
               </div>
 
               <div className="overlay-gradient"></div>

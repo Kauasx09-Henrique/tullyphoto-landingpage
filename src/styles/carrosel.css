@@ -37,14 +37,19 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transform: scale(1);
-    transition: transform 6s ease;
+
+    /* 🔥 REMOVIDO: animação pesada */
+    /* transform: scale(1); */
+    /* transition: transform 6s ease; */
 }
 
+/* ❌ REMOVIDO (pesado no CPU/GPU) */
+/*
 .swiper-slide-active .carousel-item img {
     transform: scale(1.1);
     transition: transform 6s ease;
 }
+*/
 
 .overlay-gradient {
     position: absolute;
@@ -52,6 +57,8 @@
     left: 0;
     width: 100%;
     height: 100%;
+
+    /* 🔥 leve ajuste (menos pesado) */
     background: linear-gradient(to bottom,
             rgba(0, 0, 0, 0.2) 0%,
             rgba(0, 0, 0, 0.1) 50%,
@@ -66,9 +73,11 @@
     z-index: 2;
     color: var(--vetra-white);
     max-width: 600px;
+
+    /* 🔥 animação mais leve */
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease 0.5s;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
 }
 
 .swiper-slide-active .slide-content {
@@ -103,7 +112,6 @@
     background-color: var(--vetra-gold);
 }
 
-
 .swiper-button-next,
 .swiper-button-prev {
     color: var(--vetra-white) !important;
@@ -112,7 +120,9 @@
     height: 50px !important;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
-    backdrop-filter: blur(2px);
+
+    /* ❌ REMOVIDO (pesado em alguns dispositivos) */
+    /* backdrop-filter: blur(2px); */
 }
 
 .swiper-button-next::after,
@@ -125,7 +135,8 @@
 .swiper-button-prev:hover {
     background: var(--vetra-gold);
     color: var(--vetra-brown) !important;
-    transform: scale(1.1);
+    transform: scale(1.05);
+    /* 🔥 menor impacto */
 }
 
 .swiper-pagination-bullet {
@@ -139,7 +150,8 @@
 .swiper-pagination-bullet-active {
     opacity: 1 !important;
     background: var(--vetra-gold) !important;
-    transform: scale(1.3);
+    transform: scale(1.2);
+    /* 🔥 reduzido */
 }
 
 @media (max-width: 768px) {
@@ -164,18 +176,17 @@
     }
 }
 
+/* 🔥 mantido mas simplificado */
 .carousel-item.vertical {
-    grid-row: span 2;
     aspect-ratio: 9 / 16;
 }
 
 .carousel-item.vertical img {
-    object-fit: cover; 
+    object-fit: cover;
 }
 
 @media (max-width: 768px) {
     .carousel-item.vertical {
-        grid-row: auto;
         aspect-ratio: 3 / 4;
     }
 }
