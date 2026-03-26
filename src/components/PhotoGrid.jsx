@@ -12,26 +12,26 @@ import '../styles/carrosel.css';
 const photos = [
   {
     id: 1,
-    src: '/home/Foto_Inicio.jpg',
+    src: '/home/Foto_Inicio.webp',
     title: 'Espaço Criativo',
     subtitle: 'Ambientes inspiradores para suas fotos'
   },
   {
     id: 2,
-    src: '/home/Mesa.jpg',
+    src: '/home/Mesa.webp',
     title: 'Estúdio Profissional',
     subtitle: 'Alugue o estúdio'
   },
   {
     id: 3,
-    src: '/home/cadeira.jpeg',
+    src: '/home/cadeira.webp',
     title: 'Conforto & Design',
     subtitle: 'conheça nosso espaço',
     isPortrait: true
   },
   {
     id: 4,
-    src: '/home/cadeiraM.jpeg',
+    src: '/home/cadeiraM.webp',
     title: 'Mobiliário diversos para seus cenários',
     subtitle: 'Alugue o estúdio',
     isPortrait: true

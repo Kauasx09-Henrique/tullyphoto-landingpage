@@ -38,7 +38,7 @@ const Home = () => {
     setLoading(true);
     try {
       await api.post('/usuarios/salvar-telefone', { telefone: cleanPhone });
-      
+
       // Atualiza localmente para sumir o modal
       const updatedUser = { ...user, telefone_verificado: true, telefone: cleanPhone };
       localStorage.setItem('user', JSON.stringify(updatedUser));
@@ -73,21 +73,21 @@ const Home = () => {
             </div>
 
             <div className="modal-body-lux">
-                <div className="step-content">
-                  <label className="label-lux">Seu WhatsApp</label>
-                  <div className="input-group-lux">
-                    <FaPhoneAlt />
-                    <input 
-                      type="text" 
-                      placeholder="(00) 00000-0000" 
-                      value={telefone}
-                      onChange={(e) => setTelefone(mask(e.target.value, ['(99) 9999-9999', '(99) 99999-9999']))}
-                    />
-                  </div>
-                  <button className="btn-action-lux" onClick={handleSavePhone} disabled={loading}>
-                    {loading ? 'Salvando...' : 'Salvar Contato'} <FaCheckCircle />
-                  </button>
+              <div className="step-content">
+                <label className="label-lux">Seu WhatsApp</label>
+                <div className="input-group-lux">
+                  <FaPhoneAlt />
+                  <input
+                    type="text"
+                    placeholder="(00) 00000-0000"
+                    value={telefone}
+                    onChange={(e) => setTelefone(mask(e.target.value, ['(99) 9999-9999', '(99) 99999-9999']))}
+                  />
                 </div>
+                <button className="btn-action-lux" onClick={handleSavePhone} disabled={loading}>
+                  {loading ? 'Salvando...' : 'Salvar Contato'} <FaCheckCircle />
+                </button>
+              </div>
             </div>
             <div className="modal-footer-lux">
               <FaShieldAlt /> <span>Seus dados estão seguros conosco.</span>
@@ -99,7 +99,7 @@ const Home = () => {
       <PhotoGrid />
       <StudioBanner />
       <ServiceCards />
-      
+
       <Equipe />
       <Location />
     </main>
