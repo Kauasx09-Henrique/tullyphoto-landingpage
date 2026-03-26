@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Lato:wght@300;400;700&display=swap');
-
 :root {
     --vetra-white2: #ffffff;
     --vetra-brown: #4A3B32;
@@ -8,64 +6,51 @@
 }
 
 .carousel-section {
+    position: relative;
     width: 100%;
     height: 85vh;
     min-height: 600px;
-    position: relative;
+    overflow: hidden;
     background-color: var(--vetra-brown);
 }
 
-.hero-swiper {
-    width: 100%;
+.carousel-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
     height: 100%;
+    scrollbar-width: none;
+}
+
+.carousel-container::-webkit-scrollbar {
+    display: none;
 }
 
 .carousel-item {
+    min-width: 100%;
+    height: 100%;
     position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.image-wrapper {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+    scroll-snap-align: start;
 }
 
 .carousel-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-
-    /* 🔥 REMOVIDO: animação pesada */
-    /* transform: scale(1); */
-    /* transition: transform 6s ease; */
 }
 
-/* ❌ REMOVIDO (pesado no CPU/GPU) */
-/*
-.swiper-slide-active .carousel-item img {
-    transform: scale(1.1);
-    transition: transform 6s ease;
-}
-*/
-
+/* OVERLAY */
 .overlay-gradient {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    /* 🔥 leve ajuste (menos pesado) */
+    inset: 0;
     background: linear-gradient(to bottom,
-            rgba(0, 0, 0, 0.2) 0%,
-            rgba(0, 0, 0, 0.1) 50%,
-            rgba(0, 0, 0, 0.6) 100%);
-    z-index: 1;
+            rgba(0, 0, 0, 0.2),
+            rgba(0, 0, 0, 0.1),
+            rgba(0, 0, 0, 0.6));
 }
 
+/* TEXTO */
 .slide-content {
     position: absolute;
     bottom: 80px;
@@ -73,16 +58,19 @@
     z-index: 2;
     color: var(--vetra-white);
     max-width: 600px;
-
-    /* 🔥 animação mais leve */
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.4s ease;
+    animation: fadeUp 0.6s ease;
 }
 
-.swiper-slide-active .slide-content {
-    opacity: 1;
-    transform: translateY(0);
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .slide-content h3 {
@@ -109,51 +97,39 @@
 .divider-small {
     width: 60px;
     height: 3px;
-    background-color: var(--vetra-gold);
-}
-
-.swiper-button-next,
-.swiper-button-prev {
-    color: var(--vetra-white) !important;
-    transition: all 0.3s ease;
-    width: 50px !important;
-    height: 50px !important;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-
-    /* ❌ REMOVIDO (pesado em alguns dispositivos) */
-    /* backdrop-filter: blur(2px); */
-}
-
-.swiper-button-next::after,
-.swiper-button-prev::after {
-    font-size: 1.5rem !important;
-    font-weight: bold;
-}
-
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
     background: var(--vetra-gold);
-    color: var(--vetra-brown) !important;
-    transform: scale(1.05);
-    /* 🔥 menor impacto */
 }
 
-.swiper-pagination-bullet {
-    background: var(--vetra-white) !important;
-    opacity: 0.5 !important;
-    width: 10px !important;
-    height: 10px !important;
-    transition: all 0.3s ease;
+/* BOTÕES */
+.nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 3;
 }
 
-.swiper-pagination-bullet-active {
-    opacity: 1 !important;
-    background: var(--vetra-gold) !important;
-    transform: scale(1.2);
-    /* 🔥 reduzido */
+.nav.prev {
+    left: 20px;
 }
 
+.nav.next {
+    right: 20px;
+}
+
+.nav:hover {
+    background: var(--vetra-gold);
+    color: var(--vetra-brown);
+}
+
+/* MOBILE */
 @media (max-width: 768px) {
     .carousel-section {
         height: 60vh;
@@ -170,23 +146,7 @@
         font-size: 2rem;
     }
 
-    .swiper-button-next,
-    .swiper-button-prev {
-        display: none !important;
-    }
-}
-
-/* 🔥 mantido mas simplificado */
-.carousel-item.vertical {
-    aspect-ratio: 9 / 16;
-}
-
-.carousel-item.vertical img {
-    object-fit: cover;
-}
-
-@media (max-width: 768px) {
-    .carousel-item.vertical {
-        aspect-ratio: 3 / 4;
+    .nav {
+        display: none;
     }
 }
