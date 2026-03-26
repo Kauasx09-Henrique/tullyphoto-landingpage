@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ReactNotifications } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css/animate.min.css';
+import { SpeedInsights } from "@vercel/speed-insights/react";
+
 
 import useIdleTimeout from './hooks/useIdleTimeout';
 
@@ -36,6 +38,7 @@ function App() {
   return (
     <BrowserRouter>
       <ReactNotifications />
+      <SpeedInsights />
 
       <VigiaInatividade />
 
