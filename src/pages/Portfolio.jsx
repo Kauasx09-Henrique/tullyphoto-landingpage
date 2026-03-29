@@ -23,43 +23,37 @@ const Portfolio = () => {
   const [selectedIndex, setSelectedIndex] = useState(null)
 
   const photos = [
-    { id: 1, src: '/Tiago/Foto_Ana.jpg', alt: 'Ensaio Corporativo', category: 'Corporativo' },
-    { id: 3, src: '/Tiago/Foto_Euler.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 4, src: '/portfolio/foto4.jpeg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 5, src: '/Tully/Portifolio3.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 6, src: '/Tully/Portifolio4.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 7, src: '/Tully/Portifolio5.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 8, src: '/Tully/Portifolio1.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 9, src: '/portfolio/foto9.jpeg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 10, src: '/Tiago/Foto__Maria.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 11, src: '/portfolio/foto11.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 12, src: '/portfolio/foto12.jpeg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 13, src: '/portfolio/foto13.jpeg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 14, src: '/Tiago/Foto_Marias.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 15, src: '/portfolio/Felipe/Foto2.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 16, src: '/portfolio/Felipe/Foto3.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 17, src: '/portfolio/Felipe/Foto4.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 18, src: '/portfolio/Felipe/Foto5.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 19, src: '/portfolio/Felipe/Foto6.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 20, src: '/portfolio/Felipe/Foto7.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 21, src: '/portfolio/Felipe/Foto8.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 22, src: '/portfolio/Felipe/Foto9.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 23, src: '/portfolio/Felipe/Foto10.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 24, src: '/portfolio/Felipe/Foto11.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 25, src: '/portfolio/Felipe/Foto12.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 26, src: '/portfolio/Felipe/Foto13.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 27, src: '/portfolio/Felipe/Foto14.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 28, src: '/portfolio/Felipe/Foto15.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 29, src: '/portfolio/Felipe/Foto16.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 30, src: '/portfolio/Felipe/Foto17.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
-    { id: 31, src: '/portfolio/Felipe/Foto18.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' }
+    //FOTO TIAGO USADAS
+    { id: 1, src: '/Tiago/Foto_Euler.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 2, src: '/Tiago/Foto_Marias.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 3, src: '/Tiago/Foto__Maria.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 4, src: '/Tiago/Foto_Elma.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 5, src: '/Tiago/Foto_Ana.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    //FOTOS TULLY
+    { id: 6, src: '/Tully/Portifolio3.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 7, src: '/Tully/Portifolio4.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 8, src: '/Tully/Portifolio5.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 9, src: '/Tully/Portifolio1.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 10, src: '/Tully/Portifolio2.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    //FOTOS  PORTFOLIO
+    { id: 11, src: '/portfolio/foto4.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 12, src: '/portfolio/foto9.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 13, src: '/portfolio/foto12.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 14, src: '/portfolio/foto13.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 15, src: '/portfolio/Foto11.jpg', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    //FELIPE FOTOS 
+    { id: 16, src: '/portfolio/Felipe/Foto2.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 17, src: '/portfolio/Felipe/Foto4.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 18, src: '/portfolio/Felipe/foto5.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 19, src: '/portfolio/Felipe/Foto6.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+    { id: 20, src: '/portfolio/Felipe/foto7.webp', alt: 'Ensaio Corporativo', category: 'Estúdio' },
+
   ];
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Bloqueia scroll quando lightbox abre
   useEffect(() => {
     document.body.style.overflow = selectedIndex !== null ? 'hidden' : 'auto';
     return () => { document.body.style.overflow = 'auto'; };
@@ -79,7 +73,6 @@ const Portfolio = () => {
     setSelectedIndex(null);
   }, []);
 
-  // Atalhos de teclado
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (selectedIndex === null) return;

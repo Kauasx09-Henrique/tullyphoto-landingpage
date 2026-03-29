@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
-    FaUserCircle, FaSignOutAlt, FaBars, FaTimes, 
+    FaUserCircle, FaSignOutAlt, FaBars, FaTimes,
     FaArrowRight, FaBell, FaCheck
 } from 'react-icons/fa';
 import api from '../services/api';
@@ -74,7 +74,7 @@ const Header = () => {
     return (
         <header className={`header ${scrolled ? 'header-scrolled' : ''}`}>
             <div className="header-container">
-                
+
                 <Link to="/" className="logo-area" onClick={() => setMobileOpen(false)}>
                     <img src={logoImg} alt="Vetra Studio" className="brand-logo" />
                 </Link>
@@ -82,7 +82,7 @@ const Header = () => {
                 <div className={`nav-overlay ${mobileOpen ? 'open' : ''}`} onClick={() => setMobileOpen(false)}></div>
 
                 <div className={`nav-wrapper ${mobileOpen ? 'mobile-open' : ''}`}>
-                    
+
                     <div className="mobile-only-header">
                         <span className="menu-brand-name">Vetra Menu</span>
                         <FaTimes className="mobile-close-btn" onClick={() => setMobileOpen(false)} />
@@ -115,7 +115,7 @@ const Header = () => {
                                                 <FaTimes className="close-notif" onClick={() => setShowNotif(false)} />
                                             </div>
                                             <div className="notif-list">
-                                                {notificacoes.length === 0 ? <p className="notif-empty">Tudo limpo.</p> : 
+                                                {notificacoes.length === 0 ? <p className="notif-empty">Tudo limpo.</p> :
                                                     notificacoes.map(n => (
                                                         <div key={n.id} className={`notif-item ${!n.lida ? 'unread' : ''}`}>
                                                             <p>{n.mensagem}</p>
@@ -127,8 +127,7 @@ const Header = () => {
                                         </div>
                                     )}
                                 </div>
-                                
-                                {/* PERFIL */}
+
                                 <div className="user-profile-menu">
                                     <Link to={isAdmin ? "/admin/dashboard" : "/meus-agendamentos"} className="user-badge-link" onClick={() => setMobileOpen(false)}>
                                         <FaUserCircle className="user-icon" />
@@ -151,7 +150,6 @@ const Header = () => {
                     </div>
                 </div>
 
-                {/* BOTÃO HAMBURGUER (MOBILE) */}
                 <div className="mobile-toggle" onClick={() => setMobileOpen(true)}>
                     <FaBars />
                 </div>

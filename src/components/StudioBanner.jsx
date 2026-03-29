@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { TbAirConditioning, TbWifi, TbInfinity } from 'react-icons/tb';
 import { IoMdSunny } from 'react-icons/io';
-import { FaChair } from 'react-icons/fa'; // <-- Ícone de Cadeira adicionado aqui
+import { FaChair } from 'react-icons/fa';
 import { BsLightbulb } from 'react-icons/bs';
 import '../styles/studiobanner.css';
 
@@ -11,7 +11,6 @@ const StudioBanner = () => {
     const sectionRef = useRef(null);
     const navigate = useNavigate();
 
-    // --- REGRA DE NEGÓCIO: LOCAÇÃO ---
     const handleLocacao = (e) => {
         e.preventDefault();
         window.scrollTo(0, 0);
@@ -26,21 +25,19 @@ const StudioBanner = () => {
     };
 
     useEffect(() => {
-        // 1. Carrega o Script do Instagram
         const script = document.createElement('script');
         script.src = "//www.instagram.com/embed.js";
         script.async = true;
         document.body.appendChild(script);
 
-        // 2. Configura o Observer para Animação no Scroll
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
                     setIsVisible(true);
-                    observer.unobserve(entry.target); // Anima apenas uma vez
+                    observer.unobserve(entry.target);
                 }
             },
-            { threshold: 0.2 } // Dispara quando 20% da seção estiver visível
+            { threshold: 0.2 }
         );
 
         if (sectionRef.current) {
@@ -56,7 +53,6 @@ const StudioBanner = () => {
     return (
         <section className="studio-banner" ref={sectionRef}>
 
-            {/* LADO ESQUERDO: CONTEÚDO */}
             <div className={`banner-content ${isVisible ? 'visible' : ''}`}>
                 <h2>Alugue o estúdio </h2>
                 <div className="divider"></div>
@@ -65,7 +61,6 @@ const StudioBanner = () => {
                     Um estúdio projetado para elevar sua produção fotográfica e de vídeo.
                 </p>
 
-                {/* Grid de Ícones */}
                 <div className="features-icon-grid">
                     <div className="feature-icon-item" title="Conforto térmico garantido">
                         <div className="icon-wrapper"><TbAirConditioning /></div>
@@ -92,17 +87,15 @@ const StudioBanner = () => {
                         <span>Wi-Fi</span>
                     </div>
 
-                    {/* --- AQUI ESTÁ O NOVO ÍCONE DE MOBILIÁRIO --- */}
                     <div className="feature-icon-item" title="Acervo de móveis e props">
                         <div className="icon-wrapper"><FaChair /></div>
                         <span>Mobiliário</span>
                     </div>
                 </div>
 
-                {/* BOTÕES DE AÇÃO */}
                 <div className="banner-actions">
                     <button onClick={handleLocacao} className="cta-button primary">
-                    Reservar
+                        Reservar
                     </button>
 
                     <Link to="/informacoes" className="cta-button secondary" onClick={() => window.scrollTo(0, 0)}>

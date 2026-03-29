@@ -4,21 +4,27 @@ import '../styles/carrosel.css';
 const photos = [
   {
     id: 1,
-    src: '/home/Foto_Inicio.webp',
+    src: '/carrosel/Foto_Inicio.webp',
     title: 'Espaço Criativo',
     subtitle: 'Ambientes inspiradores para suas fotos'
   },
   {
     id: 2,
-    src: '/home/Mesa.webp',
+    src: '/carrosel/Mesa.webp',
     title: 'Estúdio Profissional',
     subtitle: 'Alugue o estúdio'
   },
   {
     id: 3,
-    src: '/home/cadeira.webp',
+    src: '/carrosel/cadeira.webp',
     title: 'Conforto & Design',
     subtitle: 'Conheça nosso espaço'
+  },
+  {
+    id: 4,
+    src: './carrosel/cadeiraM.webp',
+    title: "Estudio Completo",
+    subtitle: "Alugue o estúdio"
   }
 ];
 
@@ -59,7 +65,6 @@ const PhotoGrid = () => {
         ))}
       </div>
 
-      {/* BOTÕES */}
       <button className="nav prev" onClick={() => scroll('prev')}>‹</button>
       <button className="nav next" onClick={() => scroll('next')}>›</button>
 

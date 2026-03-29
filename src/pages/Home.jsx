@@ -17,7 +17,7 @@ const Home = () => {
   const [telefone, setTelefone] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // 🔥 controle de carregamento do carrossel
+
   const [showCarousel, setShowCarousel] = useState(false);
 
   useEffect(() => {
@@ -25,7 +25,6 @@ const Home = () => {
       setTimeout(() => setShowModal(true), 1500);
     }
 
-    // 🔥 atraso para não travar LCP
     setTimeout(() => setShowCarousel(true), 500);
 
   }, [user]);

@@ -4,19 +4,17 @@ import { FaInstagram, FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaArrowUp } from '
 import '../styles/footer.css';
 
 const Footer = () => {
-    
+
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     return (
         <footer className="footer">
-            {/* Detalhe Dourado Superior */}
             <div className="footer-border"></div>
 
             <div className="footer-content">
-                
-                {/* Coluna 1: Marca */}
+
                 <div className="footer-brand">
                     <h3>Estúdio Vetra</h3>
                     <p>Capturando a essência através de uma ótica atemporal. Espaços, momentos e histórias que merecem ser eternizados.</p>
@@ -26,7 +24,6 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Coluna 2: Navegação */}
                 <div className="footer-links">
                     <h4>Explorar</h4>
                     <ul>
@@ -37,7 +34,6 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Coluna 3: Contato e Social */}
                 <div className="footer-social">
                     <h4>Conecte-se</h4>
                     <div className="contact-info">
@@ -45,7 +41,7 @@ const Footer = () => {
                             <FaEnvelope /> contato@estudiovetra.com.br
                         </a>
                     </div>
-                    
+
                     <div className="social-icons">
                         <a href="https://www.instagram.com/estudiovetra/" target="_blank" rel="noopener noreferrer" title="Instagram">
                             <FaInstagram />
@@ -57,10 +53,9 @@ const Footer = () => {
                 </div>
             </div>
 
-            {/* Rodapé Inferior */}
             <div className="footer-bottom">
                 <p>&copy; {new Date().getFullYear()} Estúdio Vetra. Todos os direitos reservados.</p>
-                
+
                 <button onClick={scrollToTop} className="back-to-top" title="Voltar ao topo">
                     <FaArrowUp />
                 </button>

@@ -17,15 +17,33 @@ import Header from './Header';
 import Footer from './Footer';
 import '../styles/information.css';
 
-import imgBege from './bege.jpg';
+//bege
+
+import imgBege from './bege/bege.jpg';
+
+// Gentian Green
+
 import GentininGreen1 from './gentiam_green/green1.jpg';
 import GentininGreen2 from './gentiam_green/green2.jpg';
 import GentininGreen3 from './gentiam_green/green3.jpg';
+
+// grey
 import grey from './grey/grey1.jpg';
-import coco from './coco/coco1.jpg';
+import grey2 from './grey/grey2.jpg';
+
+//coco 
+import coco from './coco/marrom_1.jpg';
+import coco2 from './coco/marrom_2.jpg';
+
+//blue 
+
 import blue1 from './deep_blue/blue1.jpg'
 import blue2 from './deep_blue/blue2.jpg';
+
+// Green Deep
 import depgreen from './green/foto1.jpg';
+
+// branco puro
 import branco1 from './branco/foto1.jpg';
 import branco2 from './branco/foto2.jpg';
 
@@ -59,7 +77,7 @@ const Information = () => {
             hex: "#553e31",
             bgHex: "#EBE5DE",
             desc: "Quente e autêntico. O marrom coco cria uma atmosfera sofisticada.",
-            images: [coco]
+            images: [coco, coco2]
         },
         {
             id: 3,
@@ -83,7 +101,7 @@ const Information = () => {
             hex: "#5c5a59",
             bgHex: "#222222",
             desc: "Sofisticação e drama. O fundo preto absorve a luz.",
-            images: [grey]
+            images: [grey, grey2]
         },
         {
             id: 6,
@@ -107,7 +125,6 @@ const Information = () => {
             hex: "#dc293e",
             bgHex: "#FDEDEC",
             desc: "Energia e paixão. O vermelho vibrante destaca a cena.",
-            images: []
         }
     ];
 
@@ -143,7 +160,6 @@ const Information = () => {
         <>
             <Header />
 
-            {/* 1. SEÇÃO: EXPERIÊNCIA VETRA */}
             <div className="info-details-section" style={{ paddingTop: '140px' }}>
                 <div className="details-content">
                     <div className="details-header">
@@ -172,7 +188,6 @@ const Information = () => {
                 </div>
             </div>
 
-            {/* 2. SEÇÃO: FUNDOS E CORES (Visualizador) */}
             <div className="info-page" style={{ backgroundColor: currentBackdrop.bgHex, padding: '80px 5%' }}>
                 <div className="visualizer-container">
                     <div className="image-stage">
@@ -223,7 +238,6 @@ const Information = () => {
                 </div>
             </div>
 
-            {/* 3. SEÇÃO: PLANTA E DIMENSÕES */}
             <div className="blueprint-section">
                 <div className="blueprint-container">
                     <div className="blueprint-text">
